@@ -1,0 +1,269 @@
+asd_kb
+	- diversity: higher richness in control vs. autistic. non-significant Shannon Diversity (though trend in same direction: higher in control than autistic).
+	- no phylum-level association
+	- some genus-level associations
+	- bc they saw quite a few Prevotella, investigated deeper --> found Prevotella copri present in neurotypical but not autistic
+	- also saw Prevotella/Bacteroides ratio much lower in ASD (duh)
+	-they do say they controlled for diet, so maybe that's not the entire signal. But the signal that is there is quite quite weak
+	
+cdi_schubert
+	- CDI and nonCDI diarrhea both have lower diversity than non-diarrhea controls
+	- cases and diarrheal controls are really hard to tell apart
+	- did some stuff with subdividing microbiome into community types and looking at "types" which were different, and then looking at what bacteria are enriched/lower in those "types"
+	- found the usual: Bacteroides, Lachno, Ruminos higher in controls and Enterococcus, Enterobacters and Erysipelotrich... higher in cases
+	- makes an argument for looking at combinations of species
+
+cdi_youngster
+	- 20 recurrent CDI patients, two treatment arms (naso gastric tube vs enema) vs. 4 healthy?! (but multiple samples per patient...)
+	- note: not strictly case-control! may need to go back and check which samples I'm comparing...
+	- shannon diversity highest in donors, lowest in CDI, intermediate in post-FMT CDI
+	
+cdi_vincent
+	- lower diversity in CDI than controls
+	- some bacteria also lower - note that I think they collapsed to each level (phylum, family) before doing stats test.
+	- unsure what multi comp they did
+	- unclear to me whether the cases are patients with active CDI, or patients who later developed CDI... I think it's patients who later developed CDI, but who were sampled within 7 days of hospital admission
+	- also unclear whether it's fecal samples or fecal DNA from rectal swabs
+
+crc_xiang
+	- did many comparisons between tissue and intestinal lumen (i.e. stool) just in the CRC group
+	- also looked at rectal swab of patients vs control
+	- stc = stool control, stp = stool patient, swc = swab control, swp = swab patient
+
+crc_zhao
+	- great overview of 'groups of bacteria' that are associated with health (butyrate producers, linoleic acids)
+	- and good overview of previous work on CRC associations
+	- did genus and phylum level stats tests (H poop vs CRC poop)
+	- also did a redundancy analysis on OTU-level, and of the 48 OTUs they found as key variables, 46 were stat different btw H and CRC
+	- they mapped these OTUs to species names using BLAST matches
+
+crc_zhu
+	- case control poops, 19 CRC vs 20 H
+	- univariate tests on phylum, family, and genus level
+	- PLS-DA on OTUs, found 69 key phylotypes that differentiated the two groups
+		found butyrate-producing bugs etc
+	- correlated abundance of g__Bacteroides with disease status --> found a correlation (but looks silly, Fig 5)
+
+crc_zeller
+	- provide examples of mechanistic previous studies, only summarize fusobacteria result from previous 16S studies
+	- they did phylum-level comparisons
+	- made a classifier based on an ensemble of penalized linear models
+	- validated their classifiers on other populations
+	their classifier did basically as well as or better than the standard diagnostic, but like the standard dx (FOBT hemoccult) is rull bad (Fig 1A)
+	- also looked at classifier on late stage vs. early tumors (good - want to detect cancer early in CRC bc then it's really curable)
+	- then applied their classifier to published IBD data to show specificity of their markers to CRC (rather than general dysbiosis) --> but Fig 1B - two of the Fusos weren't in the IBD study, 2 of them were "less" in IBD than CRC (but smaller sample size = dubious)
+	- also looked at tumor biopsies, to compare the bugs they found in poop to the bugs they found in tumors (Fuso is in both!)
+	- and did some functional analysis to look at different microbial metabolism stuffs in CRC vs H (but hard to tell if it's just diet or not, cuz didn't have diet data)
+	- interestingly, used MOCAT for all their stuff (not qiime or mothur) - looks like even the 16S part?
+	- methods is pretty detailed on all the models they used - this would be a good paper for trying new model types!
+	
+crc_baxter
+	- built lots of random forest models based on microbiome, compared to gold standard dx test
+		- adenoma vs normal: FIT and microbiota basically the same, and not that good
+		- cancer vs normal: FIT better than microbiota, and both are quite good
+		- cancer vs. normal model selected OTUs consistent with previous reports of CRC-association
+	- the two classifiers (FIT vs microbiome) find different adenomas so they made another RF with both microbiome and FIT results to distinguish healthy vs. adenoma or carcinoma. This model was better than FIT for all classification tasks (healthy vs. any lesion, healthy vs cancer, healthy vs adenoma).
+		- Most of the OTUs selected for in this combined model were enriched in normal patients
+ 
+crc_zakcular
+    - used lefse to identify OTUs with largest effects, input those OTUs into a logit model (along with clinical data)
+    - first made logit model based on age, gender, race, bmi, and medication. then added the top 6 most discriminant OTUs (identified by lefse). did this for H vs adenoma, H vs cancer, H vs any lesion, and adenoma vs carcinoma
+    - can't find supplementary info from the online version of article
+    
+ibd_gevers
+    - did unifrac pcoa, multivariate analysis on mucosal samples (mucosal tissue biopsies)
+    - looked at how biopsy results compared with stool results
+        - stool did worse, and didn't reflect the same changes/bugs they saw in biopsies
+    - then looked at difference btw stool and biopsy microbiota
+    - picrust on mucosa-associated bugs
+    - subset of stool samples got shotgun metagenomics, found that functional profile of stool is different than functional profile of mucosa (as predicted by picrust). foud some species associations
+    - built RF classifier on the different data types, stool didn't work that well (but mucosal microbiota was pretty good)
+    
+ibd_eng
+    - most interesting part: ICD and CCD (two subtypes of crohns) have opposite direction for many of the significant bugs!
+    - partial least squares discriminant analysis correctly classified most patients except UC
+    - had biopsy for a subset of patients. 
+    - concordant twin biopsies clustered together, but if twins had different phenotype then they didn't group together (disease > genotype)
+    - strong signal for ICD, very weak signal in UC
+    - but otherwise it's basically a list of different bugs changed in different groups...
+    
+ibd_alm
+    - classify ibd vs non-ibd with random forest (slime). worked really well, and even better for patients with active disease
+    - compared results to previous study
+    - diversity related to disease activity
+    - active vs remission
+    - UC vs CD
+    - blind validation of RF model on independent cohort
+    - also compared with fecal calprotectin
+   
+ibd_hut
+    - associated metadata (age, smoker, mesalamine use, sample type, etc) with microbiome
+    - found clade associations with disease state (using multivariate something corrected for clinical stuff)
+    - CD with ileal involvement was different
+    - looked at specific associations btw bugs and abx, smoking, age
+    - inferred metabolic modules from the data, found lots of shifts in metabolic modules
+    
+nash_chan
+    - this is a clinical trial of probiotics --> need to check longitudinality of samples!
+    - alpha and beta diversity not significantly different
+    - unifrac PCA --> no big separation
+    - PLS-DA --> pretty good separation (in 3D WOW)
+    - looked at bacteria with highest variable importance in projection (on the pls-da plot), and compared with t-test results
+    - diversity over time in probiotic and no tx group = no difference
+    - some genera were affected by probiotic treatment
+    - looked at changes in bugs that correlated with changes in IHTG (intrahepatic triglyceride content)
+    --> actually, this is quite cool! Fig. 7. (not sure how they're plotting abundance)
+    - has a good discussion of F. prausnitzii at the end of paper
+    
+nash_baker
+    - good overview of gut microbiota relation to metabolic health
+    - for most analyses, did ANOVA between the three groups (rather than univariate tests)
+    - enterotypes: 53/63 fit into pre-defined enterotypes, the other ones were in enterotype "H"
+    - phylum, family, and genus level comparisons
+    - then looked at Escherichia specifically (bc it was the only thing that differed btw obese and nash - all other changes were ob and/or nash vs healthy)
+    - also looked at serum ethanol concentration, bc they found more alcohol-producing bacteria in nash (i guess this is the e coli?)
+    - biological hypothesis: alcohol produced by gut bacteria contribute to progression from obesity to NASH
+    
+ob_gord
+    - mostly focused on functional analysis of 18 metagenomics samples
+    - twin study
+        - found related people's microbiomes to be more similar than unrelated people's
+        - 29% of enrolees (families? indivs? dunno) live in same house
+        - monozygotic twins weren't more similar to each other than dizygotic twins
+    - looked at richness of taxa, tried to find core taxa --> didn't find any present in all 154 patients
+    - found some phylum-level differences
+       - not sure if they did lower level univariate comparisons
+    - obese have lower diversity
+    - did metagenomics to find functional profiles
+        - looked at Firmicutes' functional profiles in healthy vs. obese, also looked with Bacteroidetes
+    - found that everyone was pretty similar, function-wise
+       - core groups = shared across all 18 metagenomics samples
+       - core groups = more than 90% of sequences
+    - looked at functions, obese vs. healthy
+       - found differences, and also mapped them back to the taxa (using the 44 ref genomes, I think)
+       
+ob_zup
+    - amish population, BMI and other metabolic syndrome traits (blood pressure, cholesterol, fasting glucoses, etc...)
+    - found 17 genera present in 75% of subjects
+    - BF ratio correlates weakly with BMI (r=0.116, p=0.04)
+    - identified networks of interacting bacteria AKA enterotypes (but noted that enterotypes were gradients of communities)
+    - had follow up samples for 19 people, 2-5 months after
+    - looked at factors associated with groups (i.e. enterotypes)
+        nuclear family? --> not really
+        occupation? --> yes, farmers and prevotella
+        
+ob_escobar
+    - sequenced 30 columbians, compared to previously published USA, european, japanese, and korean data (that also had BMI, but mostly healthy except the USA one which is the gordon obesity/twins paper)
+    - good overview on conflicting results re: obesity microbiome
+    - found significant clustering by geography AKA study
+    - correlated BMI with bugs, found a few with negative correlation
+
+
+ob_ross
+    - obesity and t2d study --> no t2d diagnosis in the data (only has clinical data like HOMA, cholesterol,  etc - I don't know how to turn those into binary categories)
+    - cohort of mexican americans in lower rio grande valley
+    - found no significant associations with clinical metadata!! (that's why they did all this other weird stuff)
+    - compared their data to HMP (as a mex-am vs. am comparison)
+    - BF ratio greater in this cohort than in HMP
+    - network analysis using sparcc
+        - did this in three other datasets to see how generalizable the correlations were across populations
+        - found 22 otu pairs that were correlated in 3/4 datasets
+        - kids and old people have fewer strong otu correlations
+
+ob_goodrich
+    - twinsUK cohort, with monozygotic and dizygotic twins
+    - looked for heritable bugs: found christensenellaceae as most heritable bug
+    - most of the most heritable bugs were enriched in lean subjects
+    - methanogen has been associated with leanness in previous studied and was present with christ. in their study
+        - did FMT of +/- lean and +/- methanogens (which correlated with christ)
+         - recipients of lean and christ positive stool gained less weight than from other donors
+
+par_schep
+    - constipation is a risk factor for parkinson's.
+    - looked at differences in communities btw H and the two phenotypes of parkinson's (postural instability and gait difficulty, and tremor dominant)
+    - family-level analyses
+    - univariate: found 5 families greater in PD than healthy; prevotellaceae had large effect and was lower in PD than healthy (others had smaller effects)
+    - made logistic regression using just prevotellaceae abundance < log reg with top familes < log reg with top families and constipation score
+    - also compared the two phenotypes with each other: found more enterobacteriaceae with the phenotype that progresses faster and has a worse prognosis)       
+    
+ra_littman
+    - arthritis = systemic auto-immune. germ free mice don't develop RA, but introduction of microbes leads high-risk RA mice to get it. abx is a common treatment for RA, but no one knows why or whether a specific microbe is to blame
+    - new-onset arthritis = NORA
+    - chronic arthritis = CRA
+    - psoriatic arthritis = PSA
+    - shannon diversity not different; simpson diversity was lower in NORA group
+    - did lefse on everything: OTUs, family, genus-level
+    - lefse on nora vs healthy
+    - identified a few prevotella OTUs that were higher in NORA samples, mapped them to p. copri, and did metagenomics on a couple samples with very high abundance of this OTU
+    - mapped shotgun reads to p. copri genome to make an assembly
+    - then did shotgun sequencing on both nora and healthy subjects to see if their p. copris had different genes!
+        used this data to look at variability of p copri strains across indivs and over time --> found stable over time, variable across indivs
+    - also did humann (to get kegg modules out of the metagenomics) and lefse on the results from humann
+    - bc prevotella and bacteroides are rarely found together, looked to find genes that were in p. copri but not in bacteroides
+    - then gavaged mice with p copri!!
+       found excellent colonization by p. copri
+       and worse colitis when induced by dextran
+       
+asd_son
+    - autism and sibling neurotypical controls. V1V2 and V1V3
+    - got lots of clinical metadata: functional GI symptoms, behavioral symptoms, food intake the week before giving sample
+    - autistic kids more often constipated
+    - autistic w/ gi symptoms vs. w/ out didn't have different severity of asd, or worse behavioral scores
+    - they did qpcr of sutterella, prevotella, bacteroidetes (bc of previous reports). also did f. prau, e. coli, and c. coccoides-e-rectales (bc of association with gi diseases)
+    - no phylum-level signals
+    - found one OTU (cyanobacteria/chloroplast) associated with asd --> they think it's bc parents were feeding two of the asd+fgid kids chia seeds
+    - in general, found some significant first-order interactions but didn't seem super consistent across the two datasets, or that convincing...   
+    
+edd_singh
+    - enteric infections vs. uninfected family members
+        - four pathogens (salmonella, campylobacter, STEC (E. coli), Shigella)
+    - PCA: healthy people cluster more tightly, infected people are all over
+        - infected people didn't cluster by pathogen, but beta diversity did show that communities were different
+    - phylum level analysis (more Bacteroidetes and Firmicutes in healthy, more Proteo in infected)
+    - more escherichia in patients regardless of pathogen
+    - lefse, found 14 features significantly different btw infected and uninfected
+        - didn't find differences btw patients with dif pathogens
+        - also update: they also found 38 bugs higher in healthy (in the supp figure, not in the text here??)
+    - built a tree based on bray-curtis, called each major clade a "cluster" (found 5 clusters)
+        - 77% of infected are in I or II, 91% of uninfected are in III or IV, V was small and grouped with III+IV based on phylo
+        - chi-square likelihood: infected patients in groups I+II, uninfected in III-V
+        - looked at differential abundance of higher-order phylogenies in clusters
+        - also looked at how clinical metadata (age, gender, symptoms) fell within the clusters
+    - looked at follow-up samples from patients 1-14 weeks after infection
+        - recovered communities were more diverse
+        - clustered more with uninfected comms on the pca
+        
+hiv_dinh
+    - motivation: HIV patients have more immune activation, maybe through microbial translocation.
+    - design: 21 patients with chronic HIV (undergoing ART) - poop, plasma markers of translocation and inflammation
+    - no alpha diversity difference
+    - beta diversity was different
+    - did lefse (and confirmed with mann whitney) to find different taxa
+    - plasma levels of one bacterial translocation marker were higher in HIV, others weren't that different
+    - plasma markers of inflammation were significantly higher in HIV w univariate analysis but not multivariate analysis
+    - looked at correlations btw plasma markers + bacteria
+        - some of the plasma markers were correlated with each other
+        - some of the markers were also correlated with with the bugs identified with lefse
+        
+t1d_mejialeon
+    - T1D at onset + T1D after 2 years controlled
+    - alpha diversity not different
+    - beta diversity showed T1D-T1D distance < between T1D-control
+        - also new-onset T1D has largest within-group beta diversity
+    - saw a few genus-level differences
+    - no phylum changes, including no B/F ratio
+    - looked at clinical factors too: number of antibiotic treatments > in T1D than controls
+        - HLA risk alleles
+
+mhe_zhang
+    - motivation: patients with MHE develop overt HE more frequently than cirrhotic patients without MHE, patients with over HE have high mortality rates, so if we can understand MHE maybe we can prevent MHE which will prevent later mortality from overt HE
+    - compared MHE with related controls and non-HE liver cirrhosis patients
+    - identified gut microbiome in each group (OTU in >50% of patients in group)
+        - gene content of similar species to the OTUs
+        - also used these to see gain/loss of core bugs across groups
+    - did co-occurence analysis (not sparcc)
+    - found one OTU that correlated with ammonia abundance in MHE patients (but not cirrhosis patients)
+        - this OTU mapped to Streptococcus salivarius, which has a urease function
+    - text is really hard to read, mostly just skimmed it blerg
+
+        

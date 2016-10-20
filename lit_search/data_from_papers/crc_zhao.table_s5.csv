@@ -1,0 +1,49 @@
+OTU,Phylum,Class,Order,Family,Genus,Nearest neighboring bacterium/bacteria (similarity)*,H,C,(Mann-Whitney test)
+OTU0005,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides vulgatus;  AB510712 (100.0% ),7.3955,2.0929,1.93E-04
+OTU0945,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides vulgatus; AB510712 (98.7%),0.0327,0.0083,5.87E-04
+OTU4160,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides uniformis; AB510711 (97.5%),0.0041,0,0.023
+OTU3045,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides fragilis (T); ATCC 25285; CR626927 (98.1%),0,0.0114,0.006
+OTU0185,Bacteroidetes,Bacteroidia,Bacteroidales,Rikenellaceae,Alistipes,Alistipes indistinctus; AB490804 (97.5% ),0.0504,0.0053,3.82E-04
+OTU0845,Actinobacteria,Actinobacteria,Bifidobacteriales,Bifidobacteriaceae,Bifidobacterium,,0.0041,0.0303,3.40E-04
+OTU1336,Actinobacteria,Actinobacteria,,,,,0.0007,0.0076,0.013
+OTU0176,Firmicutes,Clostridia,Clostridiales,Ruminococcaceae,Oscillibacter,Oscillospira guilliermondii; AB040499 (97.1% ),0.0443,0.0068,7.14E-04
+OTU0039,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Escherichia/Shigella,,0.9398,2.815,2.42E-05
+OTU0484,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Escherichia/Shigella,,0,0.0061,0.006
+OTU1955,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Escherichia/Shigella,,0.0007,0.0083,0.006
+OTU2525,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,,Klebsiella oxytoca; FM207542 (97.0%),0.0014,0.0121,0.01
+OTU1203,Proteobacteria,Gammaproteobacteria,,,,Escherichia fergusonii; AJ277981 (97.000% similar),0.0041,0.0174,0.012
+OTU0901,Proteobacteria,Gammaproteobacteria,Pseudomonadales,Moraxellaceae,Acinetobacter,Acinetobacter johnsonii; DQ257432 (100.0%),0.0007,0.0091,0.012
+OTU3671,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,,Citrobacter freundii; FJ542329 (98.8%),0,0.0046,0.012
+OTU1380,Fusobacteria,Fusobacteria,Fusobacteriales,Fusobacteriaceae,Fusobacterium,,0.002,0.0614,0.005
+OTU1801,Actinobacteria,Actinobacteria,Coriobacteriales,Coriobacteriaceae,Eggerthella,Eggerthella lenta (T); ATCC25559; AF292375 (97.9%),0.0014,0.0121,0.009
+OTU0147,Firmicutes,,,,,Clostridium spiroforme; X73441 (94.4%),0.8424,0.4377,0.009
+OTU0391,Firmicutes,Bacilli,Bacillales,Staphylococcaceae,Gemella,Gemella morbillorum; GU561406 (100.0%),0.0068,0.0728,0.006
+OTU1407,Firmicutes,Bacilli,Lactobacillales,Enterococcaceae,Enterococcus,,0,0.019,0.003
+OTU2673,Firmicutes,Bacilli,Lactobacillales,Enterococcaceae,Enterococcus,,0,0.0038,0.012
+OTU1174,Firmicutes,Clostridia,Clostridiales,,,Clostridium innocuum (T); M23732 (99.4%),0.0007,0.0228,0.005
+OTU1435,Firmicutes,Bacilli,Lactobacillales,Streptococcaceae,Streptococcus,Streptococcus thermophilus (T); ATCC 19258; AY188354 (99.3%),0.0007,0.0106,0.011
+OTU1803,Firmicutes,Bacilli,Lactobacillales,Streptococcaceae,Streptococcus,Streptococcus gallolyticus (T); LAB617; Z94012 (97.6%),0,0.0053,0.012
+OTU0432,Firmicutes,Clostridia,Clostridiales,Veillonellaceae,Phascolarctobacterium,Phascolarctobacterium faecium (T); X72865 (99.4%),0.0259,0.0091,0.032
+OTU0580,Firmicutes,Clostridia,Clostridiales,Veillonellaceae,Dialister,Dialister pneumosintes; Z36297 (100.0%),0.0007,0.025,0.001
+OTU1032,Firmicutes,Clostridia,Clostridiales,Peptostreptococcaceae,Peptostreptococcus,Peptostreptococcus stomatis; GQ422715 (100.0%),0,0.2177,1.42E-07
+OTU0343,Firmicutes,Clostridia,Clostridiales,Peptostreptococcaceae,,Peptostreptococcaceae bacterium oral taxon 091; GU400652 (97.1%),0.0014,0.0341,0.016
+OTU0783,Firmicutes,Clostridia,Clostridiales,Incertae Sedis XI,Parvimonas,Parvimonas micra (T); ATCC 33270; AY323523 (100.0%),0.0014,0.1092,3.09E-04
+OTU1073,Firmicutes,Clostridia,Clostridiales,Incertae Sedis XI,Anaerococcus,,0,0.0129,0.006
+OTU0473,Firmicutes,Clostridia,Clostridiales,,,Clostridiaceae bacterium SH021; AB298756 (96.4%),0.0068,0,0.008
+OTU0748,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Dorea,Dorea longicatena (T); III-35; AJ132842 (99.3%),0.0075,0.0569,0.544
+OTU1040,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Dorea,Dorea longicatena (T); III-35; AJ132842 (99.3%),0,0.0046,0.012
+OTU0007,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza; AY169414 (100.0%),1.4777,0.2913,9.23E-05
+OTU4020,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza; AY169414 (98.6%),0.0041,0,0.023
+OTU0614,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza; AY169414 (99.3%),0.0245,0.0038,0.006
+OTU0599,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza; AY169414 (99.3%),0.0109,0.0008,0.006
+OTU0067,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,butyrate-producing bacterium A2-166; AJ270489 (100.0%),0.3786,0.0614,0.019
+OTU0457,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,,0.0654,0.0152,0.278
+OTU1704,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,,0.0109,0.003,0.024
+OTU1443,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Ruminococcus torques; FP929055 (97.5%),0.0082,0.0008,0.009
+OTU0662,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,Roseburia intestinalis (T); L1-82; AJ312385,0.0129,0.0008,0.001
+OTU1167,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,,0.0163,0.0038,0.002
+OTU0756,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,,0.0163,0.0038,0.038
+OTU1036,Firmicutes,Clostridia,Clostridiales,Incertae Sedis XIV,Blautia,Ruminococcus obeum; X85101 (99.3%),0.0007,0.0068,0.027
+OTU3710,Firmicutes,Clostridia,Clostridiales,,,,0.0007,0.0061,0.006
+OTU0916,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,,0.0095,0.0455,0.006
+OTU0911,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,,0.0048,0.0303,9.05E-04

@@ -1,0 +1,32 @@
+,species,p,new_name,lower,higher
+0,Pseudoflavonifractor capillosus ,0.00107,g__Pseudoflavonifractor;s__capillosus,control,crc
+1,unclassified Ruminococcus sp. ,0.0173,g__Ruminococcus;s__,crc,control
+2,unclassified butyrate-producing bacterium ,0.0173,unclassified butyrate-producing bacterium ,crc,control
+3,unclassified Ruminococcaceae bacterium ,0.0173,f__Ruminococcaceae;g__;s__,control,crc
+4,Eubacterium hallii ,0.018,g__Eubacterium;s__hallii,crc,control
+5,Eubacterium eligens ,0.0205,g__Eubacterium;s__eligens,crc,control
+6,unclassified Ruminococcus sp. ,0.022,g__Ruminococcus:s__,crc,control
+7,Leptotrichia hofstadii ,0.035,g__Leptotrichia;s__hofstadii,control,crc
+8,Streptococcus salivarius ,0.0555,g__Streptococcus;s__salivarius,crc,control
+9,Fusobacterium periodonticum ,0.063,g__Fusobacterium;s__periodonticum,control,crc
+10,Roseburia intestinalis ,0.0658,g__Roseburia;s__intestinalis,crc,control
+11,Bacteroides fragilis ,0.0746,g__Bacteroides;s__fragilis,control,crc
+12,Eubacterium ventriosum ,0.077,g__Eubacterium;s__ventriosum,crc,control
+13,Bilophila wadsworthia ,0.0841,g__Bilophila;s__wadsworthia,control,crc
+14,unclassified Neisseria sp. ,0.0841,g__Neisseria;s__,control,crc
+15,Campylobacter rectus ,0.0841,g__Campylobacter;s__rectus,control,crc
+16,Selenomonas sputigena ,0.0841,g__Selenomonas;s__sputigena,control,crc
+17,Leptotrichia buccalis ,0.0841,g__Leptotrichia;s__buccalis,control,crc
+18,Clostridium hylemonae ,0.0887,g__Clostridium;s__hylemonae,control,crc
+19,Ruminococcus bromii ,0.0939,g__Ruminococcus;s__bromii,crc,control
+20,Clostridium symbiosum ,0.0955,g__Clostridium;s__symbiosum,control,crc
+21,unclassified Parvimonas sp. ,0.0563,g__Parvimonas;s__,control,crc
+22,Fusobacterium nucleatum subsp. polymorphum ,0.00323,g__Fusobacterium;s__nucleatum;sb__polymorphum,control,crc
+23,Porphyromonas asaccharolytica ,0.00961,g__Porphyromonas;s__asaccharolytica,control,crc
+24,Prevotella nigrescens ,0.0215,g__Prevotella;s__nigrescens,control,crc
+25,Fusobacterium nucleatum subsp. nucleatum ,0.000654,g__Fusobacterium;s__nucleatum;sb__nucleatum,control,crc
+26,Parvimonas micra ,0.0665,g__Parvimonas;s__micra,control,crc
+27,Eubacterium rectale ,0.063,g__Eubacterium;s__rectale,crc,control
+28,Peptostreptococcus stomatis ,0.022,g__Peptostreptococcus;s__stomatis,control,crc
+29,Fusobacterium nucleatum subsp. animalis ,7.51E-05,g__Fusobacterium;s__nucleatum;sb__animalis ,control,crc
+30,Fusobacterium nucleatum subsp. vincentii ,1.30E-05,g__Fusobacterium;s__nucleatum;sb__vincentii ,control,crc

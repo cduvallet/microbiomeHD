@@ -1,0 +1,297 @@
+Taxon,Variable,Value,Coefficient,P-value (nominal),Q-value,Mean Taxon Abundance,Median Taxon Abundance
+Bacteria|Actinobacteria|Actinobacteria|Bifidobacteriales|Bifidobacteriaceae,Age,,-0.000933058,0.000602058,0.01986791,0.050028498,0.024957448
+Bacteria|Actinobacteria|Actinobacteria|Bifidobacteriales|Bifidobacteriaceae|Bifidobacterium,Age,,-0.000929156,0.000611038,0.01975273,0.049944134,0.024957448
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|unclassified,Age,,0.000276437,0.002754015,0.05665402,0.014817785,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales,Age,,0.002989668,0.01963136,0.2129869,0.476727857,0.504038554
+Bacteria|Firmicutes,Age,,-0.002639099,0.00572361,0.09543367,0.854164896,0.859543469
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptostreptococcaceae,Age,,-0.000430595,0.01308314,0.1671265,0.042490746,0.027842318
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Sporobacter,Age,,0.000175363,0.000781195,0.02249842,0.005662837,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae,Antibiotics,TRUE,-0.05997505,0.000783184,0.02215293,0.073280696,0.060407727
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae,Antibiotics,FALSE,,,,0.095526562,0.062605731
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Collinsella,Antibiotics,TRUE,-0.08572543,1.411784e-05,0.001064889,0.024299633,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Collinsella,Antibiotics,FALSE,,,,0.078333807,0.035749986
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|unclassified,Antibiotics,TRUE,-0.01421305,0.002609667,0.05822131,0.009359164,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|unclassified,Antibiotics,FALSE,,,,0.015520379,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|unclassified,Antibiotics,TRUE,0.005188619,0.007346715,0.1118961,0.008838608,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|unclassified,Antibiotics,FALSE,,,,0.001862536,0
+Bacteria|Firmicutes|Clostridia,Antibiotics,TRUE,-0.1155771,0.01475299,0.181153,0.744924976,0.774039096
+Bacteria|Firmicutes|Clostridia,Antibiotics,FALSE,,,,0.763087514,0.774605784
+Bacteria|Firmicutes|Clostridia|Clostridiales,Antibiotics,TRUE,-0.1146499,0.01579323,0.1895188,0.744803802,0.773550674
+Bacteria|Firmicutes|Clostridia|Clostridiales,Antibiotics,FALSE,,,,0.762767559,0.774605784
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XI|Parvimonas,Antibiotics,TRUE,0.003749176,0.01941911,0.2121371,0.005455692,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XI|Parvimonas,Antibiotics,FALSE,,,,0.00185167,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Dorea,Antibiotics,TRUE,-0.07844807,1.652335e-05,0.001189681,0.060717099,0.032522154
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Dorea,Antibiotics,FALSE,,,,0.130708782,0.13028632
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Acetivibrio,Antibiotics,TRUE,-0.00428009,0.01801433,0.1995433,0.001558177,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Acetivibrio,Antibiotics,FALSE,,,,0.004194772,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Butyricicoccus,Antibiotics,TRUE,-0.02584642,0.004529765,0.07972386,0.042437758,0.035866982
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Butyricicoccus,Antibiotics,FALSE,,,,0.053511774,0.050749198
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Subdoligranulum,Antibiotics,TRUE,-0.03560973,0.01128999,0.1541667,0.052862186,0.03396847
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Subdoligranulum,Antibiotics,FALSE,,,,0.076277629,0.059684595
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Phascolarctobacterium,Antibiotics,TRUE,-0.03174442,0.01444355,0.1815761,0.012103718,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Phascolarctobacterium,Antibiotics,FALSE,,,,0.048416822,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|unclassified,Antibiotics,TRUE,-0.01211479,0.013978,0.1771292,0.009130005,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|unclassified,Antibiotics,FALSE,,,,0.02021377,0.011594705
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Cronobacter,Antibiotics,TRUE,0.01000332,0.01179047,0.1569421,0.015316408,0.010927766
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Cronobacter,Antibiotics,FALSE,,,,0.010362892,0
+Evenness,Antibiotics,TRUE,-0.04722375,0.002746224,0.05800025,0.37466594,0.353015634
+Evenness,Antibiotics,FALSE,,,,0.409436846,0.419467256
+Richness,Antibiotics,TRUE,-12.66963,0.01612284,0.1891746,49.82520514,43
+Richness,Antibiotics,FALSE,,,,59.52851839,55
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Leuconostocaceae,Disease,UC,-0.005704633,0.01758085,0.1989147,0.002537948,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Leuconostocaceae,Disease,Healthy,,,,0.008684605,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Leuconostocaceae,Disease,CD,,,,0.003549257,0
+Bacteria|Firmicutes|Clostridia,Disease,UC,-0.1429138,0.01225745,0.1604611,0.768761296,0.789064217
+Bacteria|Firmicutes|Clostridia,Disease,Healthy,,,,0.942555072,0.945356783
+Bacteria|Firmicutes|Clostridia,Disease,CD,-0.1575302,0.004744134,0.08257921,0.702897952,0.717086848
+Bacteria|Firmicutes|Clostridia|Clostridiales,Disease,UC,-0.1401638,0.01587615,0.1890813,0.768582107,0.788912216
+Bacteria|Firmicutes|Clostridia|Clostridiales,Disease,Healthy,,,,0.941860356,0.944425819
+Bacteria|Firmicutes|Clostridia|Clostridiales,Disease,CD,-0.1542224,0.007044486,0.1104799,0.702624606,0.712470868
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae,Disease,UC,0.03810167,0.000400773,0.01442782,0.026416177,0.007230708
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae,Disease,Healthy,,,,0.012718645,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae,Disease,CD,0.03213189,0.001466374,0.03746349,0.022838516,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|Clostridium,Disease,UC,0.03289844,0.002508162,0.05757868,0.024332221,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|Clostridium,Disease,Healthy,,,,0.011430979,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|Clostridium,Disease,CD,0.02742871,0.007748049,0.1168848,0.022106252,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|unclassified,Disease,UC,0.0124971,0.01794677,0.2001949,0.007142286,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|unclassified,Disease,Healthy,,,,0.002589381,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|unclassified,Disease,CD,0.01297895,0.006332415,0.1013186,0.007521456,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Roseburia,Disease,UC,-0.1016833,0.000342505,0.0132324,0.15326286,0.154901956
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Roseburia,Disease,Healthy,,,,0.254963065,0.252192759
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Roseburia,Disease,CD,-0.1326454,2.224173e-06,0.000195727,0.110510472,0.080900408
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae,Disease,UC,,,,0.385694184,0.41715528
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae,Disease,Healthy,,,,0.517935764,0.496710864
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae,Disease,CD,-0.1157554,0.01763717,0.1981368,0.298563941,0.261691571
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Phascolarctobacterium,Disease,UC,-0.06380935,0.000501931,0.01728388,0.036589402,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Phascolarctobacterium,Disease,Healthy,,,,0.092221112,0.082292363
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Phascolarctobacterium,Disease,CD,-0.06189,0.000621222,0.01929441,0.036623293,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|unclassified,Disease,UC,-0.02150057,0.000388132,0.01429769,0.013437942,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|unclassified,Disease,Healthy,,,,0.037771939,0.044079566
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|unclassified,Disease,CD,-0.01697543,0.002174624,0.051412,0.017718349,0
+Bacteria|Proteobacteria,Disease,UC,,,,0.122698749,0.081573193
+Bacteria|Proteobacteria,Disease,Healthy,,,,0.083493876,0.042138708
+Bacteria|Proteobacteria,Disease,CD,0.09477173,0.01177039,0.1580026,0.174974666,0.106199513
+Bacteria|Proteobacteria|Gammaproteobacteria,Disease,UC,,,,0.105429469,0.068256402
+Bacteria|Proteobacteria|Gammaproteobacteria,Disease,Healthy,,,,0.063116469,0.019228405
+Bacteria|Proteobacteria|Gammaproteobacteria,Disease,CD,0.1074596,0.004918574,0.08468502,0.163616165,0.091950484
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae,Disease,UC,,,,0.080877134,0.035704271
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae,Disease,Healthy,,,,0.039848847,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae,Disease,CD,0.09880716,0.01445475,0.1802861,0.146401526,0.066372397
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Disease,UC,,,,0.05717103,0.018597947
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Disease,Healthy,,,,0.028749168,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Disease,CD,0.07105142,0.01933331,0.2126664,0.100209114,0.035014153
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|unclassified,Disease,UC,,,,0.040123612,0.018357243
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|unclassified,Disease,Healthy,,,,0.023120674,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|unclassified,Disease,CD,0.05074183,0.01024613,0.1436271,0.072455036,0.040115122
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|Clostridium,Gender,TRUE,-0.01012658,0.02366107,0.2465733,0.018308917,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|Clostridium,Gender,FALSE,,,,0.026945509,0.017387566
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptococcaceae,Gender,TRUE,0.003071226,0.02285413,0.2462649,0.004337849,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptococcaceae,Gender,FALSE,,,,0.001558365,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|unclassified,Gender,TRUE,0.02756593,0.006374945,0.1009791,0.201865146,0.196071229
+Bacteria|Firmicutes|Clostridia|Clostridiales|unclassified,Gender,FALSE,,,,0.174639693,0.168463225
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Alcaligenaceae,Gender,TRUE,0.007292168,0.01654854,0.1927418,0.015989127,0
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Alcaligenaceae,Gender,FALSE,,,,0.00982254,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Porphyromonadaceae|Odoribacter,Ileal involved,TRUE,-0.01725274,0.008408173,0.1233199,0.00890919,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Porphyromonadaceae|Odoribacter,Ileal involved,FALSE,,,,0.016268311,0
+Bacteria|Firmicutes,Ileal involved,TRUE,-0.1132036,0.01657805,0.1916761,0.577240339,0.573954026
+Bacteria|Firmicutes,Ileal involved,FALSE,,,,0.918531145,0.914946768
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae,Ileal involved,TRUE,-0.1531419,0.000616719,0.01953767,0.148363726,0.102403143
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae,Ileal involved,FALSE,,,,0.410074705,0.436596997
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Faecalibacterium,Ileal involved,TRUE,-0.1507295,7.493466e-05,0.004092983,0.080287185,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Faecalibacterium,Ileal involved,FALSE,,,,0.273602422,0.287695131
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|unclassified,Ileal involved,TRUE,-0.05858062,0.00709977,0.1102552,0.07709239,0.078433888
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|unclassified,Ileal involved,FALSE,,,,0.196314497,0.196305809
+Bacteria|Proteobacteria|Alphaproteobacteria,Ileal involved,TRUE,0.005491545,0.02317136,0.2479962,0.007002205,0
+Bacteria|Proteobacteria|Alphaproteobacteria,Ileal involved,FALSE,,,,0.002363169,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Ileal involved,TRUE,0.06301711,0.009800097,0.1386014,0.173008346,0.166361298
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Ileal involved,FALSE,,,,0.052029481,0.012451788
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae,Immunosuppressed,TRUE,0.01041594,0.003714114,0.07003757,0.01177204,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae,Immunosuppressed,FALSE,,,,0.004444682,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae|Enterococcus,Immunosuppressed,TRUE,0.01021534,0.003865393,0.07119515,0.010822528,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae|Enterococcus,Immunosuppressed,FALSE,,,,0.00430742,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|unclassified,Immunosuppressed,TRUE,0.003750608,0.023546,0.2486457,0.003352835,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|unclassified,Immunosuppressed,FALSE,,,,0.002415496,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|unclassified,Immunosuppressed,TRUE,0.008989849,0.001996078,0.04790586,0.010240677,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|unclassified,Immunosuppressed,FALSE,,,,0.008524011,0
+Bacteria|Firmicutes|Erysipelotrichi|Erysipelotrichales|Erysipelotrichaceae|Coprobacillus,Immunosuppressed,TRUE,0.04476802,0.004930772,0.08398219,0.123024512,0.09308754
+Bacteria|Firmicutes|Erysipelotrichi|Erysipelotrichales|Erysipelotrichaceae|Coprobacillus,Immunosuppressed,FALSE,,,,0.087243068,0.066341413
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae,Mesalamine use,TRUE,0.008223664,0.008150609,0.1206595,0.008015249,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae,Mesalamine use,FALSE,,,,0.004158935,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae|Enterococcus,Mesalamine use,TRUE,0.008216324,0.007300492,0.1122716,0.007861302,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Enterococcaceae|Enterococcus,Mesalamine use,FALSE,,,,0.003559345,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae,Mesalamine use,TRUE,-0.01835533,0.001317891,0.03479232,0.023229595,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae,Mesalamine use,FALSE,,,,0.024070078,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|Clostridium,Mesalamine use,TRUE,-0.01459587,0.009664414,0.1379138,0.021832952,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Clostridiaceae|Clostridium,Mesalamine use,FALSE,,,,0.022353585,0
+Bacteria|Proteobacteria,Mesalamine use,TRUE,-0.06418201,0.002747889,0.05727179,0.104817633,0.071186897
+Bacteria|Proteobacteria,Mesalamine use,FALSE,,,,0.19166868,0.123170059
+Bacteria|Proteobacteria|Gammaproteobacteria,Mesalamine use,TRUE,-0.06689644,0.002638297,0.05804254,0.092515395,0.053786231
+Bacteria|Proteobacteria|Gammaproteobacteria,Mesalamine use,FALSE,,,,0.175305522,0.104057316
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae,Mesalamine use,TRUE,-0.06783349,0.002543824,0.05756311,0.075226906,0.02991859
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae,Mesalamine use,FALSE,,,,0.151377348,0.070837332
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Mesalamine use,TRUE,-0.05446473,0.001350607,0.03507151,0.049164088,0.014461417
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Mesalamine use,FALSE,,,,0.108309551,0.038041792
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Porphyromonadaceae|Odoribacter,Pancolonic,TRUE,-0.02174266,0.006042269,0.09866963,0.003056986,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Porphyromonadaceae|Odoribacter,Pancolonic,FALSE,,,,0.015955263,0
+Bacteria|Firmicutes|Bacilli|Bacillales|Staphylococcaceae,Pancolonic,TRUE,-0.008240285,0.01453174,0.1798303,0.005917691,0
+Bacteria|Firmicutes|Bacilli|Bacillales|Staphylococcaceae,Pancolonic,FALSE,,,,0.005233369,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Dialister,Pancolonic,TRUE,0.05612161,0.01557547,0.1883324,0.067476393,0.048569067
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Dialister,Pancolonic,FALSE,,,,0.044613553,0
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Alcaligenaceae|Parasutterella,Pancolonic,TRUE,0.01369678,0.01184994,0.1564192,0.020769234,0
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Alcaligenaceae|Parasutterella,Pancolonic,FALSE,,,,0.00743305,0
+Richness,Pancolonic,TRUE,17.81326,0.02359673,0.2475313,70.95964912,66
+Richness,Pancolonic,FALSE,,,,57.28221394,52
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Anaerostipes,Smoker,TRUE,-0.03738548,0.009113183,0.1324338,0.085927728,0.067106861
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Anaerostipes,Smoker,FALSE,,,,0.130744399,0.11297619
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Alcaligenaceae|Sutterella,Smoker,TRUE,0.002976976,0.005027584,0.08472014,0.003706821,0
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Alcaligenaceae|Sutterella,Smoker,FALSE,,,,0.00068311,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pseudomonadales|Moraxellaceae|Acinetobacter,Smoker,TRUE,0.003375498,0.01589471,0.1878898,0.005290214,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pseudomonadales|Moraxellaceae|Acinetobacter,Smoker,FALSE,,,,0.00255907,0
+Bacteria|Firmicutes|Clostridia|unclassified,Steroids,TRUE,-0.004611455,0.006286116,0.1016042,0.002331892,0
+Bacteria|Firmicutes|Clostridia|unclassified,Steroids,FALSE,,,,0.005798438,0
+Bacteria,Stool,TRUE,0.2572579,5.005451e-30,2.642878e-27,1.568880489,1.570796327
+Bacteria,Stool,FALSE,,,,1.293815955,1.334532865
+Bacteria|Actinobacteria|Actinobacteria,Stool,TRUE,0.1031621,1.230416e-10,1.771799e-08,0.179181404,0.148749311
+Bacteria|Actinobacteria|Actinobacteria,Stool,FALSE,,,,0.060608344,0.053087502
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae,Stool,TRUE,0.09969069,1.712536e-13,3.875224e-11,0.131989546,0.104272678
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae,Stool,FALSE,,,,0.037394304,0.03064048
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Asaccharobacter,Stool,TRUE,0.003535918,0.0006488,0.01976345,0.003109916,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Asaccharobacter,Stool,FALSE,,,,0.000494073,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Collinsella,Stool,TRUE,0.0837491,7.067158e-09,8.61106e-07,0.103298452,0.08095763
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Collinsella,Stool,FALSE,,,,0.027800286,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Eggerthella,Stool,TRUE,0.01558111,0.000193135,0.008268272,0.027398639,0.02108608
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|Eggerthella,Stool,FALSE,,,,0.008827147,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|unclassified,Stool,TRUE,0.02393338,4.50322e-11,7.1331e-09,0.023260195,0
+Bacteria|Actinobacteria|Actinobacteria|Coriobacteriales|Coriobacteriaceae|unclassified,Stool,FALSE,,,,0.002782859,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Prevotellaceae,Stool,TRUE,0.01015315,0.000184589,0.008121911,0.010063251,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Prevotellaceae,Stool,FALSE,,,,0.003621116,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Prevotellaceae|Prevotella,Stool,TRUE,0.006900799,0.002254355,0.05251322,0.007095789,0
+Bacteria|Bacteroidetes|Bacteroidia|Bacteroidales|Prevotellaceae|Prevotella,Stool,FALSE,,,,0.002216395,0
+Bacteria|Firmicutes,Stool,TRUE,0.3039064,7.165913e-14,1.891801e-11,1.008474667,0.999685268
+Bacteria|Firmicutes,Stool,FALSE,,,,0.634191394,0.640986618
+Bacteria|Firmicutes|Bacilli,Stool,TRUE,0.05678722,0.01672619,0.1919876,0.153951671,0.120252182
+Bacteria|Firmicutes|Bacilli,Stool,FALSE,,,,0.084507843,0.060057055
+Bacteria|Firmicutes|Bacilli|Bacillales,Stool,TRUE,-0.01031897,0.000155763,0.007256713,0.003935585,0
+Bacteria|Firmicutes|Bacilli|Bacillales,Stool,FALSE,,,,0.010284526,0
+Bacteria|Firmicutes|Bacilli|Bacillales|Staphylococcaceae,Stool,TRUE,-0.007759426,0.000684144,0.02044686,0.003600141,0
+Bacteria|Firmicutes|Bacilli|Bacillales|Staphylococcaceae,Stool,FALSE,,,,0.007699908,0
+Bacteria|Firmicutes|Bacilli|Bacillales|Staphylococcaceae|Gemella,Stool,TRUE,-0.004775411,0.01072518,0.1477276,0.003011488,0
+Bacteria|Firmicutes|Bacilli|Bacillales|Staphylococcaceae|Gemella,Stool,FALSE,,,,0.006663293,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales,Stool,TRUE,0.07814706,0.000303548,0.01232873,0.156589157,0.120027678
+Bacteria|Firmicutes|Bacilli|Lactobacillales,Stool,FALSE,,,,0.078952315,0.050718679
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae,Stool,TRUE,0.01072358,2.16163e-05,0.001426676,0.012662784,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae,Stool,FALSE,,,,0.001798756,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|Lactobacillus,Stool,TRUE,0.01130352,5.26881e-06,0.00041729,0.011860238,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|Lactobacillus,Stool,FALSE,,,,0.001783502,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|unclassified,Stool,TRUE,0.004676103,0.002880548,0.05849729,0.004522657,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Lactobacillaceae|unclassified,Stool,FALSE,,,,0,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Leuconostocaceae,Stool,TRUE,0.00528591,0.000111641,0.005526208,0.006183197,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Leuconostocaceae,Stool,FALSE,,,,0.000171337,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Leuconostocaceae|Leuconostoc,Stool,TRUE,0.00337139,0.002700795,0.05781161,0.004099189,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Leuconostocaceae|Leuconostoc,Stool,FALSE,,,,0.000121151,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Streptococcaceae,Stool,TRUE,0.04832835,0.004241053,0.07633896,0.120254489,0.097454517
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Streptococcaceae,Stool,FALSE,,,,0.06495243,0.043070155
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Streptococcaceae|Lactococcus,Stool,TRUE,0.009150851,6.8508e-07,6.782292e-05,0.010240565,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Streptococcaceae|Lactococcus,Stool,FALSE,,,,0.000437693,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Streptococcaceae|Streptococcus,Stool,TRUE,0.04137251,0.01696421,0.1933188,0.120610997,0.097464676
+Bacteria|Firmicutes|Bacilli|Lactobacillales|Streptococcaceae|Streptococcus,Stool,FALSE,,,,0.064912078,0.043070155
+Bacteria|Firmicutes|Bacilli|Lactobacillales|unclassified,Stool,TRUE,0.01004302,0.000372795,0.0140597,0.01247673,0
+Bacteria|Firmicutes|Bacilli|Lactobacillales|unclassified,Stool,FALSE,,,,0.003966766,0
+Bacteria|Firmicutes|Clostridia,Stool,TRUE,0.2781054,3.433568e-12,6.798464e-10,0.887708835,0.889261005
+Bacteria|Firmicutes|Clostridia,Stool,FALSE,,,,0.580412164,0.580043051
+Bacteria|Firmicutes|Clostridia|Clostridiales,Stool,TRUE,0.2747335,1.856952e-11,3.268235e-09,0.887262808,0.889035667
+Bacteria|Firmicutes|Clostridia|Clostridiales,Stool,FALSE,,,,0.58032691,0.579789761
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIII,Stool,TRUE,0.004541557,0.006022098,0.09936462,0.005086526,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIII,Stool,FALSE,,,,0.001577133,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIII|Anaerovorax,Stool,TRUE,0.00293539,0.003883268,0.07070226,0.002425852,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIII|Anaerovorax,Stool,FALSE,,,,0.000397068,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIV,Stool,TRUE,0.1936341,1.11326e-18,4.408509e-16,0.31369897,0.283943144
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIV,Stool,FALSE,,,,0.106527078,0.09625676
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIV|Blautia,Stool,TRUE,0.192009,2.321098e-14,7.353238e-12,0.313614628,0.283943144
+Bacteria|Firmicutes|Clostridia|Clostridiales|Incertae_Sedis_XIV|Blautia,Stool,FALSE,,,,0.106183171,0.09625676
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae,Stool,TRUE,0.09312155,0.002678997,0.05813057,0.414777957,0.41391579
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae,Stool,FALSE,,,,0.340890966,0.344420185
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Anaerostipes,Stool,TRUE,0.06630001,1.96822e-05,0.001355504,0.149974305,0.134102508
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Anaerostipes,Stool,FALSE,,,,0.067809781,0.051766582
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Roseburia,Stool,TRUE,0.04823531,0.0153545,0.1870886,0.170633617,0.165770671
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|Roseburia,Stool,FALSE,,,,0.103313859,0.078437152
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|unclassified,Stool,TRUE,0.05622227,0.003213097,0.06442463,0.212644762,0.21428233
+Bacteria|Firmicutes|Clostridia|Clostridiales|Lachnospiraceae|unclassified,Stool,FALSE,,,,0.197583144,0.191398519
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptostreptococcaceae,Stool,TRUE,0.03614665,5.024934e-07,5.306331e-05,0.059941078,0.049939826
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptostreptococcaceae,Stool,FALSE,,,,0.017614742,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptostreptococcaceae|Sporacetigenium,Stool,TRUE,0.02350849,4.113964e-05,0.002506354,0.037348784,0.028221432
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptostreptococcaceae|Sporacetigenium,Stool,FALSE,,,,0.011042267,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptostreptococcaceae|unclassified,Stool,TRUE,0.02839399,2.356636e-09,3.110759e-07,0.040798114,0.036283217
+Bacteria|Firmicutes|Clostridia|Clostridiales|Peptostreptococcaceae|unclassified,Stool,FALSE,,,,0.009326871,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae,Stool,TRUE,0.07306692,0.02422865,0.249209,0.431081259,0.464561961
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae,Stool,FALSE,,,,0.260410341,0.195640381
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Acetivibrio,Stool,TRUE,0.005678199,0.000319695,0.01265992,0.006151883,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Acetivibrio,Stool,FALSE,,,,0.000675576,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Butyricicoccus,Stool,TRUE,0.0292187,0.0002235,0.009316418,0.064979107,0.057931311
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Butyricicoccus,Stool,FALSE,,,,0.034101699,0.03079498
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Papillibacter,Stool,TRUE,0.01833115,0.000102509,0.005237879,0.027594924,0.01931453
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Papillibacter,Stool,FALSE,,,,0.006307786,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Ruminococcus,Stool,TRUE,0.03453755,0.00952913,0.1372195,0.065280683,0.030165538
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Ruminococcus,Stool,FALSE,,,,0.028473681,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Sporobacter,Stool,TRUE,0.009424148,3.077929e-06,0.000256602,0.008256892,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Sporobacter,Stool,FALSE,,,,0.001964929,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Subdoligranulum,Stool,TRUE,0.0383476,0.001562923,0.03868235,0.090830885,0.074965592
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|Subdoligranulum,Stool,FALSE,,,,0.049054887,0.031637428
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|unclassified,Stool,TRUE,0.05250604,0.001004029,0.02790144,0.210149293,0.222179378
+Bacteria|Firmicutes|Clostridia|Clostridiales|Ruminococcaceae|unclassified,Stool,FALSE,,,,0.12205478,0.111836569
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae,Stool,TRUE,0.04815295,0.008143749,0.1216953,0.15399069,0.143664845
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae,Stool,FALSE,,,,0.124945408,0.121659542
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Dialister,Stool,TRUE,0.04584518,0.003438204,0.06641604,0.057016751,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|Dialister,Stool,FALSE,,,,0.031553612,0
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|unclassified,Stool,TRUE,0.00915298,0.01285017,0.1668415,0.0220775,0.018949831
+Bacteria|Firmicutes|Clostridia|Clostridiales|Veillonellaceae|unclassified,Stool,FALSE,,,,0.01449124,0
+Bacteria|Firmicutes|Clostridia|unclassified,Stool,TRUE,0.005773514,0.000174007,0.007875057,0.006403399,0
+Bacteria|Firmicutes|Clostridia|unclassified,Stool,FALSE,,,,0.002329769,0
+Bacteria|Firmicutes|Erysipelotrichi|Erysipelotrichales|Erysipelotrichaceae|Turicibacter,Stool,TRUE,0.006938103,0.001158943,0.03111466,0.00862382,0
+Bacteria|Firmicutes|Erysipelotrichi|Erysipelotrichales|Erysipelotrichaceae|Turicibacter,Stool,FALSE,,,,0.001446798,0
+Bacteria|Firmicutes|Erysipelotrichi|Erysipelotrichales|Erysipelotrichaceae|unclassified,Stool,TRUE,0.01442315,0.003840356,0.07156616,0.036692318,0.032051626
+Bacteria|Firmicutes|Erysipelotrichi|Erysipelotrichales|Erysipelotrichaceae|unclassified,Stool,FALSE,,,,0.014396699,0
+Bacteria|Firmicutes|unclassified,Stool,TRUE,0.02658296,0.01039408,0.144423,0.074783953,0.060166909
+Bacteria|Firmicutes|unclassified,Stool,FALSE,,,,0.04701885,0.037751515
+Bacteria|Fusobacteria|Fusobacteria|Fusobacteriales,Stool,TRUE,-0.02233588,0.00112744,0.03079076,0.003777384,0
+Bacteria|Fusobacteria|Fusobacteria|Fusobacteriales,Stool,FALSE,,,,0.032178999,0
+Bacteria|Fusobacteria|Fusobacteria|Fusobacteriales|Fusobacteriaceae,Stool,TRUE,-0.02289796,0.000707418,0.02075092,0.003066591,0
+Bacteria|Fusobacteria|Fusobacteria|Fusobacteriales|Fusobacteriaceae,Stool,FALSE,,,,0.03206591,0
+Bacteria|Fusobacteria|Fusobacteria|Fusobacteriales|Fusobacteriaceae|Fusobacterium,Stool,TRUE,-0.02271495,0.00045773,0.01611209,0.003066591,0
+Bacteria|Fusobacteria|Fusobacteria|Fusobacteriales|Fusobacteriaceae|Fusobacterium,Stool,FALSE,,,,0.030562777,0
+Bacteria|Proteobacteria,Stool,TRUE,-0.1103334,1.56623e-06,0.000145936,0.077487522,0.050024683
+Bacteria|Proteobacteria,Stool,FALSE,,,,0.235248363,0.172774974
+Bacteria|Proteobacteria|Betaproteobacteria,Stool,TRUE,-0.02480859,5.296227e-05,0.00310712,0.01472839,0
+Bacteria|Proteobacteria|Betaproteobacteria,Stool,FALSE,,,,0.043963228,0.039560729
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales,Stool,TRUE,-0.01900301,0.001723277,0.04199493,0.012930337,0
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales,Stool,FALSE,,,,0.040406918,0.034634466
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Comamonadaceae,Stool,TRUE,-0.01043538,2.973223e-07,3.363989e-05,0.000543586,0
+Bacteria|Proteobacteria|Betaproteobacteria|Burkholderiales|Comamonadaceae,Stool,FALSE,,,,0.010205528,0
+Bacteria|Proteobacteria|Gammaproteobacteria,Stool,TRUE,-0.09444943,6.881992e-05,0.003893241,0.067561529,0.033851138
+Bacteria|Proteobacteria|Gammaproteobacteria,Stool,FALSE,,,,0.215281784,0.161898929
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae,Stool,TRUE,-0.07690721,0.001512304,0.03802366,0.056379874,0.024400094
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae,Stool,FALSE,,,,0.182294948,0.113072299
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Stool,TRUE,-0.05320303,0.00356815,0.06809578,0.036544688,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|Escherichia/Shigella,Stool,FALSE,,,,0.129444943,0.074845671
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|unclassified,Stool,TRUE,-0.04605229,0.000148236,0.007115338,0.030160804,0.017392855
+Bacteria|Proteobacteria|Gammaproteobacteria|Enterobacteriales|Enterobacteriaceae|unclassified,Stool,FALSE,,,,0.088515492,0.061579682
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae,Stool,TRUE,-0.0275134,3.007008e-05,0.00190524,0.011253684,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae,Stool,FALSE,,,,0.029925476,0.018951703
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae|Actinobacillus,Stool,TRUE,-0.004056298,0.004283687,0.07624,0.001135268,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae|Actinobacillus,Stool,FALSE,,,,0.003221916,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae|Haemophilus,Stool,TRUE,-0.009747791,0.000560347,0.01888488,0.003329299,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae|Haemophilus,Stool,FALSE,,,,0.009118301,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae|unclassified,Stool,TRUE,-0.0241697,8.195565e-05,0.004327258,0.009586001,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pasteurellales|Pasteurellaceae|unclassified,Stool,FALSE,,,,0.027774437,0.017084742
+Bacteria|Proteobacteria|Gammaproteobacteria|Pseudomonadales,Stool,TRUE,-0.005974074,0.003348281,0.06629596,0.001810027,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pseudomonadales,Stool,FALSE,,,,0.008273246,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pseudomonadales|Moraxellaceae,Stool,TRUE,-0.004830312,0.01149242,0.1555897,0.001804513,0
+Bacteria|Proteobacteria|Gammaproteobacteria|Pseudomonadales|Moraxellaceae,Stool,FALSE,,,,0.006488937,0
+Bacteria|unclassified,Stool,TRUE,-0.2655171,2.450021e-44,3.880833e-41,0.031735903,0.021071659
+Bacteria|unclassified,Stool,FALSE,,,,0.297252975,0.258226592
+Diversity,Stool,TRUE,1.6738,0.003364426,0.06579322,7.352004846,7.151860778
+Diversity,Stool,FALSE,,,,5.912315409,5.335748378
+Evenness,Stool,TRUE,0.03399381,0.01299011,0.1672873,0.419951474,0.438062252
+Evenness,Stool,FALSE,,,,0.384830423,0.387622486
+unclassified,Stool,TRUE,-0.2672445,1.824843e-37,1.445276e-34,0.000176577,0
+unclassified,Stool,FALSE,,,,0.276936321,0.236264011

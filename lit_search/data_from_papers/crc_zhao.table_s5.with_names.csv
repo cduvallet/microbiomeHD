@@ -1,0 +1,49 @@
+,OTU,Phylum,Class,Order,Family,Genus,Nearest neighboring bacterium/bacteria (similarity)*,H,C,(Mann-Whitney test),name,lower_in,higher_in
+0,OTU0005,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides vulgatus,7.3955,2.0929,0.000193,f__Bacteroidaceae;g__Bacteroides;s__vulgatus,crc,control
+1,OTU0945,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides vulgatus,0.0327,0.0083,0.000587,f__Bacteroidaceae;g__Bacteroides;s__vulgatus,crc,control
+2,OTU4160,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides uniformis,0.0041,0,0.023,f__Bacteroidaceae;g__Bacteroides;s__uniformis,crc,control
+3,OTU3045,Bacteroidetes,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,Bacteroides fragilis,0,0.0114,0.006,f__Bacteroidaceae;g__Bacteroides;s__fragilis,control,crc
+4,OTU0185,Bacteroidetes,Bacteroidia,Bacteroidales,Rikenellaceae,Alistipes,Alistipes indistinctus,0.0504,0.0053,0.000382,f__Rikenellaceae;g__Alistipes;s__indistinctus,crc,control
+5,OTU0845,Actinobacteria,Actinobacteria,Bifidobacteriales,Bifidobacteriaceae,Bifidobacterium,,0.0041,0.0303,0.00034,f__Bifidobacteriaceae;g__;s__,control,crc
+6,OTU1336,Actinobacteria,Actinobacteria,,,,,0.0007,0.0076,0.013,c__Actinobacteria;o__;f__;g__;s__,control,crc
+7,OTU0176,Firmicutes,Clostridia,Clostridiales,Ruminococcaceae,Oscillibacter,Oscillospira guilliermondii,0.0443,0.0068,0.000714,f__Ruminococcaceae;g__Oscillospira;s__guilliermondii,crc,control
+8,OTU0039,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Escherichia/Shigella,,0.9398,2.815,2.42E-05,f__Enterobacteriaceae;g__;s__,control,crc
+9,OTU0484,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Escherichia/Shigella,,0,0.0061,0.006,f__Enterobacteriaceae;g__;s__,control,crc
+10,OTU1955,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,Escherichia/Shigella,,0.0007,0.0083,0.006,f__Enterobacteriaceae;g__;s__,control,crc
+11,OTU2525,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,,Klebsiella oxytoca,0.0014,0.0121,0.01,f__Enterobacteriaceae;g__Klebsiella;s__oxytoca,control,crc
+12,OTU1203,Proteobacteria,Gammaproteobacteria,,,,Escherichia fergusonii,0.0041,0.0174,0.012,f__Enterobacteriaceae;g__Escherichia;s__fergusonii,control,crc
+13,OTU0901,Proteobacteria,Gammaproteobacteria,Pseudomonadales,Moraxellaceae,Acinetobacter,Acinetobacter johnsonii,0.0007,0.0091,0.012,f__Moraxellaceae;g__Acinetobacter;s__johnsonii,control,crc
+14,OTU3671,Proteobacteria,Gammaproteobacteria,Enterobacteriales,Enterobacteriaceae,,Citrobacter freundii,0,0.0046,0.012,f__Enterobacteriaceae;g__Citrobacter;s__freundii,control,crc
+15,OTU1380,Fusobacteria,Fusobacteria,Fusobacteriales,Fusobacteriaceae,Fusobacterium,,0.002,0.0614,0.005,f__Fusobacteriaceae;g__;s__,control,crc
+16,OTU1801,Actinobacteria,Actinobacteria,Coriobacteriales,Coriobacteriaceae,Eggerthella,Eggerthella lenta,0.0014,0.0121,0.009,f__Coriobacteriaceae;g__Eggerthella;s__lenta,control,crc
+17,OTU0147,Firmicutes,,,,,Clostridium spiroforme,0.8424,0.4377,0.009,f__Clostridiaceae;g__Clostridium;s__spiroforme,crc,control
+18,OTU0391,Firmicutes,Bacilli,Bacillales,Staphylococcaceae,Gemella,Gemella morbillorum,0.0068,0.0728,0.006,f__Staphylococcaceae;g__Gemella;s__morbillorum,control,crc
+19,OTU1407,Firmicutes,Bacilli,Lactobacillales,Enterococcaceae,Enterococcus,,0,0.019,0.003,f__Enterococcaceae;g__;s__,control,crc
+20,OTU2673,Firmicutes,Bacilli,Lactobacillales,Enterococcaceae,Enterococcus,,0,0.0038,0.012,f__Enterococcaceae;g__;s__,control,crc
+21,OTU1174,Firmicutes,Clostridia,Clostridiales,,,Clostridium innocuum,0.0007,0.0228,0.005,f__Clostridiaceae;g__Clostridium;s__innocuum,control,crc
+22,OTU1435,Firmicutes,Bacilli,Lactobacillales,Streptococcaceae,Streptococcus,Streptococcus thermophilus,0.0007,0.0106,0.011,f__Streptococcaceae;g__Streptococcus;s__thermophilus,control,crc
+23,OTU1803,Firmicutes,Bacilli,Lactobacillales,Streptococcaceae,Streptococcus,Streptococcus gallolyticus,0,0.0053,0.012,f__Streptococcaceae;g__Streptococcus;s__gallolyticus,control,crc
+24,OTU0432,Firmicutes,Clostridia,Clostridiales,Veillonellaceae,Phascolarctobacterium,Phascolarctobacterium faecium,0.0259,0.0091,0.032,f__Veillonellaceae;g__Phascolarctobacterium;s__faecium,crc,control
+25,OTU0580,Firmicutes,Clostridia,Clostridiales,Veillonellaceae,Dialister,Dialister pneumosintes,0.0007,0.025,0.001,f__Veillonellaceae;g__Dialister;s__pneumosintes,control,crc
+26,OTU1032,Firmicutes,Clostridia,Clostridiales,Peptostreptococcaceae,Peptostreptococcus,Peptostreptococcus stomatis,0,0.2177,1.42E-07,f__Peptostreptococcaceae;g__Peptostreptococcus;s__stomatis,control,crc
+27,OTU0343,Firmicutes,Clostridia,Clostridiales,Peptostreptococcaceae,,Peptostreptococcaceae bacterium oral taxon 091,0.0014,0.0341,0.016,f__Peptostreptococcaceae;g__Peptostreptococcaceae;s__091,control,crc
+28,OTU0783,Firmicutes,Clostridia,Clostridiales,Incertae Sedis XI,Parvimonas,Parvimonas micra,0.0014,0.1092,0.000309,f__Incertae Sedis XI;g__Parvimonas;s__micra,control,crc
+29,OTU1073,Firmicutes,Clostridia,Clostridiales,Incertae Sedis XI,Anaerococcus,,0,0.0129,0.006,f__Incertae Sedis XI;g__;s__,control,crc
+30,OTU0473,Firmicutes,Clostridia,Clostridiales,,,Clostridiaceae bacterium SH021,0.0068,0,0.008,f__Clostridiaceae;g__Clostridiaceae;s__SH021,crc,control
+31,OTU0748,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Dorea,Dorea longicatena,0.0075,0.0569,0.544,f__Lachnospiraceae;g__Dorea;s__longicatena,control,crc
+32,OTU1040,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Dorea,Dorea longicatena,0,0.0046,0.012,f__Lachnospiraceae;g__Dorea;s__longicatena,control,crc
+33,OTU0007,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza,1.4777,0.2913,9.23E-05,f__Lachnospiraceae;g__Lachnospira;s__pectinoschiza,crc,control
+34,OTU4020,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza,0.0041,0,0.023,f__Lachnospiraceae;g__Lachnospira;s__pectinoschiza,crc,control
+35,OTU0614,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza,0.0245,0.0038,0.006,f__Lachnospiraceae;g__Lachnospira;s__pectinoschiza,crc,control
+36,OTU0599,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Lachnospira pectinoschiza,0.0109,0.0008,0.006,f__Lachnospiraceae;g__Lachnospira;s__pectinoschiza,crc,control
+37,OTU0067,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,butyrate-producing bacterium A2-166,0.3786,0.0614,0.019,f__Lachnospiraceae;g__butyrate-producing;s__A2-166,crc,control
+38,OTU0457,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,,0.0654,0.0152,0.278,f__Lachnospiraceae;g__;s__,crc,control
+39,OTU1704,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,,0.0109,0.003,0.024,f__Lachnospiraceae;g__;s__,crc,control
+40,OTU1443,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,Ruminococcus torques,0.0082,0.0008,0.009,f__Lachnospiraceae;g__Ruminococcus;s__torques,crc,control
+41,OTU0662,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,Roseburia intestinalis,0.0129,0.0008,0.001,f__Lachnospiraceae;g__Roseburia;s__intestinalis,crc,control
+42,OTU1167,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,Roseburia,,0.0163,0.0038,0.002,f__Lachnospiraceae;g__;s__,crc,control
+43,OTU0756,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,,0.0163,0.0038,0.038,f__Lachnospiraceae;g__;s__,crc,control
+44,OTU1036,Firmicutes,Clostridia,Clostridiales,Incertae Sedis XIV,Blautia,Ruminococcus obeum,0.0007,0.0068,0.027,f__Incertae Sedis XIV;g__Ruminococcus;s__obeum,control,crc
+45,OTU3710,Firmicutes,Clostridia,Clostridiales,,,,0.0007,0.0061,0.006,o__Clostridiales;f__;g__;s__,control,crc
+46,OTU0916,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,,0.0095,0.0455,0.006,f__Lachnospiraceae;g__;s__,control,crc
+47,OTU0911,Firmicutes,Clostridia,Clostridiales,Lachnospiraceae,,,0.0048,0.0303,0.000905,f__Lachnospiraceae;g__;s__,control,crc
