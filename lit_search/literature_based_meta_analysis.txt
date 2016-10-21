@@ -879,3 +879,14 @@ mhe_zhang	Genus	f__Erysipelotrichaceae;g__		mhe	control	<0.05	dunns_method	yes	d
 mhe_zhang	Genus	f__Erysipelotrichaceae;g__		mhe	cirr	<0.05	dunns_method	yes	dunns_method
 mhe_zhang	Genus	g__Prevotella		cirr	mhe	<0.05	dunns_method	yes	dunns_method
 mhe_zhang	Genus	g__Prevotella		cirr	control	<0.05	dunns_method	yes	dunns_method
+ob_ross		no_within-study_significant_anything							
+t1d_alkanani		alpha_diversity	x						
+t1d_alkanani	OTU	p__Bacteroidetes;c__;o__;f__;g__;s__		t1d	control	<0.1		yes	cant_figure_it_out
+t1d_alkanani	OTU	g__Alistipes;s__		t1d	control	<0.1		yes	
+t1d_alkanani	OTU	f__Rikenellaceae;g__RC9-gut-group;s__		?	?	<0.1		yes	
+t1d_alkanani	OTU	f__Prevotellaceae;g__;s__		?	?	<0.1		yes	
+t1d_alkanani	OTU	g__Catenibacterium		?	?	<0.1		yes	
+t1d_alkanani	OTU	g__Lactobacillus		control?	t1d?	<0.1		yes	
+t1d_alkanani	OTU	g__Staphylococcus		?	?	<0.1		yes	
+t1d_alkanani	OTU	g__Succiniclasticum		control?	t1d?	<0.1		yes	
+t1d_alkanani	OTU	g__Thalassospira		?	?	<0.1		yes	

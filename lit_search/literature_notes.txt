@@ -266,4 +266,23 @@ mhe_zhang
         - this OTU mapped to Streptococcus salivarius, which has a urease function
     - text is really hard to read, mostly just skimmed it blerg
 
-        
+t1d_alkanani
+    - four groups of patients:
+        - 35 newly diagnosed T1D
+        - 21 T1D (1-4 autoantibodies)
+        - 32 seronegative first degree relatives
+        - 23 unrelated healthy subjects
+    - HLA typing, found almost all new-onset and t1d patients had risk alleles and about half of unrelated healthy had them
+    - looking at OTU barplots + diversity: "these observations suggest that islet autoimmunity is probably not associated with altered bacterial diversity or striking differences in the intestinal microbiota"
+    - compared seronegative vs. seropositive family members
+       - also compared new-onset vs. seronegative, new-onset vs. seropositive, healthy vs. seropositive, healthy vs. new-onset
+       - no differences btw new-onset and seropositive patients
+       - actually really hard to tell what directionality of significance is because everything is basically zero!!
+    - looked at age differences... by getting rid of patients older than 18 and seeing if the same bugs were significant?
+       - 6/9 previously significant bugs were still significant...
+    - did prelim analysis of patients with 2-4 autoantibodies (n=16) and patients with just one autoantibody (n=5)
+    - canonical discriminant analysis to separate all four groups:
+       - PC1 separates new-onset from the rest, PC2 separates healthy+new-onset from seropos/neg relatives
+       - my question: were these four groups of patients collected + sequenced in batch, or all at the same time? because the cohorts were recruited at three different places, which matches perfectly with the clustering...
+       - seems like all samples were delivered to the same place, but some were collected at home whereas others were collected at the hospital    
+    
