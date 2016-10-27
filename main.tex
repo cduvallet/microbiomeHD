@@ -1,0 +1,113 @@
+\documentclass{article}
+
+\usepackage[colorlinks=true]{hyperref} % for links and urls
+\usepackage{amsmath,amssymb} % for math
+\usepackage{color,soul} % for highlighting
+\usepackage{booktabs,rotating,multirow} % for nice tables
+\usepackage{authblk} % for author affiliations
+\usepackage{graphicx} % for figures
+\usepackage[numbers]{natbib}
+
+\begin{document}
+
+\title{Comparing microbiome studies across diseases reveals patterns of microbial dysbiosis}
+\author{Claire Duvallet}
+\author{Sean Gibbons}
+\author{Eric Alm}
+\affil{Department of Biological Engineering, MIT}
+\affil{Center for Microbiome Informatics and Therapeutics}
+\date{}
+
+\maketitle
+
+\tableofcontents
+
+\section{Abstract}
+In spite of the recent increase in research on the human 
+microbiome, there is not a clear consensus on the relationship between 
+the human gut microbiome and disease. 
+Many researchers have found associations between gut microbial 
+communities and individual diseases, but combining results from 
+different studies about the same disease often yields conflicting results. To date, no one has
+performed a comprehensive comparison of gut microbiome 
+studies across all disease states using standardized processing
+and analysis methods.
+Here, we show that collecting and re-processing gut microbiome datasets
+across multiple diseases and conditions identifies a shared microbial response 
+to disease as well as microbial associations unique to specific diseases.
+Our work provides an important contribution toward synthesizing existing knowledge on the
+gut microbiome and moving the field toward mechanistically-motivated hypotheses
+and physiologically-relevant associations.
+
+\section{Introduction}
+other stuff
+
+\section{Results}
+
+\subsection{Collection of 16S gut microbiome case-control datasets}
+
+{
+\renewcommand{\arraystretch}{1.1}
+\begin{table}[h]
+\resizebox{\textwidth}{!}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\hline
+	\textbf{Dataset ID} & \textbf{Year} & \textbf{Disease(s)} &	\textbf{N control} & \textbf{N case} & \parbox[c]{2cm}{\centering\textbf{Median}\\\textbf{reads per}\\\textbf{sample}} &	\textbf{Sequencer} & \textbf{16S Region} & \textbf{Ref.} \\
+	\hline
+	asd\_kb & 2013 & ASD & 20 & 19 & 1345 & 454 & V2-V3 & \cite{asd-kb}\\ 
+	asd\_son & 2015 & ASD & 44 & 59 & 4777 & Miseq & V1-V2  & \cite{asd-son}\\ 
+	cdi\_schu & 2014 & CDI & 243 & 93 & 3557 & 454 & V3-V5 & \cite{cdi-schubert}\\ 
+	cdi\_vincent & 2013 & CDI & 18 & 17 & 5518 & 454 & V1-V3 & \cite{cdi-vincent}\\ 
+	cdi\_young & 2014 & CDI & 18 & 27 & 16516 & Miseq & V4 & \cite{cdi-youngster}\\ 
+	crc\_baxter & 2016 & CRC & 122 & 120 & 9476 & Miseq & V4 & \cite{crc-baxter}\\ 
+	crc\_xiang & 2012 & CRC & 22 & 21 & 1152 & 454 & V1-V3 & \cite{crc-xiang}\\ 
+	crc\_zackular & 2014 & CRC & 58 & 30 & 54269 & MiSeq & V4 & \cite{crc-zackular}\\ 
+	crc\_zeller & 2014 & CRC & 75 & 41 & 120612 & MiSeq & V4 & \cite{crc-zeller}\\ 
+	crc\_zhao & 2012 & CRC & 54 & 44 & 161 & 454 & V3 & \cite{crc-zhao}\\ 
+	crc\_zhu & 2013 & CRC & 18 & 12 & 1835 & 454 & V3 & \cite{crc-zhu}\\ 
+	edd\_singh & 2015 & EDD & 82 & 222 & 2573 & 454 & V3-V5 & \cite{edd-singh}\\ 
+	hiv\_dinh & 2015 & HIV & 15 & 21 & 3248 & 454 & V3-V5 & \cite{hiv-dinh}\\ 
+	ibd\_alm & 2012 & UC, CD & 24 & 66 & 1303 & 454 & V3-V5 & \cite{ibd-papa}\\ 
+	ibd\_eng & 2009 & UC, CD & 32 & 32 & 2658 & 454 & V5-V6 & \cite{ibd-engstrand}\\ 
+	ibd\_gevers & 2014 & CD & 16 & 146 & 9773 & Miseq & V4 & \cite{ibd-gevers}\\ 
+	ibd\_hut & 2012 & UC, CD & 27 & 186 & 995 & 454 & V3-V5 & \cite{ibd-hut}\\ 
+	mhe\_zhang & 2013 & CIRR, MHE & 25 & 46 & 487 & 454 & V1-V2 & \cite{mhe-zhang}\\ 
+	nash\_baker & 2013 & NASH, OB & 16 & 47 & 9904 & 454 &   & \cite{nash-baker}\\ 
+	nash\_chan & 2013 & NASH & 22 & 32 & 1743 & 454 & V1-V2 & \cite{nash-chan}\\ 
+	ob\_escobar & 2014 & OW, OB & 10 & 20 & 1126 & 454 & V1-V3 & \cite{ob-escobar}\\ 
+	ob\_goodrich & 2014 & OW, OB & 451 & 528 & 27364 & Miseq & V4 & \cite{ob-goodrich}\\ 
+	ob\_gord & 2009 & OW, OB & 61 & 219 & 1569 & 454 & V2 & \cite{ob-gordon}\\ 
+	ob\_ross & 2015 & OB & 26 & 37 & 1583 & 454 & V1-V3 & \cite{ob-ross}\\ 
+	ob\_zup & 2012 & OB & 167 & 117 & 1392 & 454 & V1-V3 & \cite{ob-zupancic}\\ 
+	par\_schep & 2015 & PAR & 74 & 74 & 2351 & 454 & V1-V3 & \cite{par-schep}\\ 
+	t1d\_alkanani & 2015 & T1D & 23 & 89 & 9117 & MiSeq & V4 & \cite{t1d-alkanani}\\ 
+	t1d\_mejia & 2014 & T1D & 8 & 21 & 4702 & 454 & V3-V5 & \cite{t1d-mejia}\\ 	
+	\hline
+\end{tabular}}
+\caption{Datasets currently collected and processed through standardized pipeline. Disease labels: ASD = Austism spectrum disorder, CDI = \textit{Clostridium difficile} infection, CRC = colorectal cancer, EDD = enteric diarrheal disease, UC = Ulcerative colitis, CD = Crohn's disease, CIRR = Liver cirrhosis, MHE =  minimal hepatic encephalopathy, NASH = non-alcoholic steatohepatitis, OW = overweight, OB = obese, PAR = Parkinson's disease, T1D = Type I Diabetes. }\label{tab:datasets}
+\end{table}
+}
+
+\subsection{Within-disease meta-analyses reveals consistent, but not distinct, microbial markers of disease}
+\hl{Sean: edit away! Possibly make this four different sections for each of the diseases 
+with more than 3 studies?}
+
+\subsection{Cross-disease comparison of microbes associated with health and disease reveals microbes consistently associated with health and disease}
+Shared microbial response to disease
+
+Cross-disease comparison identifies a shared microbial response to disease
+
+\subsection{General markers of dysbiosis are indicative only of certain diseases and conditions}
+General dysbiosis is not generalizable across studies 
+
+Alpha diversity
+
+BF ratio?
+
+\section{Discussion}
+
+\section{Methods}
+
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+
+\end{document}
