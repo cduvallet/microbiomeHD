@@ -286,3 +286,24 @@ t1d_alkanani
        - my question: were these four groups of patients collected + sequenced in batch, or all at the same time? because the cohorts were recruited at three different places, which matches perfectly with the clustering...
        - seems like all samples were delivered to the same place, but some were collected at home whereas others were collected at the hospital    
     
+hiv_lozupone
+	- HIV patients have higher diversity
+	- used random forest classifier to find discriminative OTUs (used the features)
+		- unclear whether the RF actually classified patients or not...
+	- and also did ANOVA to find significant OTUs
+	- also did cell-based assays with cultures to look at production of inflammatory markers
+	- made the claim that HIV-positive patients have Prevotella-rich and Bacteroides-poor microbiomes, like the rural agrarian communities...
+
+hiv_noguerajulian
+	- MSM vs. non-MSM had strongest signal (in both diversity and pcoa clustering) --> lifestyle is the strongest driver!
+	- LASSO regression classifier: strong results for MSM vs non-MSM, no results for HIV status
+	- lower diversity in HIV patients (regardless of MSM status)
+	- Bacteroides and Prevotella significantly different btw MSM and non-MSM   
+	
+hiv_dubourg
+	- diversity: HIV lower than controls, HIV-ART vs HIV-untreated not different
+	- pcoa: controls and HIV as different as HIV-treated and HIV-untreated
+	- lefse at all taxonomic levels (without multiple test correction) --> found more aerobic bacteria in HIV
+		- re-did lefse with multiple correction --> still found more aerobic in HIV
+	- did lefse on Dinh data, also found more aerotolerant in HIV
+	- correlated bugs with immune markers 
