@@ -1,0 +1,1 @@
+This folder contains the raw OTU tables, i.e. the output from the processing pipeline.

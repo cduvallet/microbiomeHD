@@ -1,0 +1,1 @@
+This folder contains all of the cleaned up OTU tables and associated metadata files.
