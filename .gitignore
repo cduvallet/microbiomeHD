@@ -1,0 +1,7 @@
+*~
+*.tar.gz
+*.clean
+*_results
+*.pyc
+*#
+*.DS_Store
