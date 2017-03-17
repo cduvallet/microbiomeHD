@@ -30,7 +30,7 @@ clean_metadata_files := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | s
 # dataset_info = data/clean_tables/datasets_info.txt
 # analysis_results = manually_defined_files_here
 
-data: $(raw_tar_files) $(clean_otu_tables) #$(clean_metadata_files)
+data: $(raw_tar_files) $(clean_otu_tables) $(clean_metadata_files)
 
 ## 1. Pull raw OTU tables from somewhere (prob Zenodo? for now, my other folder).
 # output: tar files in a directory called data/raw_otu_tables,
@@ -38,12 +38,16 @@ $(raw_tar_files): src/data/copy_tar_folders.sh
 	src/data/copy_tar_folders.sh $@
 
 ## 2. Clean the raw OTU tables and metadata files
-# Targets: clean otu tables
-# Rule:
-$(clean_otu_tables): src/data/clean_data.py
-	python src/data/clean_data.py data/raw_otu_tables data/results_folders.yaml $@ --otu-table
+# Targets: clean otu table file names
+# Rule: python clean_otu_tables.py raw_data_dir results_folder.yaml clean_otu_fname
+$(clean_otu_tables): src/data/clean_otu_tables.py
+	python src/data/clean_otu_tables.py data/raw_otu_tables data/results_folders.yaml $@
 
-$(clean_metadata_files): src/data/clean_data.py $(clean_otu_tables)
+# Targets: clean metadata file names
+# Rule: python clean_metadata.py raw_data_dir results_folder.yaml clean_metadata_fname
+# Note: this also updates the OTU tables!
+$(clean_metadata_files): src/data/clean_metadata.py $(clean_otu_tables)
+	python src/data/clean_metadata.py data/raw_otu_tables data/results_folders.yaml $@
 # input: folders in the data/raw_otu_tables directory, and a script to clean one dataset at a time (given a yaml file with the location of the metadata, etc?)
 # output: *.otu_table.clean and *.metadata.clean files with the same prefix as the folder prefixes, in a directory called data/clean_data
 

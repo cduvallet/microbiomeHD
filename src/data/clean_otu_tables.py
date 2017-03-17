@@ -2,9 +2,6 @@
 
 """
 This script cleans up the raw OTU tables from processing.
-
-For OTU tables, it
-- unzips the
 """
 
 import argparse
@@ -107,54 +104,43 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('raw_data_dir', help='directory with raw OTU tables')
     parser.add_argument('yaml_file', help='yaml file. Should have datasetID '
-                        + 'as the main key, and at least the sub-key '
-                        + '"tar file" that gives the name of the .tar.gz file '
-                        + 'with the corresponding raw OTU tables.')
-    parser.add_argument('out_file', help='clean OTU table name. Should be of '
-                        + 'format: datasetID.otu_table.clean')
-    parser.add_argument('--otu-table', help='flag indicating that OTU table '
-                        + 'should be processed.', action='store_true')
+                        + 'as the main key, and at least one of the sub-keys '
+                        + '"tar file" (that gives the name of the .tar.gz file '
+                        + 'with the corresponding raw OTU tables) or '
+                        + '"folder" (that is converted to folder.tar.gz '
+                        + 'and is in raw_data_dir.)')
+    parser.add_argument('clean_file', help='clean OTU table name. Should have'
+                        + ' format: datasetID.otu_table.clean')
+    # Optional args below. Makefile just uses defaults
     parser.add_argument('--sample-min', help='minimum reads per sample '
                         + ' (default: %(default)s)', default=100)
     parser.add_argument('--otu-min', help='minimum reads per OTU '
                         + '(default: %(default)s)', default=10)
     parser.add_argument('--otu-perc', help='minimum percent of samples an OTU'
                         + ' is found in (default: %(default)s)', default=0.01)
-    parser.add_argument('--metadata', help='flag indicating that the metadata '
-                        + 'should be processed.', action='store_true')
+
     args = parser.parse_args()
 
-    dataset_id = args.out_file.split('/')[-1].split('.')[0]
+    dataset_id = args.clean_file.split('/')[-1].split('.')[0]
     y = read_yaml(args.yaml_file, args.raw_data_dir)
 
-    if args.otu_table:
-        # Get the tar file and unzip it
-        tar_file = get_tar_file(y[dataset_id])
-        tar_file = os.path.join(args.raw_data_dir, tar_file)
-        cmd = 'tar -C {} -zxvkf {}'.format(args.raw_data_dir, tar_file)
-        print(cmd)
-        subprocess.call(cmd, shell=True)
+    # Get the tar file and unzip it
+    tar_file = get_tar_file(y[dataset_id])
+    tar_file = os.path.join(args.raw_data_dir, tar_file)
+    cmd = 'tar -C {} -zxvkf {}'.format(args.raw_data_dir, tar_file)
+    subprocess.call(cmd, shell=True)
 
-        # Read the OTU table
-        df = pd.read_csv(y[dataset_id]['otu_table'], sep='\t', index_col=0)
+    # Read the OTU table
+    df = pd.read_csv(y[dataset_id]['otu_table'], sep='\t', index_col=0).T
 
-        ## Remove samples and OTUs based on criteria
-        # Remove samples with fewer than 100 reads.
-        df = remove_shallow_smpls(df, n_reads=args.sample_min)
-        # Remove OTUs in fewer than 1% of samples and with fewer than 10 reads
-        df = remove_shallow_otus(df, perc_samples=args.otu_perc,
-                                 n_reads=args.otu_min)
-        # Remove any samples which now have fewer than n_reads
-        df = remove_shallow_smpls(df, n_reads=args.sample_min)
+    ## Remove samples and OTUs based on criteria
+    # Remove samples with fewer than 100 reads.
+    df = remove_shallow_smpls(df, n_reads=args.sample_min)
+    # Remove OTUs in fewer than 1% of samples and with fewer than 10 reads
+    df = remove_shallow_otus(df, perc_samples=args.otu_perc,
+                             n_reads=args.otu_min)
+    # Remove any samples which now have fewer than n_reads
+    df = remove_shallow_smpls(df, n_reads=args.sample_min)
 
-        # Write the OTU table
-        df.to_csv(args.out_file, sep='\t')
-
-    if args.metadata:
-        # Get the metadata and OTU table files
-        print('pass')
-        # Make a list of samples with both 16S and metadata,
-
-        # and which follow any conditions in metadata
-
-        # Add manually-defined parameters to the metadata file
+    # Write the OTU table
+    df.to_csv(args.clean_file, sep='\t')
