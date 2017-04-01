@@ -12,9 +12,9 @@ import subprocess
 
 import pandas as pd
 
-src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src'))
+src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
 sys.path.append(src_dir)
-from util import read_yaml
+from FileIO import read_yaml
 
 def get_tar_file(data):
     """
@@ -41,6 +41,7 @@ def get_tar_file(data):
     else:
         raise ValueError("No raw data specified. Make sure your yaml"
                          + " file has a 'tar_file' or 'folder' key.")
+
 def remove_shallow_smpls(df, n_reads):
     """
     Removes samples with fewer than n_reads from dataframe df.
@@ -59,7 +60,6 @@ def remove_shallow_smpls(df, n_reads):
     df = df.drop(shallow_smpls)
 
     return df
-
 
 def remove_shallow_otus(df, perc_samples=None, n_reads=None):
     """
@@ -136,9 +136,11 @@ if __name__ == "__main__":
     ## Remove samples and OTUs based on criteria
     # Remove samples with fewer than 100 reads.
     df = remove_shallow_smpls(df, n_reads=args.sample_min)
+
     # Remove OTUs in fewer than 1% of samples and with fewer than 10 reads
     df = remove_shallow_otus(df, perc_samples=args.otu_perc,
                              n_reads=args.otu_min)
+
     # Remove any samples which now have fewer than n_reads
     df = remove_shallow_smpls(df, n_reads=args.sample_min)
 

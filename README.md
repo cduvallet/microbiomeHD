@@ -14,11 +14,14 @@ Here's to hoping it works!
 |    |-- raw OTU table results and metadata files
 |    |-- cleaned up OTU tables
 |    |-- lit search results (the manual stuff I did)
+|    |-- datasets info
+|    |    |-- basic datasets stats
+|    |
 |    |-- analysis results files
 |         |-- q values
 |     	  |-- disease-wise meta-analysis results
 |     	  |-- overall meta-analysis results
-|     	  |-- random forest AUCs, fisher P values, sample size, 
+|     	  |-- random forest AUCs, fisher P values, sample size,
 |         |   prevalence (input to supp figures)
 |
 |-- src
@@ -53,14 +56,17 @@ Here's to hoping it works!
 |         |        (Fig 3C)
 |         |
 |         |-- supplementary
-|              |-- the alpha diversity figure
-|              |-- the heatmap with p-values and effect sizes for all
-|              |    genera in all datasets
-|              |-- the random forest playing with parameters figures
-|
+|         |    |-- the alpha diversity figure
+|         |    |-- the heatmap with p-values and effect sizes for all
+|         |    |    genera in all datasets
+|         |    |-- the random forest playing with parameters figures
+|         |
+|         |-- tables
+|         |    |-- script to make latex tables
 |-- final
 |    |-- figures
 |    |    |-- save all of the figures here
+|    |    |-- files corresponding to each table (md and tex)
 |    |
 |    |-- manuscript
 |         |-- README.md with link to the manuscript repo

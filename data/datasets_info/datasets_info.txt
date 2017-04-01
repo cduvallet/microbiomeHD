@@ -1,0 +1,4 @@
+dataset	N_ctrl	N_dis	total	controls	cases	min_reads	max_reads	med_reads	sequencer	region	year	citation
+cdi_vincent	25	25	50	H	CDI	1011	20180	2662.5	454	V3-V5	2013	\cite{cdi-vincent}
+hiv_dinh	15	21	36	H	HIV	1921	12272	3417.0	454	V3-V5	2015	\cite{hiv-dinh}
+asd_kang	20	19	39	H	ASD	216	3775	1536.0	454	V2-V3	2013	\cite{asd-kb}

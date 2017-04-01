@@ -11,9 +11,9 @@ import sys
 
 import pandas as pd
 
-src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src'))
+src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
 sys.path.append(src_dir)
-from util import read_yaml
+from FileIO import read_yaml
 
 def clean_up_samples_from_meta(df, meta, data):
     """

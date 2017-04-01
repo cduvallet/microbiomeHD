@@ -1,0 +1,4 @@
+dataset	data_type	demultiplexed	barcodes_removed	primers_trimmed	quality_method	quality_cutoff	length_trim	data_source	metadata_source
+cdi_vincent	fastq	Yes	No	Yes	-fastq_truncqual	20	101	email authors	email authors
+hiv_dinh	fastq	Yes	No	No	-fastq_truncqual	25	200	SRA study SRP039076	SRA
+asd_kang	fastq	Yes	No	Yes	-fastq_truncqual	25	200	SRA study SRP017161	SRA
