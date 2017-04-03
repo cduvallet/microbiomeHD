@@ -129,6 +129,6 @@ def compare_otus_teststat(df, Xsmpls, Ysmpls, method='kruskal-wallis', multi_com
         results.loc[o, 'test-stat'] = h
 
     if multi_comp == 'fdr':
-        _, results['p'], _, _ = multipletests(results['p'], method='fdr_bh')
+        _, results['q'], _, _ = multipletests(results['p'], method='fdr_bh')
 
     return results

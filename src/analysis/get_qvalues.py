@@ -118,7 +118,7 @@ if __name__ == "__main__":
         dis_smpls = dfdict[dataset]['dis_smpls']
         H_smpls = dfdict[dataset]['H_smpls']
 
-        med_results, mean_results = sign_results(results, df, dis_smpls, H_smpls, dataset, col='p')
+        med_results, mean_results = sign_results(results, df, dis_smpls, H_smpls, dataset, col='q')
 
         try:
             med_allresults_lst.append(med_results)

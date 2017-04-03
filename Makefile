@@ -91,7 +91,7 @@ $(meta_qvalues): src/analysis/meta_analyze.py $(qvalues)
 ## 3. overall meta-analysis results (maybe combined with 2? I don't remember how I structured the codes and the files)
 
 ## 4. phyloT stuff
-# this outputs a file, right?
+# this outputs a file, right? Right. It also re-writes the qvalues, etc files and re-orders them according to phyloT
 
 ## 5. alpha diversities
 
