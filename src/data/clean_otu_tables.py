@@ -15,32 +15,32 @@ import pandas as pd
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
 sys.path.append(src_dir)
 from FileIO import read_yaml
-
-def get_tar_file(data):
-    """
-    Return the raw_data tar file or directory with the .
-
-    Parameters
-    ----------
-    data : dict
-        dictionary corresponding to the yaml info for the dataset
-        of interest. Should either have a 'tar_file' key which
-        directly gives the tar file, or a 'folder' key which
-        is assumed to be the prefix for the tar file
-
-    Returns
-    -------
-    tar_file : str
-        the filename with the "raw" OTU tables for this dataset
-    """
-
-    if 'tar_file' in data:
-        return data['tar_file']
-    elif 'folder' in data:
-        return data['folder'] + '.tar.gz'
-    else:
-        raise ValueError("No raw data specified. Make sure your yaml"
-                         + " file has a 'tar_file' or 'folder' key.")
+#
+# def get_tar_file(data):
+#     """
+#     Return the raw_data tar file or directory with the .
+#
+#     Parameters
+#     ----------
+#     data : dict
+#         dictionary corresponding to the yaml info for the dataset
+#         of interest. Should either have a 'tar_file' key which
+#         directly gives the tar file, or a 'folder' key which
+#         is assumed to be the prefix for the tar file
+#
+#     Returns
+#     -------
+#     tar_file : str
+#         the filename with the "raw" OTU tables for this dataset
+#     """
+#
+#     if 'tar_file' in data:
+#         return data['tar_file']
+#     elif 'folder' in data:
+#         return data['folder'] + '.tar.gz'
+#     else:
+#         raise ValueError("No raw data specified. Make sure your yaml"
+#                          + " file has a 'tar_file' or 'folder' key.")
 
 def remove_shallow_smpls(df, n_reads):
     """
@@ -124,11 +124,11 @@ if __name__ == "__main__":
     dataset_id = args.clean_file.split('/')[-1].split('.')[0]
     y = read_yaml(args.yaml_file, args.raw_data_dir)
 
-    # Get the tar file and unzip it
-    tar_file = get_tar_file(y[dataset_id])
-    tar_file = os.path.join(args.raw_data_dir, tar_file)
-    cmd = 'tar -C {} -zxvkf {}'.format(args.raw_data_dir, tar_file)
-    subprocess.call(cmd, shell=True)
+    # # Get the tar file and unzip it
+    # tar_file = get_tar_file(y[dataset_id])
+    # tar_file = os.path.join(args.raw_data_dir, tar_file)
+    # cmd = 'tar -C {} -zxvkf {}'.format(args.raw_data_dir, tar_file)
+    # subprocess.call(cmd, shell=True)
 
     # Read the OTU table
     df = pd.read_csv(y[dataset_id]['otu_table'], sep='\t', index_col=0).T
@@ -146,3 +146,5 @@ if __name__ == "__main__":
 
     # Write the OTU table
     df.to_csv(args.clean_file, sep='\t')
+
+    print(dataset_id, y[dataset_id]['otu_table'], args.clean_file)

@@ -110,6 +110,14 @@ def add_info_to_meta(meta, data, dataset):
 
     return meta
 
+def fix_ob_zhu(meta):
+    """
+    Fix the DiseaseState labels for case patients in the ob_zhu data.
+    """
+    meta['DiseaseState'] = meta['DiseaseState'].replace('nonNASH-OB', 'OB')
+    meta['DiseaseState'] = meta['DiseaseState'].replace('NASH', 'OB-NASH')
+    return meta
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('raw_data_dir', help='directory with raw metadata')
@@ -124,10 +132,20 @@ if __name__ == "__main__":
     dataset_id = args.clean_file.split('/')[-1].split('.')[0]
     y = read_yaml(args.yaml_file, args.raw_data_dir)
 
-    # Read the raw metadata and OTU table files
+    # Read the raw metadata and clean OTU table files
     meta = pd.read_csv(y[dataset_id]['metadata_file'], sep='\t',
                        index_col=0)
-    df = pd.read_csv(y[dataset_id]['otu_table'], sep='\t', index_col=0).T
+    clean_otu_file = args.clean_file.split('.metadata.clean')[0] + '.otu_table.clean'
+    df = pd.read_csv(clean_otu_file, sep='\t', index_col=0)
+
+    # If pandas didn't read in sampleIDs as strings, re-read that first column explicitly as str type
+    # When indices are strings, the dtype of the index is an object.
+    if meta.index.dtype != 'O':
+        meta.index = pd.read_csv(y[dataset_id]['metadata_file'], sep='\t', dtype=str).iloc[:,0]
+
+    if df.index.dtype != 'O':
+        df.index = pd.read_csv(clean_otu_file, sep='\t', dtype=str).iloc[:,0]
+
 
     # Keep samples with both 16S and metadata, and which follow any
     # conditions specified in the yaml file
@@ -136,10 +154,19 @@ if __name__ == "__main__":
     # Add manually-defined parameters to the metadata file
     meta = add_info_to_meta(meta, y[dataset_id], dataset_id)
 
+    if dataset_id == 'ob_zhu':
+        # Turn the nonNASH-OB into OB and the NASH into OB-NASH,
+        # so that they're not recognized as cases in downstream analyses
+        meta = fix_ob_zhu(meta)
+
     # Add sequencing depth to metadata
     meta['total_reads'] = df.sum(axis=1)
 
+    if meta.shape[0] != df.shape[0]:
+        raise ValueError('Metadata and OTU tables have different numbers of samples.')
+
     # Write both metadata and OTU table
     meta.to_csv(args.clean_file, sep='\t')
-    otu_file = args.clean_file.split('.metadata.clean')[0] + '.otu_table.clean'
-    df.to_csv(otu_file, sep='\t')
+    df.to_csv(clean_otu_file, sep='\t')
+
+    print(dataset_id, args.clean_file, clean_otu_file)
