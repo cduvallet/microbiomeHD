@@ -19,7 +19,7 @@ all: data analysis #all_figures
 
 ### User inputs
 tar_files = data/list_of_tar_files.txt
-yaml_file = data/baxter.yaml
+yaml_file = data/results_folders.yaml
 
 ### Define target data files
 # define the tar files from the list_of_tar_files.txt file
@@ -34,7 +34,7 @@ proc_info = data/datasets_info/datasets_info.processing.txt
 manual_meta_analysis = data/lit_search/literature_based_meta_analysis.txt
 
 raw_data: $(raw_tar_files)
-clean_data: $(clean_otu_tables) $(clean_metadata_files)
+clean_data: $(clean_otu_tables) #$(clean_metadata_files)
 data_info: $(dataset_info) $(manual_meta_analysis)
 
 data: raw_data clean_data data_info
@@ -45,25 +45,18 @@ $(raw_tar_files): src/data/copy_tar_folders.sh
 	src/data/copy_tar_folders.sh $@
 
 ## 2. Clean the raw OTU tables and metadata files
-## Note: technically these clean files should depend on the raw_tar_files,
-## but because the stem of the files doesn't necessarily match, including
-## raw_tar_files as a prerequisite means that make can no longer parallelize
-## the cleaning steps. So if you changed the raw data for one of the OTU tables,
-## you need to delete it so that make knows to re-process it.
-# Targets: clean otu table file names
-# Prerequisites: tar files, clean_otu_tables.py
-# Rule: python clean_otu_tables.py raw_data_dir results_folder.yaml clean_otu_fname
-$(clean_otu_tables): src/data/clean_otu_tables.py $(yaml_file)
-	python src/data/clean_otu_tables.py data/raw_otu_tables $(yaml_file) $@
+# Note: technically these clean files should depend on the raw_tar_files,
+# but because the stem of the files doesn't necessarily match, including
+# raw_tar_files as a prerequisite means that make can no longer parallelize
+# the cleaning steps. So if you changed the raw data for one of the OTU tables,
+# you need to delete it so that make knows to re-process it.
+# Note: If my results_folders were better labeled, I could simply
+# write a rule like %.otu_table.clean : clean.py raw_data/%.tar.gz
 
-# Targets: clean metadata file names
-# Prerequisites: clean_metadata.py, the clean OTU tables, and the raw data
-# Rule: python clean_metadata.py raw_data_dir results_folder.yaml clean_metadata_fname
-## Note: this also updates the OTU tables! But it doesn't have the OTU tables
-## as a prerequisite, otherwise this code will always run. Make sure to delete
-## both OTU table and metadata files if you make any changes to the data.
-$(clean_metadata_files): src/data/clean_metadata.py $(yaml_file)
-	python src/data/clean_metadata.py data/raw_otu_tables $(yaml_file) $@
+# This code cleans both the OTU and metadata files,
+# and writes both *.otu_table.clean and *.metadata.clean
+$(clean_otu_tables): src/data/clean_otu_and_metadata.py $(yaml_file)
+	python src/data/clean_otu_and_metadata.py data/raw_otu_tables $(yaml_file) $@
 
 ## 3. Get info about datasets
 # input: files in the clean_data/ folder, and a script to get info for all datasets

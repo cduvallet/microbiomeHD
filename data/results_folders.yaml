@@ -472,6 +472,8 @@ ob_zupancic:
     metadata_source: SRA
     notes: from SRA metadata, looks like maybe multiple samples per patient. But nothing is significant anyway so leave as is...
     paper: http://dx.doi.org/10.1371/journal.pone.0043052
+    condition:
+        visit_number: [1]
 par_scheperjans:
     folder: par_scheperjans_results
     region: V1-V3
