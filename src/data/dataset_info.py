@@ -8,6 +8,7 @@ dataset.
 import os
 import sys
 import pandas as pd
+import numpy as np
 import argparse
 
 # Add this repo to the path
