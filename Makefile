@@ -90,8 +90,6 @@ $(manual_meta_analysis):
 qvalues = data/analysis_results/q-val_all_results.mean.kruskal-wallis.case-control.txt
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
-phyloT_tree = data/analysis_results/genus_tree.tre
-
 
 analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues)
 
@@ -110,11 +108,11 @@ $(overall_qvalues): $(meta_qvalues)
 		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
 	fi
 
-## 5. alpha diversities
+## 4. alpha diversities
 
-## 6. random forest results
+## 5. random forest results
 
-## 7. random forest parameter search
+## 6. random forest parameter search
 
 ## Tree stuff
 genera_file = data/analysis_results/genera.tmp
@@ -146,8 +144,33 @@ $(phyloT_file): $(clean_ncbi)
 $(final_tree_file): src/analysis/update_tree.py $(phyloT_file) $(genera_file)
 	src/analysis/update_tree.py $(genera_file) $(phyloT_file) $(final_tree_file)
 
-# Re-order the qvalues and meta-analysis files phylogenetically
+## Prepare q-value files for plotting
+# Re-order rows in qvalues and meta-analysis files phylogenetically
+# Keep only genera which were significant in at least one study
+# Also make the logfold change qvalues file
+qvalues_clean = $(subst txt,sig_ordered.txt,$(qvalues))
+meta_clean = $(subst txt,sig_ordered.txt,$(meta_qvalues))
+overall_clean = $(subst txt,sig_ordered.txt,$(overall_qvalues))
+logfold = $(subst txt,log2change.sig_ordered.txt,$(qvalues))
 
+for_plotting: $(qvalues_clean) $(meta_clean) $(overall_clean) #$(logfold)
+
+$(qvalues_clean): src/analysis/reorder_qvalues.py $(qvalues) $(meta_qvalues) $(overall_qvalues) $(final_tree_file)
+	python src/analysis/reorder_qvalues.py $(qvalues) --qthresh 0.05  $(meta_qvalues) $(overall_qvalues) $(final_tree_file)
+
+$(meta_clean): $(qvalues_clean)
+	@if test -f $@; then :; else \
+		rm -f $(meta_clean); \
+		$(MAKE) $(AM_MAKEFLAGS) $(qvalues_clean); \
+	fi
+
+$(overall_clean): $(qvalues_clean)
+	@if test -f $@; then :; else \
+		rm -f $(overall_clean); \
+		$(MAKE) $(AM_MAKEFLAGS) $(qvalues_clean); \
+	fi
+
+##TODO: make the logfold change file (for plotting supp fig)
 
 ### make figures
 # Just go through the figures in the directory structure business
