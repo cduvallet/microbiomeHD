@@ -17,6 +17,8 @@
 
 all: data analysis tree #all_figures
 
+##### DOWNLOAD AND CLEAN DATA #####
+
 ### User inputs
 tar_files = data/user_input/list_of_tar_files.txt
 yaml_file = data/user_input/results_folders.yaml
@@ -35,7 +37,7 @@ manual_meta_analysis = data/lit_search/literature_based_meta_analysis.txt
 
 raw_data: $(raw_tar_files)
 clean_data: $(clean_otu_tables) $(clean_metadata_files)
-data_info: $(dataset_info) $(manual_meta_analysis)
+data_info: $(dataset_info) $(proc_info) $(manual_meta_analysis)
 
 data: raw_data clean_data data_info
 
@@ -67,8 +69,6 @@ $(clean_metadata_files): $(clean_otu_tables)
   	fi
 
 ## 3. Get info about datasets
-# input: files in the clean_data/ folder, and a script to get info for all datasets
-# output: datasets_info.txt
 $(dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
 	python src/data/dataset_info.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(proc_info)
 
@@ -86,12 +86,17 @@ $(proc_info): $(dataset_info)
 $(manual_meta_analysis):
 	echo -e "Download this from the supplement or something"
 
+##### ANALYSES #####
+
 ## Define the target analysis files
 qvalues = data/analysis_results/q-val_all_results.mean.kruskal-wallis.case-control.txt
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
 
-analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues)
+alpha_divs = data/analysis_results/alpha_diversity.txt
+alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
+
+analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(alpha_divs) $(alpha_pvals)
 
 ## 1. q-values files for all genera across all studies
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
@@ -108,8 +113,17 @@ $(overall_qvalues): $(meta_qvalues)
 		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
 	fi
 
+alpha: $(alpha_divs)
 ## 4. alpha diversities
+$(alpha_divs): src/analysis/alpha_diversity.py $(clean_otu_tables) $(clean_metadata_files)
+	python src/analysis/alpha_diversity.py data/clean_tables \
+	$(alpha_divs) $(alpha_pvals)
 
+$(alpha_pvals): $(alpha_divs)
+	@if test -f $@; then :; else \
+		rm -f $(alpha_pvals); \
+		$(MAKE) $(AM_MAKEFLAGS) $(alpha_pvals); \
+	fi
 ## 5. random forest results
 
 ## 6. random forest parameter search
@@ -144,6 +158,8 @@ $(phyloT_file): $(clean_ncbi)
 $(final_tree_file): src/analysis/update_tree.py $(phyloT_file) $(genera_file)
 	src/analysis/update_tree.py $(genera_file) $(phyloT_file) $(final_tree_file)
 
+##### PREP FOR PLOTTING #####
+
 ## Prepare q-value files for plotting
 # Re-order rows in qvalues and meta-analysis files phylogenetically
 # Keep only genera which were significant in at least one study
@@ -172,6 +188,7 @@ $(overall_clean): $(qvalues_clean)
 
 ##TODO: make the logfold change file (for plotting supp fig)
 
+##### PLOTTING #####
 ### make figures
 # Just go through the figures in the directory structure business
 

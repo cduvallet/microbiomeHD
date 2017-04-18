@@ -91,7 +91,6 @@ def collapse_taxonomic_contents_df(OTU_table, taxonomic_level):
 
     return newdf
 
-
 def compare_otus_teststat(df, Xsmpls, Ysmpls, method='kruskal-wallis', multi_comp=None):
     """
     Compares columns between Xsmpls and Ysmpls, with statistical method=method.
