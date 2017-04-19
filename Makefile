@@ -96,9 +96,13 @@ overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_a
 alpha_divs = data/analysis_results/alpha_diversity.txt
 alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
 
+rf_results = data/analysis_results/rf_results.txt
+rf_param_search = data/analysis_results/rf_results.parameter_search.txt
+
 analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(alpha_divs) $(alpha_pvals)
 
 ## 1. q-values files for all genera across all studies
+qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/get_qvalues.py data/clean_tables data/analysis_results
 
@@ -113,8 +117,9 @@ $(overall_qvalues): $(meta_qvalues)
 		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
 	fi
 
-alpha: $(alpha_divs)
+
 ## 4. alpha diversities
+alpha: $(alpha_divs) $(alpha_pvals)
 $(alpha_divs): src/analysis/alpha_diversity.py $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/alpha_diversity.py data/clean_tables \
 	$(alpha_divs) $(alpha_pvals)
@@ -124,11 +129,17 @@ $(alpha_pvals): $(alpha_divs)
 		rm -f $(alpha_pvals); \
 		$(MAKE) $(AM_MAKEFLAGS) $(alpha_pvals); \
 	fi
+
 ## 5. random forest results
+rf: $(rf_results) #$(rf_param_search)
+
+$(rf_results): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_files) src/util/util.py
+	python src/analysis/classifiers.py data/clean_tables \
+	$(rf_results)
 
 ## 6. random forest parameter search
 
-## Tree stuff
+##### PHYLOT TREE STUFF #####
 genera_file = data/analysis_results/genera.tmp
 ncbi_file = data/analysis_results/ncbi_ids.tmp
 clean_ncbi = data/analysis_results/ncbi_ids.clean.for_phyloT

@@ -188,15 +188,19 @@ def get_dataset_ids(clean_folder):
 def read_dfdict_data(datadir):
     """
     Read in all df's, metadata, dis_smpls, H_smpls, and classes_list for all
-    datasets in datadir
+    datasets in datadir.
 
     Parameters
     ----------
-    datadir          directory with dataset.otu_table.clean and dataset.metadata.clean
+    datadir : str
+        path to directory with all of the dataset.otu_table.clean
+        and dataset.metadata.clean files
 
     Returns
     -------
-    dfdict           {dataset: {'df': df, 'meta': meta, 'dis_smpls': dis_smpls, 'H_smpls': H_smpls, 'classes': classes_list}}
+    dfdict : dict
+        {dataset: {'df': df, 'meta': meta, 'dis_smpls': list_of_dis_smpls,
+                   'H_smpls': list_of_H_smpls, 'classes': classes_list}}
     """
     print('Reading datasets...')
     # Initialize dict to store all dataframes
