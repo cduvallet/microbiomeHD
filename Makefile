@@ -12,7 +12,10 @@
 # $@ is the target file
 # $* is the stem that files have in common
 
-
+## Some common files
+util = src/util/util.py
+fileio = src/util/FileIO.py
+summaryparser = src/util/SummaryParser.py
 
 
 all: data analysis tree #all_figures
@@ -27,9 +30,9 @@ yaml_file = data/user_input/results_folders.yaml
 # define the tar files from the list_of_tar_files.txt file
 raw_tar_files := $(shell cat data/list_of_tar_files.txt)
 # define the clean OTU table names from the dataset IDs in the results_folders.yaml
-clean_otu_tables := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.otu_table.clean/g' | sed 's/^/data\/clean_tables\//g')
+clean_otu_tables := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.otu_table.clean.feather/g' | sed 's/^/data\/clean_tables\//g')
 # define the metadata file names from the dataset IDs in the results_folders.yaml
-clean_metadata_files := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.metadata.clean/g' | sed 's/^/data\/clean_tables\//g')
+clean_metadata_files := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.metadata.clean.feather/g' | sed 's/^/data\/clean_tables\//g')
 
 dataset_info = data/datasets_info/datasets_info.txt
 proc_info = data/datasets_info/datasets_info.processing.txt
@@ -69,7 +72,7 @@ $(clean_metadata_files): $(clean_otu_tables)
   	fi
 
 ## 3. Get info about datasets
-$(dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
+$(dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files) $(fileio) $(summaryparser)
 	python src/data/dataset_info.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(proc_info)
 
 $(proc_info): $(dataset_info)

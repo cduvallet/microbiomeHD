@@ -6,6 +6,7 @@ Functions to interface with the OTU and metadata files.
 import os, sys
 import yaml
 import pandas as pd
+import feather
 
 # Add this repo to the path
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
@@ -117,11 +118,17 @@ def read_dataset_files(datasetid, clean_folder):
     """
     Reads the OTU table and metadata files for datasetid in clean_folder.
     """
-    fnotu = datasetid + '.otu_table.clean'
-    fnmeta = datasetid + '.metadata.clean'
+    fnotu = datasetid + '.otu_table.clean.feather'
+    fnmeta = datasetid + '.metadata.clean.feather'
 
-    df = pd.read_csv(os.path.join(clean_folder, fnotu), sep='\t', index_col=0)
-    meta = pd.read_csv(os.path.join(clean_folder, fnmeta), sep='\t', index_col=0)
+    df = feather.read_dataframe(os.path.join(clean_folder, fnotu))
+    # Feather format does not support index names, first column has index
+    df.index = df.iloc[:,0]
+    df = df.iloc[:, 1:]
+
+    meta = feather.read_dataframe(os.path.join(clean_folder, fnmeta))
+    meta.index = meta.iloc[:, 0]
+    meta = meta.iloc[:, 1:]
 
     ## Make sure sample names are strings
     if df.index.dtype != 'O':
@@ -183,7 +190,7 @@ def get_dataset_ids(clean_folder):
 
     datasets = list(set([i.split('.')[0] for i in files]))
 
-    return [d for d in datasets if d + '.otu_table.clean' in files and d + '.metadata.clean' in files]
+    return [d for d in datasets if d + '.otu_table.clean.feather' in files and d + '.metadata.clean.feather' in files]
 
 def read_dfdict_data(datadir):
     """

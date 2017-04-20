@@ -10,6 +10,8 @@ import sys
 import subprocess
 
 import pandas as pd
+import feather
+from feather.compat import pdapi
 
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
 sys.path.append(src_dir)
@@ -266,7 +268,7 @@ def fix_ob_zhu(meta):
     meta['DiseaseState'] = meta['DiseaseState'].replace('nonNASH-OB', 'OB')
     meta['DiseaseState'] = meta['DiseaseState'].replace('NASH', 'OB-NASH')
     return meta
-    
+
 if __name__ == "__main__":
 
     args = parse_args()
@@ -292,6 +294,23 @@ if __name__ == "__main__":
         meta = fix_ob_zhu(meta)
 
 
-    df.to_csv(args.otu_out, sep='\t')
-    meta_out = args.otu_out.split('.otu_table.clean')[0] + '.metadata.clean'
-    meta.to_csv(meta_out, sep='\t')
+    # Reset indices to write as feather format
+    df = df.reset_index()
+    feather.write_dataframe(df, args.otu_out)
+
+    meta_out = args.otu_out.split('.otu_table.clean.feather')[0] + '.metadata.clean.feather'
+    meta = meta.reset_index()
+
+    # Feather doesn't support writing Object column types with 'mixed' inferred
+    # dtype OR non-unicode or non-string inferred dtype.
+    # Need to convert any Object columns to their inferred dtype.
+    # https://github.com/wesm/feather/blob/master/python/feather/api.py#L42
+    for i, name in enumerate(meta.columns):
+        col = meta.iloc[:, i]
+
+        if pdapi.is_object_dtype(col):
+            inferred_type = pd.lib.infer_dtype(col)
+            if inferred_type == "boolean":
+                meta.iloc[:, i] = meta.iloc[:, i].astype(bool)
+
+    feather.write_dataframe(meta, meta_out)
