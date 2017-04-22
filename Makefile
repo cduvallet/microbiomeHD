@@ -102,7 +102,7 @@ alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
 rf_results = data/analysis_results/rf_results.txt
 rf_param_search = data/analysis_results/rf_results.parameter_search.txt
 
-analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(alpha_divs) $(alpha_pvals)
+analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(alpha_divs) $(alpha_pvals) $(rf_results) $(rf_param_search)
 
 ## 1. q-values files for all genera across all studies
 qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
@@ -120,7 +120,6 @@ $(overall_qvalues): $(meta_qvalues)
 		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
 	fi
 
-
 ## 4. alpha diversities
 alpha: $(alpha_divs) $(alpha_pvals)
 $(alpha_divs): src/analysis/alpha_diversity.py $(clean_otu_tables) $(clean_metadata_files)
@@ -134,13 +133,15 @@ $(alpha_pvals): $(alpha_divs)
 	fi
 
 ## 5. random forest results
-rf: $(rf_results) #$(rf_param_search)
+rf: $(rf_results) $(rf_param_search)
 
 $(rf_results): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_files) src/util/util.py
 	python src/analysis/classifiers.py data/clean_tables \
 	$(rf_results)
 
 ## 6. random forest parameter search
+$(rf_param_search): src/analysis/classifiers_parameters.py $(clean_otu_tables) $(clean_metadata_files)
+	python src/analysis/classifiers_parameters.py data/clean_tables $(rf_param_search)
 
 ##### PHYLOT TREE STUFF #####
 genera_file = data/analysis_results/genera.tmp
@@ -201,6 +202,7 @@ $(overall_clean): $(qvalues_clean)
 	fi
 
 ##TODO: make the logfold change file (for plotting supp fig)
+$(logfold):
 
 ##### PLOTTING #####
 ### make figures
