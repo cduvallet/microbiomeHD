@@ -71,6 +71,7 @@ disease_df = pd.read_csv(args.meta_sig, sep='\t', index_col=0)
 overall_df = pd.read_csv(args.overall_sig, sep='\t', index_col=0)
 qthresh = float(args.qthresh)
 
+# Keep only OTUs which were significant in at least one study
 sig_otus = list(\
            qvalues.loc[\
                (qvalues.applymap(abs) < qthresh).sum(axis=1) > 0]\

@@ -11,6 +11,7 @@
 # Automatic variables: https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables
 # $@ is the target file
 # $* is the stem that files have in common
+# Multiple targets for one rule: https://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
 
 ## Some common files
 util = src/util/util.py
@@ -34,15 +35,12 @@ clean_otu_tables := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed '
 # define the metadata file names from the dataset IDs in the results_folders.yaml
 clean_metadata_files := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.metadata.clean.feather/g' | sed 's/^/data\/clean_tables\//g')
 
-dataset_info = data/datasets_info/datasets_info.txt
-proc_info = data/datasets_info/datasets_info.processing.txt
 manual_meta_analysis = data/lit_search/literature_based_meta_analysis.txt
 
 raw_data: $(raw_tar_files)
 clean_data: $(clean_otu_tables) $(clean_metadata_files)
-data_info: $(dataset_info) $(proc_info) $(manual_meta_analysis)
 
-data: raw_data clean_data data_info
+data: raw_data clean_data $(manual_meta_analysis)
 
 ## 1. Pull raw OTU tables from somewhere (prob Zenodo? for now, my other folder).
 # output: tar files in a directory called data/raw_otu_tables,
@@ -71,20 +69,7 @@ $(clean_metadata_files): $(clean_otu_tables)
 		$(MAKE) $(AM_MAKEFLAGS) $<; \
   	fi
 
-## 3. Get info about datasets
-$(dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files) $(fileio) $(summaryparser)
-	python src/data/dataset_info.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(proc_info)
-
-$(proc_info): $(dataset_info)
-	## Recover from the removal of $@
-	## i.e. if the proc_info file is deleted but the dataset_info is unchanged,
-	## since dataset_info.py makes both
-	@if test -f $@; then :; else \
-		rm -f $(dataset_info); \
-		$(MAKE) $(AM_MAKEFLAGS) $(dataset_info); \
-  	fi
-
-## 4. Manual meta-analysis
+## 3. Manual meta-analysis
 # Maybe pull this from the internet? Maybe just have it echo the link to download it from? Or, like, "grab it from the paper"?
 $(manual_meta_analysis):
 	echo -e "Download this from the supplement or something"
@@ -184,7 +169,7 @@ meta_clean = $(subst txt,sig_ordered.txt,$(meta_qvalues))
 overall_clean = $(subst txt,sig_ordered.txt,$(overall_qvalues))
 logfold = $(subst txt,log2change.sig_ordered.txt,$(qvalues))
 
-for_plotting: $(qvalues_clean) $(meta_clean) $(overall_clean) #$(logfold)
+for_plotting: $(qvalues_clean) $(meta_clean) $(overall_clean) $(logfold)
 
 $(qvalues_clean): src/analysis/reorder_qvalues.py $(qvalues) $(meta_qvalues) $(overall_qvalues) $(final_tree_file)
 	python src/analysis/reorder_qvalues.py $(qvalues) --qthresh 0.05  $(meta_qvalues) $(overall_qvalues) $(final_tree_file)
@@ -201,10 +186,33 @@ $(overall_clean): $(qvalues_clean)
 		$(MAKE) $(AM_MAKEFLAGS) $(qvalues_clean); \
 	fi
 
-##TODO: make the logfold change file (for plotting supp fig)
-$(logfold):
+## Calculate logfold change for all of the "clean" genera
+# (i.e sig in at least one study, phylogenetically ordered)
+$(logfold): src/analysis/logfold_effect.py $(qvalues_clean) $(clean_otu_tables) $(clean_metadata_files)
+	python src/analysis/logfold_effect.py data/clean_tables $(qvalues_clean) $(logfold)
 
-##### PLOTTING #####
+##### FIGURES AND TABLES #####
+
+## Tables
+dataset_info = data/datasets_info/datasets_info.txt
+# Table 1 (main text) has the datasets, controls, cases, and references
+table1 = final/tables/table1.tex
+# Table 2 (supplement) has the same things, plus some info about the sequencers
+table2 = final/tables/table2.tex
+
+tables: $(table1) $(table2)
+
+$(table1): src/figures-tables/table_1_2.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
+	python src/figures-tables/table_1_2.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(table1) $(table2)
+
+$(table2): $(table1)
+	@if test -f $@; then :; else \
+		rm -f $(table1); \
+		$(MAKE) $(AM_MAKEFLAGS) $(table1); \
+	fi
+
+#TODO: basically port everything in processing_info.py to make Table 3 and 4
+
 ### make figures
 # Just go through the figures in the directory structure business
 

@@ -1,10 +1,18 @@
 """
 Make table of the log-fold change for each genus in each dataset.
 """
+import argparse
 
 import numpy as np
 import pandas as pd
 from copy import copy
+
+# Add this repo to the path
+import os, sys
+src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
+sys.path.append(src_dir)
+from FileIO import read_dfdict_data
+from util import collapse_taxonomic_contents_df
 
 def get_log_change(col, dis_smpls, H_smpls, method='mean', logfun=np.log2):
     """
@@ -97,25 +105,39 @@ def convert_dataset_to_logfold(col, dfdict, logfun=np.log2, method='mean'):
 
     return logcol
 
-
-# Set up arguments, including logfunction and method (mean or median)
-# and input files: datadir, qvalues to be converted (the reordered ones prob)
+p = argparse.ArgumentParser()
+p.add_argument('datadir', help='directory with clean OTU and metadata tables')
+p.add_argument('qvalues', help='path to file to convert to logfold values. '
+               + 'File should have genera in rows and datasets in columns. '
+               + 'The values in the matrix don\'t matter.')
+p.add_argument('logfile', help='path to write logfold change values to')
+p.add_argument('--logfun', help='log function to use (default: %(default)s)',
+               choices=['log2', 'log10'], default='log2')
+p.add_argument('--method', help='measure of central tendency to use in '
+               + 'calculating effect direction (default: %(default)s)',
+               choices=['mean', 'median'], default='mean')
+args = p.parse_args()
 
 # Read in dfdict
-
+dfdict = read_dfdict_data(args.datadir)
 # Collapse to genus level
+for dataset in dfdict:
+    dfdict[dataset]['df'] = \
+        collapse_taxonomic_contents_df(dfdict[dataset]['df'], 'genus')
 
-# Read in qvalues
+# Read in qvalues. Tab-delimited, genera in index and datasets in columns
+qvals = pd.read_csv(args.qvalues, sep='\t', index_col=0)
 
-# Calculate logfold
-allres = qvals.apply(lambda col: convert_dataset_to_logfold(col, dfdict, logfun=np.log2, method='mean'))
+# Calculate logfold change with pandas-fu
+allres = qvals.apply(lambda col: convert_dataset_to_logfold(col, dfdict,
+                                     logfun=np.log2, method='mean'))
 
 # Replace +/- infinity with max/min value in entire matrix
-# From get_log_change():
-# +infinity is returned to controls = 0, disease > 0
-# -infinity is returned when controls > 0, disease = 0
-# (note: 0 is returned when both controls and disease = 0)
+# From get_log_change(): +inf is returned when controls = 0, disease > 0;
+# -inf is returned when controls > 0, disease = 0; 0 is returned when both
+# controls and disease = 0
 allres = allres.replace(np.inf, np.ma.masked_invalid(allres.fillna(0)).max())
 allres = allres.replace(-np.inf, np.ma.masked_invalid(allres.fillna(0)).min())
 
 # Write results
+allres.to_csv(args.logfile, sep='\t')
