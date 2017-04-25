@@ -1,5 +1,6 @@
-# microbiome-meta-analysis
-Cross-disease comparison of case-control gut microbiome studies
+# microbiomeHD: Gut Microbiome in Health and Disease
+A cross-disease analysis of case-control gut microbiome studies
+in health and disease.
 
 # Eventual directory structure
 
