@@ -6,46 +6,46 @@ Cross-disease comparison of case-control gut microbiome studies
 This structure follows what's recommended by [Cookie Cutter Data Science](https://drivendata.github.io/cookiecutter-data-science/)
 Here's to hoping it works!
 
-```
+ ```
 |-- License? Citation?
 |-- Makefile   ## <- Makefile with commands like `make data` or `make figures` (or `make paper`?)
 |-- README.md
 |-- data
-|    |-- raw OTU table results and metadata files
-|    |-- cleaned up OTU tables
-|    |-- lit search results (the manual stuff I did)
-|    |-- datasets info
-|    |    |-- basic datasets stats
+|    |-- raw_otu_tables: raw OTU table results and metadata files
+|    |-- clean_tables: cleaned up OTU tables
+|    |-- lit_search: lit search results (the manual stuff I did)
+|    |-- user_input: user-inputted files like the results_folder.yaml and
+|    |   the phyloT tree
 |    |
-|    |-- analysis results files
+|    |-- analysis_results
 |         |-- q values
-|     	  |-- disease-wise meta-analysis results
-|     	  |-- overall meta-analysis results
+|     	  |-- disease-wise and overall meta-analysis results
+|     	  |-- logfold change effects
 |     	  |-- random forest AUCs, fisher P values, sample size,
 |         |   prevalence (input to supp figures)
+|         |-- alpha diversity results
+|         |-- PhyloT tree: intermediate files (minus the user-inputted
+|         |   one) and final tree
 |
 |-- src
-|    |-- __init__.py  ## If I have an init.py will I be able to import
-|    |                ## modules from here?!
+|    |-- __init__.py  
 |    |
 |    |-- data
-|    |    |-- maybe a script to download the raw OTU tables from wherever
-|    |    |   they are?
+|    |    |-- download/copy raw results into data/raw_otu_tables
 |    |    |-- script to clean up the raw data into clean OTU tables and metadata
-|    |	  |-- script to get info about the data
 |    |
 |    |-- analysis
-|    |	  |-- script to make the qvalues in each dataset for each genus
-|    |	  |-- random forests - AUCs and corr(AUC, sample size or prevalence)
-|    |    |-- disease-wise meta-analysis results
-|    |	  |-- overall meta-analysis results (unless that's easier in the
-|    |    |   same script as above)
-|    |	  |-- phyloT stuff
+|    |	  |-- calculate the qvalues in each dataset for each genus
+|    |    |-- do the disease-wise and overall meta-analysis analysis
+|    |	  |-- random forest analysis (basic AUC, for main text figure)
+|    |    |-- random forest parameter "search" (for supp. figure)
+|    |	  |-- phyloT scripts to read genera, search against NCBI, and re-order
+|    |    |   inputted tree with manually-added missing genera
 |    |	  |-- alpha diversities
-|    |	  |-- supp random forest: playing with parameters (warning:
-|    |    |   this takes forever)
+|    |	  |-- make files needed for plotting (e.g. logfold change, re-ordered
+|    |    |   and only significant q-values)
 |    |
-|    |-- figures
+|    |-- figures-tables
 |         |-- main
 |         |    |-- figure 1 should probably be its own thing
 |         |    |-- the disease heatmaps (Fig 2 and labeled)

@@ -62,6 +62,7 @@ def run_one_rf((dataset, X, Y, n_est, crit, min_split, min_leaf, random_state)):
         ]
 
     """
+    print(dataset),
     rf = RandomForestClassifier(n_estimators=n_est,
                                 criterion=crit,
                                 min_samples_split=min_split,
@@ -89,6 +90,8 @@ def run_one_rf((dataset, X, Y, n_est, crit, min_split, min_leaf, random_state)):
         score = rf.fit(X, Y).oob_score_
     except:
         score = np.nan
+
+    print('Finished. (AUC = {:.2f})'.format(results['roc_auc']))
 
     return [dataset, n_est, crit, min_split, min_leaf,
             results['roc_auc'], results['fisher_p'],
@@ -138,7 +141,7 @@ if __name__ == "__main__":
     all_minsplit = []
     all_minleaf = []
     all_random = []
-    for dataset in dfdict.keys()[0:2]:
+    for dataset in dfdict.keys():
 
         print(dataset)
         df = dfdict[dataset]['df']

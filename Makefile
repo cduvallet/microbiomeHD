@@ -29,7 +29,7 @@ yaml_file = data/user_input/results_folders.yaml
 
 ### Define target data files
 # define the tar files from the list_of_tar_files.txt file
-raw_tar_files := $(shell cat data/list_of_tar_files.txt)
+raw_tar_files := $(shell cat data/user_input/list_of_tar_files.txt)
 # define the clean OTU table names from the dataset IDs in the results_folders.yaml
 clean_otu_tables := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.otu_table.clean.feather/g' | sed 's/^/data\/clean_tables\//g')
 # define the metadata file names from the dataset IDs in the results_folders.yaml
@@ -199,11 +199,15 @@ dataset_info = data/datasets_info/datasets_info.txt
 table1 = final/tables/table1.tex
 # Table 2 (supplement) has the same things, plus some info about the sequencers
 table2 = final/tables/table2.tex
+# Table 3 has the processing parameters
+table3 = final/tables/table3.tex
+# Table 4 has the data and metadata sources
+table4 = final/tables/table4.tex
 
-tables: $(table1) $(table2)
+tables: $(table1) $(table2) $(table3) $(table4)
 
-$(table1): src/figures-tables/table_1_2.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
-	python src/figures-tables/table_1_2.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(table1) $(table2)
+$(table1): src/figures-tables/tables-1-2.datasets_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
+	python src/figures-tables/tables-1-2.datasets_info.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(table1) $(table2)
 
 $(table2): $(table1)
 	@if test -f $@; then :; else \
@@ -211,7 +215,14 @@ $(table2): $(table1)
 		$(MAKE) $(AM_MAKEFLAGS) $(table1); \
 	fi
 
-#TODO: basically port everything in processing_info.py to make Table 3 and 4
+$(table3): src/figures-tables/tables-3-4.processing_info.py $(yaml_file)
+	python src/figures-tables/tables-3-4.processing_info.py $(yaml_file) data/raw_otu_tables $(table3) $(table4)
+
+$(table4): $(table3)
+	@if test -f $@; then :; else \
+		rm -f $(table3); \
+		$(MAKE) $(AM_MAKEFLAGS) $(table3); \
+	fi
 
 ### make figures
 # Just go through the figures in the directory structure business
