@@ -253,18 +253,26 @@ figure2 = final/figures/figure2.cdi_heatmap.png \
 		  final/figures/figure2.ibd_heatmap.png \
 		  final/figures/figure2.hiv_heatmap.png \
 		  final/figures/figure2.crc_heatmap.png
-figure2_all: $(figure2)
+figure7 = final/figures/figure7.cdi_heatmap.with_labels.png \
+          final/figures/figure7.ob_heatmap.with_labels.png \
+		  final/figures/figure7.ibd_heatmap.with_labels.png \
+		  final/figures/figure7.hiv_heatmap.with_labels.png \
+		  final/figures/figure7.crc_heatmap.with_labels.png
+disease_heatmaps: $(figure2) $(figure7)
 
 # Figure 1 needs:
 # dataset_info - sample sizes in column 'total'
 # rf_results - with AUCs
 # dysbiosis - extent and direction
-figure1: src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
+$(figure1): src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
 	python src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info) $(figure1)
 
-# Okay, $* contains the disease string
-final/figures/figure2.%_heatmap.png:
-	echo $*
+# $* contains the disease string, $@ is the target file
+final/figures/figure2.%_heatmap.png: src/figures-tables/figure-2.disease_heatmaps.py $(qvalues) $(dataset_info)
+	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@
+
+final/figures/figure7.%_heatmap.with_labels.png: src/figures-tables/figure-2.disease_heatmaps.py $(qvalues) $(dataset_info)
+	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@ --labels
 
 # Just go through the figures in the directory structure business
 
