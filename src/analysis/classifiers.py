@@ -46,6 +46,7 @@ for dataset in dfdict.keys():
                                             results['mean_tpr'])).T,
                              columns=['mean_fpr', 'mean_tpr'])
     resultsdf['roc_auc'] = results['roc_auc']
+    resultsdf['fisher_p'] = results['fisher_p']
     resultsdf['dataset'] = dataset
     resultsdf['H_smpls'] = len(H_smpls)
     resultsdf['dis_smpls'] = len(dis_smpls)
