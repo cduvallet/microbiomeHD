@@ -43,7 +43,7 @@ def get_labeldict(dataset_order):
     d = {'asd_kang': 'Kang 2013, ASD',
          'asd_son': 'Son 2015, ASD',
          'cdi_schubert': 'Schubert 2014, CDI',
-         'cdi_singh': 'Singh 2015, CDI',
+         'cdi_singh': 'Singh 2015, EDD',
          'cdi_vincent': 'Vincent 2013, CDI',
          'cdi_youngster': 'Youngster 2014, CDI',
          'crc_baxter': 'Baxter 2016, CRC',

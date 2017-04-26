@@ -535,10 +535,10 @@ p.add_argument('--qthresh', help='significance threshold [default: '
 args = p.parse_args()
 
 dfpvals = pd.read_csv(args.qvalues, sep='\t', index_col=0)
-qthresh = args.qthresh
 samplesizes = pd.read_csv(args.dataset_info, sep='\t', index_col=0)
 overall = pd.read_csv(args.overall, sep='\t', index_col=0)
 dfauc = pd.read_csv(args.rf_results, sep='\t')
+qthresh = args.qthresh
 
 # Need to convert edd_singh to cdi_singh for pattern-matching purposes...
 dfpvals.columns = [i if i != 'edd_singh' else 'cdi_singh'

@@ -53,7 +53,7 @@ $(raw_tar_files): src/data/copy_tar_folders.sh
 # raw_tar_files as a prerequisite means that make can no longer parallelize
 # the cleaning steps. So if you changed the raw data for one of the OTU tables,
 # you need to delete it so that make knows to re-process it.
-# Note: If my results_folders were better labeled, I could simply
+# If my results_folders were better labeled, I could simply
 # write a rule like %.otu_table.clean : clean.py raw_data/%.tar.gz
 
 # This code cleans both the OTU and metadata files,
@@ -62,8 +62,8 @@ $(clean_otu_tables): src/data/clean_otu_and_metadata.py $(yaml_file)
 	python src/data/clean_otu_and_metadata.py data/raw_otu_tables $(yaml_file) $@
 
 $(clean_metadata_files): $(clean_otu_tables)
-	## Recover from the removal of $@
-	## i.e. if the metadata file is deleted but the OTU table still is unchanged
+	# Recover from the removal of $@
+	# i.e. if the metadata file is deleted but the OTU table still is unchanged
 	@if test -f $@; then :; else \
 		rm -f $<; \
 		$(MAKE) $(AM_MAKEFLAGS) $<; \
@@ -81,16 +81,26 @@ qvalues = data/analysis_results/q-val_all_results.mean.kruskal-wallis.case-contr
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
 
+dataset_info = data/datasets_info/datasets_info.txt
+dysbiosis = data/analysis_results/dysbiosis_metrics.txt
+
 alpha_divs = data/analysis_results/alpha_diversity.txt
 alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
 
 rf_results = data/analysis_results/rf_results.txt
 rf_param_search = data/analysis_results/rf_results.parameter_search.txt
 
-analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(alpha_divs) $(alpha_pvals) $(rf_results) $(rf_param_search)
+analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(dysbiosis) $(alpha_divs) $(alpha_pvals) $(rf_results)
+
+# Make this separately, because it takes forever
+rf_params: $(rf_param_search)
+
+# Some other nice subsets of the analyses, mostly for testing
+qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
+alpha: $(alpha_divs) $(alpha_pvals)
+rf_results: $(rf_results)
 
 ## 1. q-values files for all genera across all studies
-qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/get_qvalues.py data/clean_tables data/analysis_results
 
@@ -105,8 +115,11 @@ $(overall_qvalues): $(meta_qvalues)
 		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
 	fi
 
-## 4. alpha diversities
-alpha: $(alpha_divs) $(alpha_pvals)
+## 4. dysbiosis metrics
+$(dysbiosis): src/analysis/dysbiosis_metrics.py $(qvalues) $(dataset_info) $(overall_qvalues) $(rf_results)
+	python src/analysis/dysbiosis_metrics.py $(qvalues) $(dataset_info) $(overall_qvalues) $(rf_results) $(dysbiosis)
+
+## 5. alpha diversities
 $(alpha_divs): src/analysis/alpha_diversity.py $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/alpha_diversity.py data/clean_tables \
 	$(alpha_divs) $(alpha_pvals)
@@ -117,14 +130,12 @@ $(alpha_pvals): $(alpha_divs)
 		$(MAKE) $(AM_MAKEFLAGS) $(alpha_pvals); \
 	fi
 
-## 5. random forest results
-rf: $(rf_results) $(rf_param_search)
-
-$(rf_results): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_files) src/util/util.py
+## 6. random forest results
+$(rf_results): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/classifiers.py data/clean_tables \
 	$(rf_results)
 
-## 6. random forest parameter search
+## 7. random forest parameter search
 $(rf_param_search): src/analysis/classifiers_parameters.py $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/classifiers_parameters.py data/clean_tables $(rf_param_search)
 
@@ -135,6 +146,10 @@ clean_ncbi = data/analysis_results/ncbi_ids.clean.for_phyloT
 phyloT_file = data/user_input/phyloT_tree.newick
 final_tree_file = data/analysis_results/phyloT_tree.updated.newick
 
+# Note: phyloT doesn't necessarily return genera in the same order for
+# the same input list of genus IDs, so the arrangement of genera may
+# not be exactly as in the paper figure. This is okay - equivalent
+# trees have many different linear representations
 tree: $(final_tree_file)
 
 # Grab genus names from the qvalues file
@@ -194,7 +209,6 @@ $(logfold): src/analysis/logfold_effect.py $(qvalues_clean) $(clean_otu_tables) 
 ##### FIGURES AND TABLES #####
 
 ## Tables
-dataset_info = data/datasets_info/datasets_info.txt
 # Table 1 (main text) has the datasets, controls, cases, and references
 table1 = final/tables/table1.tex
 # Table 2 (supplement) has the same things, plus some info about the sequencers
@@ -206,6 +220,7 @@ table4 = final/tables/table4.tex
 
 tables: $(table1) $(table2) $(table3) $(table4)
 
+# tables-1-2.dataset_info.py makes table1, table2, and dataset_info
 $(table1): src/figures-tables/tables-1-2.datasets_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
 	python src/figures-tables/tables-1-2.datasets_info.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(table1) $(table2)
 
@@ -214,6 +229,13 @@ $(table2): $(table1)
 		rm -f $(table1); \
 		$(MAKE) $(AM_MAKEFLAGS) $(table1); \
 	fi
+
+$(dataset_info): $(table1)
+	@if test -f $@; then :; else \
+		rm -f $(table1); \
+		$(MAKE) $(AM_MAKEFLAGS) $(table1); \
+	fi
+
 
 $(table3): src/figures-tables/tables-3-4.processing_info.py $(yaml_file)
 	python src/figures-tables/tables-3-4.processing_info.py $(yaml_file) data/raw_otu_tables $(table3) $(table4)
@@ -224,7 +246,26 @@ $(table4): $(table3)
 		$(MAKE) $(AM_MAKEFLAGS) $(table3); \
 	fi
 
-### make figures
+## Figures
+figure1 = final/figures/figure1.samplesize_auc_extent_direction.png
+figure2 = final/figures/figure2.cdi_heatmap.png \
+          final/figures/figure2.ob_heatmap.png \
+		  final/figures/figure2.ibd_heatmap.png \
+		  final/figures/figure2.hiv_heatmap.png \
+		  final/figures/figure2.crc_heatmap.png
+figure2_all: $(figure2)
+
+# Figure 1 needs:
+# dataset_info - sample sizes in column 'total'
+# rf_results - with AUCs
+# dysbiosis - extent and direction
+figure1: src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
+	python src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info) $(figure1)
+
+# Okay, $* contains the disease string
+final/figures/figure2.%_heatmap.png:
+	echo $*
+
 # Just go through the figures in the directory structure business
 
 # Also make the tables from datasets_info.py
