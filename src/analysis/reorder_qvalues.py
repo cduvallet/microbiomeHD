@@ -85,6 +85,9 @@ overall_df = overall_df.loc[sig_otus]
 qvalues = qvalues.loc[sig_otus]
 disease_df = disease_df.loc[sig_otus]
 
+# And re-order the disease_df manually
+disease_df = disease_df[['crc', 'ob', 'ibd', 'cdi', 'hiv']]
+
 newf = args.qvalues_in.rsplit('.txt', 1)[0] + '.sig_ordered.txt'
 qvalues.to_csv(newf, sep='\t')
 newf = args.meta_sig.rsplit('.txt', 1)[0] + '.sig_ordered.txt'

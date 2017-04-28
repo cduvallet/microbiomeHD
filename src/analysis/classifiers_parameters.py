@@ -62,7 +62,7 @@ def run_one_rf((dataset, X, Y, n_est, crit, min_split, min_leaf, random_state)):
         ]
 
     """
-    print(dataset),
+    print(dataset, n_est, crit, min_split, min_leaf),
     rf = RandomForestClassifier(n_estimators=n_est,
                                 criterion=crit,
                                 min_samples_split=min_split,

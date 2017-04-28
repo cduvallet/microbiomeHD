@@ -18,8 +18,7 @@ util = src/util/util.py
 fileio = src/util/FileIO.py
 summaryparser = src/util/SummaryParser.py
 
-
-all: data analysis tree #all_figures
+all: data analysis #all_figures
 
 ##### DOWNLOAD AND CLEAN DATA #####
 
@@ -61,12 +60,12 @@ $(raw_tar_files): src/data/copy_tar_folders.sh
 $(clean_otu_tables): src/data/clean_otu_and_metadata.py $(yaml_file)
 	python src/data/clean_otu_and_metadata.py data/raw_otu_tables $(yaml_file) $@
 
+# Recover from the removal of $@
+# i.e. if the metadata file is deleted but the OTU table still is unchanged
 $(clean_metadata_files): $(clean_otu_tables)
-	# Recover from the removal of $@
-	# i.e. if the metadata file is deleted but the OTU table still is unchanged
 	@if test -f $@; then :; else \
-		rm -f $<; \
-		$(MAKE) $(AM_MAKEFLAGS) $<; \
+		rm -f $(subst metadata,otu_table,$@); \
+		$(MAKE) $(AM_MAKEFLAGS) $(subst metadata,otu_table,$@); \
   	fi
 
 ## 3. Manual meta-analysis
@@ -248,6 +247,7 @@ $(table4): $(table3)
 
 ## Figures
 figure1 = final/figures/figure1.samplesize_auc_extent_direction.png
+# Disease-specific heatmaps
 figure2 = final/figures/figure2.cdi_heatmap.png \
           final/figures/figure2.ob_heatmap.png \
 		  final/figures/figure2.ibd_heatmap.png \
@@ -260,13 +260,18 @@ figure7 = final/figures/figure7.cdi_heatmap.with_labels.png \
 		  final/figures/figure7.crc_heatmap.with_labels.png
 disease_heatmaps: $(figure2) $(figure7)
 
-# Figure 1 needs:
-# dataset_info - sample sizes in column 'total'
-# rf_results - with AUCs
-# dysbiosis - extent and direction
+# Core response
+figure3a = final/figures/figure3a.core_disease_with_phylo.png
+figure8 = final/figures/figure8.core_disease_with_phylo.with_labels.png
+
+# Alpha diversity
+figure4 = final/figures/figure4.alpha_diversity.png
+
+# Figure 1
 $(figure1): src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
 	python src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info) $(figure1)
 
+# Figure 2 and 7: disease heatmaps
 # $* contains the disease string, $@ is the target file
 final/figures/figure2.%_heatmap.png: src/figures-tables/figure-2.disease_heatmaps.py $(qvalues) $(dataset_info)
 	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@
@@ -274,9 +279,17 @@ final/figures/figure2.%_heatmap.png: src/figures-tables/figure-2.disease_heatmap
 final/figures/figure7.%_heatmap.with_labels.png: src/figures-tables/figure-2.disease_heatmaps.py $(qvalues) $(dataset_info)
 	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@ --labels
 
-# Just go through the figures in the directory structure business
+# Figure 3: panel A
+figure3: $(figure3a)
+$(figure3a): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
+	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@
 
-# Also make the tables from datasets_info.py
+alpha_fig: $(figure4)
+# Figure 4: alpha diversities
+$(figure4): src/figures-tables/figure-4.alpha_diversity.py $(alpha_divs)
+	python src/figures-tables/figure-4.alpha_diversity.py $(alpha_divs) $@
+
+
 
 ### make paper
-# Just grab from my latest repo? Dunno.
+# Just grab from my latest repo? Overleaf?
