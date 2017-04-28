@@ -5,6 +5,7 @@ bugs, one with the core bugs, and one with the phylogeny.
 """
 import argparse
 import pandas as pd
+import numpy as np
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -43,6 +44,7 @@ def get_phylo_colors(keep_rows):
     # red (proteo), blue (bacteroides), green (actino), purple (firmicutes),
     # orange (fuso), yellow, brown (eury), pink (verruco), gray (teneri, cyano, lenti, synerg)
     # this color dict is for 'Set1' color palette
+    # This first definition was for use with a ListedColorMap
     color_dict = {'p__Actinobacteria': 2,
                   'p__Bacteroidetes': 1,
                   'p__Cyanobacteria/Chloroplast': 7,
@@ -55,37 +57,27 @@ def get_phylo_colors(keep_rows):
                   'p__Synergistetes': 7,
                   'p__Verrucomicrobia': 8,
                   'p__Tenericutes': 7}
+    # Convert directly to RGB values
+    color_dict = {i: colors[color_dict[i]] for i in color_dict}
 
     ## Check that all phyla in phylodf have a color
     missingphyla = [i for i in phylodf['phylum'].unique() if i not in color_dict]
     if len(missingphyla) > 0:
         print('You need to give the following phyla colors in get_phylo_colors():')
         print('\n'.join(missingphyla))
-    ## I think I also need to drop any phyla from the dict, otherwise my
-    ## ListedColormap returns random-ish mappings? (It's not random, but I don't
-    ## know how they map ...)
-    drop_phyla = [i for i in color_dict if i not in phylodf['phylum'].unique()]
-    for i in drop_phyla:
-        color_dict.pop(i)
-    # Seed a light palette from the top-level phylum color.
-    # The first element in light_palette is white and the last element is the original color
-    # So make size of palette = number of orders + 2, and pick the 2nd element to the 2nd to last
+
     order_color_dict = {}
     for p, subdf in phylodf.groupby('phylum'):
         # Get unique orders in that phylum
         orders = subdf['order'].unique()
         # Seed a light palette from the top-level phylum color.
-        # The first element in light_palette is white and the last element is the original color
-        # So make size of palette = number of orders + 2, and pick the 2nd element to the 2nd to last
-        order_color_dict[p] = sns.light_palette(colors[color_dict[p]], len(orders) + 2)[1:-1]
-        # Assign corresponding index in `colors` to each order, and add to the master color_dict
-        color_dict.update({orders[i]: len(colors) + i for i in range(len(orders))})
-        # Append the corresponding colors to the master list of colors
-        colors += [tuple(order_color_dict[p][i]) for i in range(len(orders))]
+        order_colors = sns.light_palette(color_dict[p], len(orders) + 2)[1:-1]
+        # Assign corresponding index in `colors` to each order,
+        # and add to the master color_dict
+        color_dict.update(
+            {orders[i]: order_colors[i] for i in range(len(orders))})
 
-    palette = ListedColormap(colors)
-
-    return phylodf, palette, color_dict
+    return phylodf, color_dict
 
 p = argparse.ArgumentParser()
 p.add_argument('disease', help='path to file with disease-wise meta-analysis '
@@ -111,8 +103,10 @@ if sum(overall_meta.index == disease_meta.index) != overall_meta.shape[0]:
                      + "the same order!!")
 
 # Prepare for plotting
-phylodf, palette, color_dict = get_phylo_colors(disease_meta.index)
+phylodf, color_dict = get_phylo_colors(disease_meta.index)
 phylo_toplot = phylodf['order'].apply(lambda x: color_dict[x])
+# Plot RGBA directly by making a n_genera X 1 X 4 array
+toplot = np.array([[i] for i in phylo_toplot.values])
 
 ## Set up plot
 sns.set_style('white')
@@ -134,15 +128,10 @@ axM1 = plt.subplot(gsM[0])
 axM2 = plt.subplot(gsM[1:])
 
 ## Phylogeny, left axis
-# Manually get max and min values, otherwise colormap gets
-# scaled to values within each column
-vmax = phylo_toplot.max().max()
-vmin = phylo_toplot.min().min()
+axL1.imshow(toplot, aspect=0.5, interpolation='nearest')
 
-axL1.imshow(pd.DataFrame(phylo_toplot), interpolation='nearest',
-            cmap=palette, aspect='auto', vmax=vmax, vmin=vmin)
 # Need to shift ylim a bit to not cutoff the edge cell
-axL1.set_ylim(axL1.get_ylim()[0], axL1.get_ylim()[1] - 0.5)
+axL1.set_ylim(axL1.get_ylim()[0], axL1.get_ylim()[1])# - 0.5)
 axL1.set_xticklabels([])
 [axL1.spines[i].set_visible(False) for i in
     ['right', 'top', 'left', 'bottom']]
@@ -153,24 +142,21 @@ axM1.imshow(overall_meta.values, interpolation='nearest', aspect='auto',
             cmap=sns.diverging_palette(220,20,center='dark',as_cmap=True))
 axM1.set_xticklabels([])
 axM1.set_yticklabels([])
-axM1.set_ylim(axM1.get_ylim()[0], axM1.get_ylim()[1] - 0.5)
+axM1.set_ylim(axM1.get_ylim()[0], axM1.get_ylim()[1])# - 0.5)
 
 axM2.imshow(disease_meta.values, interpolation='nearest', aspect='auto',
             cmap=sns.diverging_palette(220,20,center='dark',as_cmap=True))
 axM2.set_yticklabels([])
 axM2.set_xticklabels([])
-axM2.set_ylim(axM2.get_ylim()[0], axM2.get_ylim()[1] - 0.5)
+axM2.set_ylim(axM2.get_ylim()[0], axM2.get_ylim()[1])# - 0.5)
 
 if args.labels:
     ## Label left-most axis with significant genera
     # Get series with True/False if any of the values are not NaN
     labeldf = overall_meta.join(disease_meta)
     labeldf = labeldf.applymap(np.isfinite).sum(axis=1).astype(bool)
-    #labels = [i.split(';')[-1][3:] if labeldf.loc[i] else '' for i in labeldf.index]
     labels = [i.split(';')[-1][3:] for i in labeldf.index]
 
-    #axL1.yaxis.tick_right()
-    #axL1.yaxis.set_label_position("right")
     axL1.set_yticks(range(0, len(labeldf)))
     axL1.set_yticklabels(labels,fontsize='xx-small', rotation=180, va='bottom')
 
