@@ -20,16 +20,19 @@ def get_phylo_colors(keep_rows):
 
     Parameters
     ----------
-    keep_rows         list of OTUs to keep. Should be full name (starting with k__;...)
-                      and in the order that you'll want to plot them.
+    keep_rows : list or pandas Index
+        list of OTUs to return colors for. Should be the full taxxonomy
+        (starting with k__;...) and in the order that you'll want to plot them.
 
     Return
     ------
-    phylodf           dataframe with 'phylum', 'class', 'order', and other columns.
-                      values are text ('o__Clostridiales')
-    palette           a ListedColormap of all the colors to map to phylum/orders
-    color_dict        dictionary with {tax_level: index_in_palette}, where tax_level
-                      is a string like 'o__Clostridiales'.
+    phylodf : pandas DataFrame
+        dataframe with 'phylum', 'class', 'order', etc columns, in the same
+        order is in keep_rows. Values are text like ('o__Clostridiales')
+    color_dict : dict
+        dictionary with {tax_level: RGBA tuple}, where tax_level
+        is a string like 'o__Clostridiales'. All phyla and orders
+        in keep_rows are in this dict.
     """
     phylodf = pd.DataFrame(columns=['phylum', 'class', 'order', 'full'])
     phylodf['full'] = keep_rows
@@ -42,9 +45,10 @@ def get_phylo_colors(keep_rows):
     ## Set1 color palette
     colors = sns.color_palette('Set1', 9)
     # red (proteo), blue (bacteroides), green (actino), purple (firmicutes),
-    # orange (fuso), yellow, brown (eury), pink (verruco), gray (teneri, cyano, lenti, synerg)
+    # orange (fuso), yellow, brown (eury), pink (verruco),
+    # gray (teneri, cyano, lenti, synerg)
     # this color dict is for 'Set1' color palette
-    # This first definition was for use with a ListedColorMap
+    # This first definition was for use with a ListedColorMap...
     color_dict = {'p__Actinobacteria': 2,
                   'p__Bacteroidetes': 1,
                   'p__Cyanobacteria/Chloroplast': 7,
@@ -61,10 +65,12 @@ def get_phylo_colors(keep_rows):
     color_dict = {i: colors[color_dict[i]] for i in color_dict}
 
     ## Check that all phyla in phylodf have a color
-    missingphyla = [i for i in phylodf['phylum'].unique() if i not in color_dict]
+    missingphyla = [i for i in phylodf['phylum'].unique()
+                    if i not in color_dict]
     if len(missingphyla) > 0:
         print('You need to give the following phyla colors in get_phylo_colors():')
         print('\n'.join(missingphyla))
+        raise ValueError
 
     order_color_dict = {}
     for p, subdf in phylodf.groupby('phylum'):

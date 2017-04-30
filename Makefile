@@ -280,9 +280,12 @@ final/figures/figure7.%_heatmap.with_labels.png: src/figures-tables/figure-2.dis
 	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@ --labels
 
 # Figure 3: panel A
-figure3: $(figure3a)
+core_heatmaps: $(figure3a) $(figure8)
 $(figure3a): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
 	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@
+
+$(figure8): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
+	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@ --labels
 
 alpha_fig: $(figure4)
 # Figure 4: alpha diversities
