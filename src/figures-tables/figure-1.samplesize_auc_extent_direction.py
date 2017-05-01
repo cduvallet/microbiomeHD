@@ -163,6 +163,12 @@ def plot_fig1(dysbiosis, dataset_order, samplesizes):
     # Plot dashed line
     ax_auc.plot([-0.5, 29.5], [1, 1], color='0.75', linestyle='--')
 
+    # No dashed lines
+    # sns.stripplot(x='label', y='value',
+    #               data=dysbiosis.query('metric == "auc"'),
+    #               order=dataset_order, ax=ax_auc, palette=colors,
+    #               size=7, marker='D')
+    # I liked it with the dashed lines better
     ax_auc = stemplot(x='label', y='value',
                       data=dysbiosis.query('metric == "auc"'),
                       order=dataset_order, ax=ax_auc,
@@ -220,9 +226,10 @@ def plot_fig1(dysbiosis, dataset_order, samplesizes):
     ax_metrics[0].yaxis.tick_right()
     ax_metrics[0].yaxis.set_label_position('right')
     # The -0.5 tick needs to be moved a bit to be less scrunched
-    ax_metrics[0].set_yticks([-0.45, 0.5])
+    ax_metrics[0].set_yticks([-0.4, 0.5])
     ax_metrics[0].tick_params(axis='y', which=u'both', length=0)
-    ax_metrics[0].set_yticklabels(['100% are\ndepleted', '100% are\nenriched'],
+    ax_metrics[0].set_yticklabels(['Beneficial-\n depleted',
+                                   'Pathogen-\n enriched'],
                                   rotation=90)
     ax_metrics[0].set_xticklabels([])
     ax_metrics[0].yaxis.set_label_position('right')

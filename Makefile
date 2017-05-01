@@ -254,6 +254,7 @@ $(table4): $(table3)
 
 ## Figures
 figure1 = final/figures/figure1.samplesize_auc_extent_direction.png
+figure1: $(figure1)
 # Disease-specific heatmaps
 figure2 = final/figures/figure2.cdi_heatmap.png \
           final/figures/figure2.ob_heatmap.png \
