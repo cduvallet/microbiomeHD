@@ -267,6 +267,9 @@ figure8 = final/figures/figure8.core_disease_with_phylo.with_labels.png
 # Alpha diversity
 figure4 = final/figures/figure4.alpha_diversity.png
 
+# ROC curves
+figure5 = final/figures/figure5.roc_curves.png
+
 # Figure 1
 $(figure1): src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
 	python src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info) $(figure1)
@@ -280,7 +283,6 @@ final/figures/figure7.%_heatmap.with_labels.png: src/figures-tables/figure-2.dis
 	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@ --labels
 
 # Figure 3: panel A
-
 core_heatmaps: $(figure3a) $(figure8)
 $(figure3a): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
 	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@
@@ -293,6 +295,10 @@ alpha_fig: $(figure4)
 $(figure4): src/figures-tables/figure-4.alpha_diversity.py $(alpha_divs)
 	python src/figures-tables/figure-4.alpha_diversity.py $(alpha_divs) $@
 
+# Figure 5: ROC curves
+figure5: $(figure5)
+$(figure5): src/figures-tables/figure-5.roc_curves.py $(rf_results)
+	python src/figures-tables/figure-5.roc_curves.py $(rf_results) $@
 
 
 ### make paper
