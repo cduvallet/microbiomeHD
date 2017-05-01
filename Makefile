@@ -89,6 +89,8 @@ alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
 rf_results = data/analysis_results/rf_results.txt
 rf_param_search = data/analysis_results/rf_results.parameter_search.txt
 
+ubiquity = data/analysis_results/ubiquity_abundance_calculations.txt
+
 analysis: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(dysbiosis) $(alpha_divs) $(alpha_pvals) $(rf_results)
 
 # Make this separately, because it takes forever
@@ -137,6 +139,11 @@ $(rf_results): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_
 ## 7. random forest parameter search
 $(rf_param_search): src/analysis/classifiers_parameters.py $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/classifiers_parameters.py data/clean_tables $(rf_param_search)
+
+## 8. Ubiquity and abundance
+ubiquity: $(ubiquity)
+$(ubiquity): src/analysis/ubiquity_abundance.py $(clean_otu_tables) $(clean_metadata_files) $(overall_qvalues)
+	python src/analysis/ubiquity_abundance.py data/clean_tables $(overall_qvalues) $@
 
 ##### PHYLOT TREE STUFF #####
 genera_file = data/analysis_results/genera.tmp
@@ -264,6 +271,8 @@ disease_heatmaps: $(figure2) $(figure7)
 figure3a = final/figures/figure3a.core_disease_with_phylo.png
 figure8 = final/figures/figure8.core_disease_with_phylo.with_labels.png
 figure3b = final/figures/figure3b.core_overlap.png
+figure3c : final/figures/figure3c.abundance.png \
+           final/figures/figure3c.ubiquity.png
 
 # Alpha diversity
 figure4 = final/figures/figure4.alpha_diversity.png
@@ -296,9 +305,12 @@ $(figure8): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(ove
 	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@ --labels
 
 # Percent overlap (Fig 3B)
-fig3b: $(figure3b)
 $(figure3b): src/figures-tables/figure-3b.percent_overlap.py $(dysbiosis) $(dataset_info)
 	python src/figures-tables/figure-3b.percent_overlap.py $(dysbiosis) $(dataset_info) $@
+
+# Ubiquity and abundance (Fig 3C)
+final/figures/figure3c.%.png: src/figures-tables/figure-3c.ubiquity_abundance.py $(ubiquity)
+	python src/figures-tables/figure-3c.ubiquity_abundance.py $(ubiquity) $* $@
 
 alpha_fig: $(figure4)
 # Figure 4: alpha diversities
