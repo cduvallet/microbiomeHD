@@ -263,6 +263,7 @@ disease_heatmaps: $(figure2) $(figure7)
 # Core response
 figure3a = final/figures/figure3a.core_disease_with_phylo.png
 figure8 = final/figures/figure8.core_disease_with_phylo.with_labels.png
+figure3b = final/figures/figure3b.core_overlap.png
 
 # Alpha diversity
 figure4 = final/figures/figure4.alpha_diversity.png
@@ -286,13 +287,18 @@ final/figures/figure2.%_heatmap.png: src/figures-tables/figure-2.disease_heatmap
 final/figures/figure7.%_heatmap.with_labels.png: src/figures-tables/figure-2.disease_heatmaps.py $(qvalues) $(dataset_info)
 	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@ --labels
 
-# Figure 3: panel A
+# Core heatmaps: disease-wise, core, and phylogeny (Fig 3A)
 core_heatmaps: $(figure3a) $(figure8)
 $(figure3a): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
 	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@
 
 $(figure8): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
 	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@ --labels
+
+# Percent overlap (Fig 3B)
+fig3b: $(figure3b)
+$(figure3b): src/figures-tables/figure-3b.percent_overlap.py $(dysbiosis) $(dataset_info)
+	python src/figures-tables/figure-3b.percent_overlap.py $(dysbiosis) $(dataset_info) $@
 
 alpha_fig: $(figure4)
 # Figure 4: alpha diversities

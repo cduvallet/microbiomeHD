@@ -33,8 +33,8 @@ def get_dataset_order(df):
                      'mhe', 'ra', 'par']
     dataset_order = np.concatenate(
         [df.loc[
-            df['dataset'].apply(lambda x:  x.startswith(d)),
-            'dataset'].values
+            df['dataset'].apply(lambda x:  x.startswith(d)), 'dataset'
+               ].values
         for d in disease_order])
 
     return disease_order, dataset_order
@@ -71,6 +71,41 @@ def get_labeldict(dataset_order):
          'ra_scher': 'Scher 2013, ART',
          't1d_alkanani': 'Alkanani 2015, T1D',
          't1d_mejialeon': 'Mejia-Leon 2014, T1D'}
+    return {i: d[i] for i in dataset_order}
+
+def get_labeldict_for_overlap(dataset_order):
+    """Dictionary for dataset labels for the percent overlap figure."""
+    d = {'asd_kang': 'Kang (ASD)',
+         'asd_son': 'Son (ASD)',
+         'cdi_schubert': 'Schubert (CDI)',
+         'cdi_singh': 'Singh (EDD)',
+         'cdi_vincent': 'Vincent (CDI)',
+         'cdi_youngster': 'Youngster (CDI)',
+         'crc_baxter': 'Baxter (CRC)',
+         'crc_chen': 'Chen (CRC)',
+         'crc_wang': 'Wang (CRC)',
+         'crc_zackular': 'Zackular (CRC)',
+         'crc_zeller': 'Zeller (CRC)',
+         'edd_singh': 'Singh (EDD)',
+         'hiv_dinh': 'Dinh (HIV)',
+         'hiv_lozupone': 'Lozupone (HIV)',
+         'hiv_noguerajulian': 'Noguera-Julian (HIV)',
+         'ibd_gevers': 'Gevers (IBD)',
+         'ibd_morgan': 'Morgan (IBD)',
+         'ibd_papa': 'Papa (IBD)',
+         'ibd_willing': 'Willing (IBD)',
+         'mhe_zhang': 'Zhang (LIV)',
+         'nash_wong': 'Wong (NASH)',
+         'nash_zhu': 'Zhu (NASH)',
+         'ob_goodrich': 'Goodrich (OB)',
+         'ob_ross': 'Ross (OB)',
+         'ob_turnbaugh': 'Turnbaugh (OB)',
+         'ob_zhu': 'Zhu (OB)',
+         'ob_zupancic': 'Zupancic (OB)',
+         'par_scheperjans': 'Scheperjans (PAR)',
+         'ra_scher': 'Scher (ART)',
+         't1d_alkanani': 'Alkanani (T1D)',
+         't1d_mejialeon': 'Mejia-Leon (T1D)'}
     return {i: d[i] for i in dataset_order}
 
 ### Table writing stuff
