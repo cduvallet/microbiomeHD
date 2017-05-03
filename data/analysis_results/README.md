@@ -5,3 +5,5 @@ This folder contains the files with results from various analyses:
 * overall meta-analysis results (''core'' genera)
 * random forest AUCs, fisher P values, sample sizes, prevalence
 * alpha diversities
+* basic dataset info
+* dysbiosis metrics (e.g. number of significant genera, direction of shift, etc)

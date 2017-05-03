@@ -42,7 +42,7 @@ cdi_schubert:
         nonCDI: 89
         H: 155
     data_source: mothur.org/CDI_MicrobiomeModeling
-    metadata_source: mothur.org
+    metadata_source: mothur.org/CDI_MicrobiomeModeling
     paper: http://dx.doi.org/10.1128/mBio.01021-14
 cdi_vincent:
     folder: cdi_vincent_v3v5_results
@@ -117,7 +117,7 @@ crc_wang:
     otu_calling: dotur, 98%
     name_assignment: rdp
     analysis_tools: aRarefactWin, R, PAST, matlab, Canoco
-    analyses: univariate, pca, pca_unifrac, redundancy_analysis, diversity, qpcr, 
+    analyses: univariate, pca, pca_unifrac, redundancy_analysis, diversity, qpcr
     sample_size:
         H: 56
         CRC: 46
@@ -138,7 +138,7 @@ crc_zackular:
     analysis_tools: lefse, stata
     analyses: lefse, logit_regression_model, bayesian_adenoma_vs_healthy, logit_plus_metadata
     data_source: mothur.org/MicrobiomeBiomarkerCRC
-    metadata_source: mothur.org
+    metadata_source: mothur.org/MicrobiomeBiomarkerCRC
     paper: http://dx.doi.org/10.1158/1940-6207.CAPR-14-0129
 crc_zeller:
     folder: crc_zeller_results
@@ -152,7 +152,7 @@ crc_zeller:
     sample_size:
         H: 75
         CRC: 41
-    comment: paper did 16S on a subset of 116 samples, supplementary dataset 2 has 129 samples listed with 13 NA's - all seems to check out.
+    notes: paper did 16S on a subset of 116 samples, supplementary dataset 2 has 129 samples listed with 13 NA's - all seems to check out.
     data_source: ENA study PRJEB6070
     metadata_source: Table S1 and S2
     paper: http://dx.doi.org/10.15252/msb.20145645

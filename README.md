@@ -1,81 +1,49 @@
-# microbiomeHD: Gut Microbiome in Health and Disease
-A cross-disease analysis of case-control gut microbiome studies
-in health and disease.
+# MicrobiomeHD: the human gut microbiome in Health and Disease
 
-# Eventual directory structure
+This repo contains the code to reproduce all of the analyses in "Meta analysis of microbiome studies identifies shared and disease-specific patterns", Duvallet et al. 2017.
 
-This structure follows what's recommended by [Cookie Cutter Data Science](https://drivendata.github.io/cookiecutter-data-science/)
-Here's to hoping it works!
+The raw data is available on Zenodo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.569601.svg)](https://doi.org/10.5281/zenodo.569601)
 
- ```
-|-- License? Citation?
-|-- Makefile   ## <- Makefile with commands like `make data` or `make figures` (or `make paper`?)
-|-- README.md
-|-- data
-|    |-- raw_otu_tables: raw OTU table results and metadata files
-|    |-- clean_tables: cleaned up OTU tables
-|    |-- lit_search: lit search results (the manual stuff I did)
-|    |-- user_input: user-inputted files like the results_folder.yaml and
-|    |   the phyloT tree
-|    |
-|    |-- analysis_results
-|         |-- q values
-|     	  |-- disease-wise and overall meta-analysis results
-|     	  |-- logfold change effects
-|     	  |-- random forest AUCs, fisher P values, sample size,
-|         |   prevalence (input to supp figures)
-|         |-- alpha diversity results
-|         |-- PhyloT tree: intermediate files (minus the user-inputted
-|         |   one) and final tree
-|
-|-- src
-|    |-- __init__.py  
-|    |
-|    |-- data
-|    |    |-- download/copy raw results into data/raw_otu_tables
-|    |    |-- script to clean up the raw data into clean OTU tables and metadata
-|    |
-|    |-- analysis
-|    |	  |-- calculate the qvalues in each dataset for each genus
-|    |    |-- do the disease-wise and overall meta-analysis analysis
-|    |	  |-- random forest analysis (basic AUC, for main text figure)
-|    |    |-- random forest parameter "search" (for supp. figure)
-|    |	  |-- phyloT scripts to read genera, search against NCBI, and re-order
-|    |    |   inputted tree with manually-added missing genera
-|    |	  |-- alpha diversities
-|    |	  |-- make files needed for plotting (e.g. logfold change, re-ordered
-|    |    |   and only significant q-values)
-|    |
-|    |-- figures-tables
-|         |-- main
-|         |    |-- figure 1 should probably be its own thing
-|         |    |-- the disease heatmaps (Fig 2 and labeled)
-|         |    |-- the meta-analysis heatmap with phylogeny (Fig 3A and
-|         |    |   labeled one)
-|         |    |-- the core overlap figure is small but separate (Fig 3B)
-|         |    |-- whatever other figure I have on here, ubiquity business
-|         |        (Fig 3C)
-|         |
-|         |-- supplementary
-|         |    |-- the alpha diversity figure
-|         |    |-- the heatmap with p-values and effect sizes for all
-|         |    |    genera in all datasets
-|         |    |-- the random forest playing with parameters figures
-|         |
-|         |-- tables
-|         |    |-- script to make latex tables
-|-- final
-|    |-- figures
-|    |    |-- save all of the figures here
-|    |    |-- files corresponding to each table (md and tex)
-|    |
-|    |-- manuscript
-|         |-- README.md with link to the manuscript repo
-|
-|-- docs??
-|    |-- how to re-run the data?
-|    |-- what the Makefile does, in English? I dunno.
-|        We'll see how much energy I have left after this.
-|
-|-- requirements.txt  ## Damnit I'm gonna have to make this aren't I? augh.
-```
+
+# Reproducing analyses
+
+[in progress]
+
+The paper is accompanied by a Makefile, which you can use to re-make all of the analyses, figures, and tables in the paper.
+
+`make` will download the data from Zenodo, clean and process the raw data, perform all of the analyses in the paper, and
+make all of the figures and tables.
+
+Other things you can `make`:
+
+* `figures`: all of the figures
+  * `main_figures`: just the figures in the main text
+  * `supp_figures`: supplementary figures
+* `tables`: all of the tables, in both Markdown and tex formats
+* `analysis`: all of the analysis files, but none of the figures or tables
+* `rf_params`: the random forest parameter search analysis. Note that this takes a very long time, and should be done
+as a background process. It is not included in any of the other `make` commands.
+
+
+# Directory structure
+
+This repo's structure follows what's recommended by [Cookie Cutter Data Science](https://drivendata.github.io/cookiecutter-data-science/).
+Some of the files have been included in this repo, others are made by various scripts.
+
+All data-related files are in `data/`:
+
+* user_input: user-inputted files, including:
+  * `results_folder.yaml` file containing metadata on all the datasets [included]
+  * `list_of_tar_files.txt` file that's used to download the raw data from Zenodo [included]
+* lit_search: manual curation of the results reported in the original publications [included]
+* analysis_results: files created by the analyses (e.g. q-values, random forest AUCs, etc) [made]
+
+All of the code is in the `scr/` folder:
+
+* `analysis`: all of the code used to perform any analyses
+* `data`: data-related code, i.e. to download the raw data from Zenodo and to clean up the raw OTU tables and metadata files
+* `final`: code used to make the final figures, tables, and supplementary files
+* `util`: various functions and modules used in other scripts
+
+The Supplementary Files, Figures, and Tables are in the `final/` folder. The Supplementary Files are provided in this repo;
+the Tables and Figures are made by `make`.

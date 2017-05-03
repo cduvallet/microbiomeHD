@@ -80,7 +80,7 @@ qvalues = data/analysis_results/q-val_all_results.mean.kruskal-wallis.case-contr
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
 
-dataset_info = data/datasets_info/datasets_info.txt
+dataset_info = data/analysis_results/datasets_info.txt
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
 
 alpha_divs = data/analysis_results/alpha_diversity.txt
