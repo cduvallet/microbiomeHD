@@ -18,7 +18,7 @@ util = src/util/util.py
 fileio = src/util/FileIO.py
 summaryparser = src/util/SummaryParser.py
 
-all: data analysis #all_figures
+all: data analysis figures tables
 
 ##### DOWNLOAD AND CLEAN DATA #####
 
@@ -216,19 +216,19 @@ $(logfold): src/analysis/logfold_effect.py $(qvalues_clean) $(clean_otu_tables) 
 
 ## Tables
 # Table 1 (main text) has the datasets, controls, cases, and references
-table1 = final/tables/table1.tex
+table1 = final/tables/table1.dataset_info.tex
 # Table 2 (supplement) has the same things, plus some info about the sequencers
-table2 = final/tables/table2.tex
+table2 = final/tables/table2.dataset_info_supplement.tex
 # Table 3 has the processing parameters
-table3 = final/tables/table3.tex
+table3 = final/tables/table3.processing_info.tex
 # Table 4 has the data and metadata sources
-table4 = final/tables/table4.tex
+table4 = final/tables/table4.data_metadata_sources.tex
 
 tables: $(table1) $(table2) $(table3) $(table4)
 
 # tables-1-2.dataset_info.py makes table1, table2, and dataset_info
-$(table1): src/figures-tables/tables-1-2.datasets_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
-	python src/figures-tables/tables-1-2.datasets_info.py $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(table1) $(table2)
+$(table1): src/final/table.datasets_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
+	python $< $(yaml_file) data/raw_otu_tables data/clean_tables $(dataset_info) $(table1) $(table2)
 
 $(table2): $(table1)
 	@if test -f $@; then :; else \
@@ -242,9 +242,8 @@ $(dataset_info): $(table1)
 		$(MAKE) $(AM_MAKEFLAGS) $(table1); \
 	fi
 
-
-$(table3): src/figures-tables/tables-3-4.processing_info.py $(yaml_file)
-	python src/figures-tables/tables-3-4.processing_info.py $(yaml_file) data/raw_otu_tables $(table3) $(table4)
+$(table3): src/final/table.processing_info.py $(yaml_file)
+	python $< $(yaml_file) data/raw_otu_tables $(table3) $(table4)
 
 $(table4): $(table3)
 	@if test -f $@; then :; else \
@@ -253,6 +252,11 @@ $(table4): $(table3)
 	fi
 
 ##### FIGURES #####
+figures : main_figures supp_figures
+main_figures: figure1 figure2 figure3
+supp_figures: figure4 figure5 figure6 figure7 #figure8 figure9
+
+rf_param_figures: figure10 figure11
 
 figure1 = final/figures/figure1.samplesize_auc_extent_direction.png
 figure1: $(figure1)
@@ -262,74 +266,84 @@ figure2 = final/figures/figure2.cdi_heatmap.png \
 		  final/figures/figure2.ibd_heatmap.png \
 		  final/figures/figure2.hiv_heatmap.png \
 		  final/figures/figure2.crc_heatmap.png
-figure7 = final/figures/figure7.cdi_heatmap.with_labels.png \
-          final/figures/figure7.ob_heatmap.with_labels.png \
-		  final/figures/figure7.ibd_heatmap.with_labels.png \
-		  final/figures/figure7.hiv_heatmap.with_labels.png \
-		  final/figures/figure7.crc_heatmap.with_labels.png
-disease_heatmaps: $(figure2) $(figure7)
+figure2: $(figure2)
+figure6 = final/figures/figure6.cdi_heatmap.with_labels.png \
+          final/figures/figure6.ob_heatmap.with_labels.png \
+		  final/figures/figure6.ibd_heatmap.with_labels.png \
+		  final/figures/figure6.hiv_heatmap.with_labels.png \
+		  final/figures/figure6.crc_heatmap.with_labels.png
+disease_heatmaps: $(figure2) $(figure6)
 
 # Core response
 figure3a = final/figures/figure3a.core_disease_with_phylo.png
-figure8 = final/figures/figure8.core_disease_with_phylo.with_labels.png
 figure3b = final/figures/figure3b.core_overlap.png
 figure3c : final/figures/figure3c.abundance.png \
            final/figures/figure3c.ubiquity.png
+figure7 = final/figures/figure7.core_disease_with_phylo.with_labels.png
+figure3: $(figure3a) $(figure3b) figure3c
 
 # Alpha diversity
 figure4 = final/figures/figure4.alpha_diversity.png
+figure4: $(figure4)
 
 # RF supplementary figures
 figure5 = final/figures/figure5.roc_curves.png
-# Note: figures 11 and 12 should NOT be in make 'all',
+figure5: $(figure5)
+
+figure6: $(figure6)
+figure7: $(figure7)
+
+# Figure 8 and 9 are the big ol' heatmaps. Not done yet.
+
+
+# Note: figures 10 and 10 should NOT be in make 'all',
 # they should be with rf_params
 figure11 = final/figures/figure11.rf_params_gini.png
 figure12 = final/figures/figure12.rf_params_entropy.png
 
 # Figure 1
-$(figure1): src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
-	python src/figures-tables/figure-1.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info) $(figure1)
+$(figure1): src/final/figure.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
+	python $< $(dysbiosis) $(dataset_info) $(figure1)
 
 # Figure 2 and 7: disease heatmaps
 # $* contains the disease string, $@ is the target file
-final/figures/figure2.%_heatmap.png: src/figures-tables/figure-2.disease_heatmaps.py $(qvalues) $(dataset_info)
-	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@
+final/figures/figure2.%_heatmap.png: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info)
+	python $< $* $(qvalues) $(dataset_info) $@
 
-final/figures/figure7.%_heatmap.with_labels.png: src/figures-tables/figure-2.disease_heatmaps.py $(qvalues) $(dataset_info)
-	python src/figures-tables/figure-2.disease_heatmaps.py $* $(qvalues) $(dataset_info) $@ --labels
+final/figures/figure6.%_heatmap.with_labels.png: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info)
+	python $< $* $(qvalues) $(dataset_info) $@ --labels
 
 # Core heatmaps: disease-wise, core, and phylogeny (Fig 3A)
-core_heatmaps: $(figure3a) $(figure8)
-$(figure3a): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
-	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@
+core_heatmaps: $(figure3a) $(figure7)
+$(figure3a): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean)
+	python $< $(meta_clean) $(overall_clean) $@
 
-$(figure8): src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean)
-	python src/figures-tables/figure-3a.core_and_disease.py $(meta_clean) $(overall_clean) $@ --labels
+$(figure7): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean)
+	python $< $(meta_clean) $(overall_clean) $@ --labels
 
 # Percent overlap (Fig 3B)
-$(figure3b): src/figures-tables/figure-3b.percent_overlap.py $(dysbiosis) $(dataset_info)
-	python src/figures-tables/figure-3b.percent_overlap.py $(dysbiosis) $(dataset_info) $@
+$(figure3b): src/final/figure.percent_overlap.py $(dysbiosis) $(dataset_info)
+	python $< $(dysbiosis) $(dataset_info) $@
 
 # Ubiquity and abundance (Fig 3C)
-final/figures/figure3c.%.png: src/figures-tables/figure-3c.ubiquity_abundance.py $(ubiquity)
-	python src/figures-tables/figure-3c.ubiquity_abundance.py $(ubiquity) $* $@
+final/figures/figure3c.%.png: src/final/figure.ubiquity_abundance_boxplots.py $(ubiquity)
+	python $< $(ubiquity) $* $@
 
 alpha_fig: $(figure4)
 # Figure 4: alpha diversities
-$(figure4): src/figures-tables/figure-4.alpha_diversity.py $(alpha_divs)
-	python src/figures-tables/figure-4.alpha_diversity.py $(alpha_divs) $@
+$(figure4): src/final/figure.alpha_diversity.py $(alpha_divs)
+	python $< $(alpha_divs) $@
 
 # RF supplementary figures
 rf_supp: $(figure5) $(figure11) $(figure12)
-$(figure5): src/figures-tables/figure-5.roc_curves.py $(rf_results)
-	python src/figures-tables/figure-5.roc_curves.py $(rf_results) $@
+$(figure5): src/final/figure.roc_curves.py $(rf_results)
+	python $< $(rf_results) $@
 
-$(figure11): src/figures-tables/figure-11.rf_params.py $(rf_param_search)
-	python src/figures-tables/figure-11.rf_params.py $(rf_param_search) gini $@
+$(figure11): src/final/figure.rf_params.py $(rf_param_search)
+	python $< $(rf_param_search) gini $@
 
-$(figure12): src/figures-tables/figure-11.rf_params.py $(rf_param_search)
-	python src/figures-tables/figure-11.rf_params.py $(rf_param_search) entropy $@
-
+$(figure12): src/final/figure.rf_params.py $(rf_param_search)
+	python $< $(rf_param_search) entropy $@
 
 ##### SUPPLEMENTARY FILES #####
 supp_qvals = final/supp-files/file-S1.qvalues.txt
@@ -340,11 +354,11 @@ supp_files: $(supp_qvals) $(supp_disease) $(supp_overall)
 $(supp_qvals): $(qvalues)
 	cp $(qvalues) $@
 
-$(supp_disease): $(meta_qvalues)
-	python src/final/supp-file.convert_meta_analysis_results.py $< $@
+$(supp_disease): src/final/supp-file.convert_meta_analysis_results.py $(meta_qvalues)
+	python $< $(meta_qvalues) $@
 
-$(supp_overall): $(overall_qvalues)
-	python src/final/supp-file.convert_meta_analysis_results.py $< $@
+$(supp_overall): src/final/supp-file.convert_meta_analysis_results.py $(overall_qvalues)
+	python $< $(overall_qvalues) $@
 
 ### make paper
 # Just grab from my latest repo? Overleaf?
