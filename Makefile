@@ -212,7 +212,7 @@ $(overall_clean): $(qvalues_clean)
 $(logfold): src/analysis/logfold_effect.py $(qvalues_clean) $(clean_otu_tables) $(clean_metadata_files)
 	python src/analysis/logfold_effect.py data/clean_tables $(qvalues_clean) $(logfold)
 
-##### FIGURES AND TABLES #####
+##### TABLES #####
 
 ## Tables
 # Table 1 (main text) has the datasets, controls, cases, and references
@@ -252,7 +252,8 @@ $(table4): $(table3)
 		$(MAKE) $(AM_MAKEFLAGS) $(table3); \
 	fi
 
-## Figures
+##### FIGURES #####
+
 figure1 = final/figures/figure1.samplesize_auc_extent_direction.png
 figure1: $(figure1)
 # Disease-specific heatmaps
@@ -329,6 +330,21 @@ $(figure11): src/figures-tables/figure-11.rf_params.py $(rf_param_search)
 $(figure12): src/figures-tables/figure-11.rf_params.py $(rf_param_search)
 	python src/figures-tables/figure-11.rf_params.py $(rf_param_search) entropy $@
 
+
+##### SUPPLEMENTARY FILES #####
+supp_qvals = final/supp-files/file-S1.qvalues.txt
+supp_disease = final/supp-files/file-S2.disease_specific_genera.txt
+supp_overall = final/supp-files/file-S2.core_genera.txt
+supp_files: $(supp_qvals) $(supp_disease) $(supp_overall)
+
+$(supp_qvals): $(qvalues)
+	cp $(qvalues) $@
+
+$(supp_disease): $(meta_qvalues)
+	python src/final/supp-file.convert_meta_analysis_results.py $< $@
+
+$(supp_overall): $(overall_qvalues)
+	python src/final/supp-file.convert_meta_analysis_results.py $< $@
 
 ### make paper
 # Just grab from my latest repo? Overleaf?
