@@ -107,6 +107,7 @@ table1 = stats[['dataset_label', 'N_ctrl', 'controls', 'N_dis',
                 'cases', 'citation']]
 fmt.write_latex_table(table1, args.main_table)
 fmt.write_markdown_table(table1, args.main_table.rsplit('.', 1)[0] + '.md')
+table1.to_csv(args.main_table.rsplit('.', 1)[0] + '.txt', sep='\t', index=False)
 
 ## Format and save Table 2 latex and markdown files
 # Re-order alphabetically by dataset ID (i.e. disease first,
@@ -118,3 +119,4 @@ table2 = stats[['dataset_label', 'year', 'N_ctrl', 'controls',
                 'region', 'citation']]
 fmt.write_latex_table(table2, args.supp_table)
 fmt.write_markdown_table(table2, args.supp_table.rsplit('.',1)[0] + '.md')
+table2.to_csv(args.supp_table.rsplit('.',1)[0] + '.txt', sep='\t', index=False)

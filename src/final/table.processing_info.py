@@ -125,9 +125,13 @@ keepcols = ['dataset_label', 'data_type', 'barcodes_removed',
 fmt.write_latex_table(procinfodf[keepcols], args.proc_info)
 fmt.write_markdown_table(procinfodf[keepcols],
                          args.proc_info.rsplit('.', 1)[0] + '.md')
+procinfodf[keepcols].to_csv(args.proc_info.rsplit('.', 1)[0] + '.txt',
+                            sep='\t', index=False)
 
 ## Write the data source tables
 keepcols = ['dataset_label', 'data_source', 'metadata_source']
 fmt.write_latex_table(procinfodf[keepcols], args.data_info)
 fmt.write_markdown_table(procinfodf[keepcols],
                          args.data_info.rsplit('.', 1)[0] + '.md')
+procinfodf[keepcols].to_csv(args.data_info.rsplit('.', 1)[0] + '.txt',
+                            sep='\t', index=False)

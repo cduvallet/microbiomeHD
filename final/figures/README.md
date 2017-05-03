@@ -1,1 +1,1 @@
-These are the final figures produced by the scripts in `../../src/figures/`. 
+This folder will contain the figures made by `make figures`, via scripts in `../../src/final/`.
