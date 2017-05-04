@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import pandas as pd
+import numpy as np
 from math import floor, ceil
 
 # Add this repo to the path
@@ -23,6 +24,11 @@ args = p.parse_args()
 
 ## Prepare alpha diversity dataframe
 alphasdf = pd.read_csv(args.alpha, sep='\t')
+
+# Remove un-annotated samples
+alphasdf = alphasdf.replace(' ', np.nan)
+alphasdf = alphasdf.replace('IBDundef', np.nan)
+alphasdf = alphasdf.dropna()
 
 col_order = sorted([i if i != 'edd_singh' else 'cdi_singh'
                     for i in alphasdf['study'].unique()])
