@@ -348,7 +348,7 @@ $(figure12): src/final/figure.rf_params.py $(rf_param_search)
 ##### SUPPLEMENTARY FILES #####
 supp_qvals = final/supp-files/file-S1.qvalues.txt
 supp_disease = final/supp-files/file-S2.disease_specific_genera.txt
-supp_overall = final/supp-files/file-S2.core_genera.txt
+supp_overall = final/supp-files/file-S3.core_genera.txt
 supp_files: $(supp_qvals) $(supp_disease) $(supp_overall)
 
 $(supp_qvals): $(qvalues)
