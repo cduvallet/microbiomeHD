@@ -28,7 +28,7 @@ yaml_file = data/user_input/results_folders.yaml
 
 ### Define target data files
 # define the tar files from the list_of_tar_files.txt file
-raw_tar_files := $(shell cat data/user_input/list_of_tar_files.txt)
+raw_tar_files := $(addprefix data/raw_otu_tables/,$(shell cat data/user_input/list_of_tar_files.txt))
 # define the clean OTU table names from the dataset IDs in the results_folders.yaml
 clean_otu_tables := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.otu_table.clean.feather/g' | sed 's/^/data\/clean_tables\//g')
 # define the metadata file names from the dataset IDs in the results_folders.yaml
@@ -41,10 +41,13 @@ clean_data: $(clean_otu_tables) $(clean_metadata_files)
 
 data: raw_data clean_data $(manual_meta_analysis)
 
-## 1. Pull raw OTU tables from somewhere (prob Zenodo? for now, my other folder).
-# output: tar files in a directory called data/raw_otu_tables,
-$(raw_tar_files): src/data/copy_tar_folders.sh
-	src/data/copy_tar_folders.sh $@
+## 1. Download the raw tar.gz files from Zenodo into data/raw_otu_tables,
+## only if the file doesn't already exist. Also extract the files.
+# Note: when I download from Zenodo, the file date corresponds to the day
+# I uploaded the data to Zenodo (May 3). Need to touch the file to update the
+# modified date so that make doesn't re-make these files all the time.
+$(raw_tar_files): data/user_input/list_of_tar_files.txt src/data/download_tar_folders.sh
+	src/data/download_tar_folders.sh $@
 
 ## 2. Clean the raw OTU tables and metadata files
 # Note: technically these clean files should depend on the raw_tar_files,

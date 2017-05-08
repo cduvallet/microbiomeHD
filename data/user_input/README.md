@@ -27,6 +27,14 @@ Other keys are optional and provide helpful notes about each dataset.
 The list of tar files to download from Zenodo. Thisile should have no header, and have each
 file name on a new line.
 
+```
+>claire:~/github/microbiomeHD/data/user_input$ cat list_of_tar_files.txt | head -n 4
+cdi_youngster_results.tar.gz
+hiv_noguerajulian_results.tar.gz
+hiv_lozupone_results.tar.gz
+t1d_alkanani_results.tar.gz
+```
+
 #### phyloT_tree.newick
 
 The genus-level tree produced by phyloT. Note that the code in this repository provides all
