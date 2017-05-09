@@ -42,3 +42,6 @@ of the steps to re-make this tree, but phyloT may return a tree with different t
 even given the same list of genus IDs. This tree is the one that was used to make the figures
 in the paper. Other trees are also correct, but may produce slightly different ordering of
 genera (while maintaining the relative ordering phylogenetically accurate).
+
+The tree that was used to make the figures in the paper is in 
+`data/analysis_results/phyloT_tree.updated.newick`. It was *not* made from the tree here.
