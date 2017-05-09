@@ -4,6 +4,7 @@ This repo contains the code to reproduce all of the analyses in "Meta analysis o
 
 The raw data is available on Zenodo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.569601.svg)](https://doi.org/10.5281/zenodo.569601)
 
+More information on the raw data on Zenodo is in `data/user_input/results_folders.yaml`.
 
 # Reproducing analyses
 
