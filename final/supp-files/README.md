@@ -22,9 +22,13 @@ disease-associated cancels out and only the *net* association is considered.
 
 **file-S3.core_genera.txt**
 
-The ``core'' microbes that respond generally to disease. A genus is considered part of the
-``core'' response if it is significant (q < 0.05) in the same direction in at least two
+The "core" microbes that respond generally to disease. A genus is considered part of the
+"core" response if it is significant (q < 0.05) in the same direction in at least two
 different diseases (i.e. in at least one dataset across at least two diseases).
 
-``Mixed'' genera are those which were enriched in cases across two diseases and also
+"Mixed" genera are those which were enriched in cases across two diseases and also
 enriched in controls across two diseases.
+
+**file-S4.literature_results.txt**
+
+The manually curated results from each previously published paper. 

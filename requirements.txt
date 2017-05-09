@@ -1,0 +1,11 @@
+statsmodels==0.6.1
+matplotlib==1.5.3
+pandas==0.19.2
+numpy==1.11.1
+scipy==0.18.1
+feather_format==0.3.1
+dendropy==4.2.0
+feather==0.9.1dev
+seaborn==0.7.1
+scikit_learn==0.18.1
+PyYAML==3.12
