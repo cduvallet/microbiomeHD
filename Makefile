@@ -257,7 +257,7 @@ $(table4): $(table3)
 ##### FIGURES #####
 figures : main_figures supp_figures
 main_figures: figure1 figure2 figure3
-supp_figures: figure4 figure5 figure6 figure7 #figure8 figure9
+supp_figures: figure4 figure5 figure6 figure7 figure8 figure9
 
 rf_param_figures: figure10 figure11
 
@@ -297,9 +297,12 @@ figure6: $(figure6)
 figure7: $(figure7)
 
 # Figure 8 and 9 are the big ol' heatmaps. Not done yet.
+figure8 = final/figures/figure8.overall_heatmap_log10qvalues.png
+figure9 = final/figures/figure9.overall_heatmap_log2effect.png
+figure8: $(figure8)
+figure9: $(figure9)
 
-
-# Note: figures 10 and 10 should NOT be in make 'all',
+# Note: figures 11 and 12 should NOT be in make 'all',
 # they should be with rf_params
 figure11 = final/figures/figure11.rf_params_gini.png
 figure12 = final/figures/figure12.rf_params_entropy.png
@@ -336,6 +339,12 @@ alpha_fig: $(figure4)
 # Figure 4: alpha diversities
 $(figure4): src/final/figure.alpha_diversity.py $(alpha_divs)
 	python $< $(alpha_divs) $@
+
+$(figure8): src/final/figure.overall_heatmap.py $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info)
+	python $< $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $@ --plot-log10
+
+$(figure9): src/final/figure.overall_heatmap.py $(logfold) $(meta_clean) $(overall_clean) $(dataset_info)
+	python $< $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $@
 
 # RF supplementary figures
 rf_supp: $(figure5) $(figure11) $(figure12)

@@ -10,80 +10,12 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-from matplotlib.colors import ListedColormap # for phylo colors
 
-
-
-def get_phylo_colors(keep_rows):
-    """
-    Return the df with phylum and orders. Make color_dict to plot bar phylogeny.
-
-    Parameters
-    ----------
-    keep_rows : list or pandas Index
-        list of OTUs to return colors for. Should be the full taxxonomy
-        (starting with k__;...) and in the order that you'll want to plot them.
-
-    Return
-    ------
-    phylodf : pandas DataFrame
-        dataframe with 'phylum', 'class', 'order', etc columns, in the same
-        order is in keep_rows. Values are text like ('o__Clostridiales')
-    color_dict : dict
-        dictionary with {tax_level: RGBA tuple}, where tax_level
-        is a string like 'o__Clostridiales'. All phyla and orders
-        in keep_rows are in this dict.
-    """
-    phylodf = pd.DataFrame(columns=['phylum', 'class', 'order', 'full'])
-    phylodf['full'] = keep_rows
-    phylodf['phylum'] = phylodf['full'].apply(lambda x: x.split(';')[1])
-    phylodf['class'] = phylodf['full'].apply(lambda x: x.split(';')[2])
-    phylodf['order'] = phylodf['full'].apply(lambda x: x.split(';')[3])
-    phylodf['family'] = phylodf['full'].apply(lambda x: x.split(';')[4])
-    phylodf['genus'] = phylodf['full'].apply(lambda x: x.split(';')[5])
-
-    ## Set1 color palette
-    colors = sns.color_palette('Set1', 9)
-    # red (proteo), blue (bacteroides), green (actino), purple (firmicutes),
-    # orange (fuso), yellow, brown (eury), pink (verruco),
-    # gray (teneri, cyano, lenti, synerg)
-    # this color dict is for 'Set1' color palette
-    # This first definition was for use with a ListedColorMap...
-    color_dict = {'p__Actinobacteria': 2,
-                  'p__Bacteroidetes': 1,
-                  'p__Cyanobacteria/Chloroplast': 7,
-                  'p__Candidatus_Saccharibacteria': 7,
-                  'p__Euryarchaeota': 6,
-                  'p__Firmicutes': 3,
-                  'p__Fusobacteria': 4,
-                  'p__Lentisphaerae': 7,
-                  'p__Proteobacteria': 0,
-                  'p__Synergistetes': 7,
-                  'p__Verrucomicrobia': 8,
-                  'p__Tenericutes': 7}
-    # Convert directly to RGB values
-    color_dict = {i: colors[color_dict[i]] for i in color_dict}
-
-    ## Check that all phyla in phylodf have a color
-    missingphyla = [i for i in phylodf['phylum'].unique()
-                    if i not in color_dict]
-    if len(missingphyla) > 0:
-        print('You need to give the following phyla colors in get_phylo_colors():')
-        print('\n'.join(missingphyla))
-        raise ValueError
-
-    order_color_dict = {}
-    for p, subdf in phylodf.groupby('phylum'):
-        # Get unique orders in that phylum
-        orders = subdf['order'].unique()
-        # Seed a light palette from the top-level phylum color.
-        order_colors = sns.light_palette(color_dict[p], len(orders) + 2)[1:-1]
-        # Assign corresponding index in `colors` to each order,
-        # and add to the master color_dict
-        color_dict.update(
-            {orders[i]: order_colors[i] for i in range(len(orders))})
-
-    return phylodf, color_dict
+# Add this repo to the path
+import os, sys
+src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
+sys.path.append(src_dir)
+from Formatting import get_phylo_colors
 
 p = argparse.ArgumentParser()
 p.add_argument('disease', help='path to file with disease-wise meta-analysis '
@@ -114,7 +46,7 @@ phylo_toplot = phylodf['order'].apply(lambda x: color_dict[x])
 # Plot RGBA directly by making a n_genera X 1 X 4 array
 toplot = np.array([[i] for i in phylo_toplot.values])
 
-## Set up plot
+### Set up plot
 sns.set_style('white')
 # Set up 2 grid specs, one with the phylogeny and one with the two heatmaps
 fig = plt.figure(figsize=(5, 16))
@@ -133,6 +65,7 @@ axM1 = plt.subplot(gsM[0])
 # axM2 has the disease-specific "overall" significant
 axM2 = plt.subplot(gsM[1:])
 
+### Plot
 ## Phylogeny, left axis
 axL1.imshow(toplot, aspect=0.5, interpolation='nearest')
 
