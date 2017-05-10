@@ -7,6 +7,8 @@ import argparse
 import pandas as pd
 import numpy as np
 
+import matplotlib
+matplotlib.use('TKAgg')
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec

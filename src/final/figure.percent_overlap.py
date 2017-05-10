@@ -6,6 +6,8 @@ with the "core" response.
 import argparse
 import pandas as pd
 
+import matplotlib
+matplotlib.use('TKAgg')
 import seaborn as sns
 import matplotlib.pyplot as plt
 

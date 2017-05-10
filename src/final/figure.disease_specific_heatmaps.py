@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 from string import upper
 
+import matplotlib
+matplotlib.use('TKAgg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 

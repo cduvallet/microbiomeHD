@@ -6,8 +6,12 @@ from different random forest parameters.
 import argparse
 import pandas as pd
 import numpy as np
+
+import matplotlib
+matplotlib.use('TKAgg')
 import seaborn as sns
 import matplotlib.pyplot as plt
+
 # Add this repo to the path
 import os, sys
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
