@@ -4,6 +4,8 @@ This script plots the alpha diversity by study.
 """
 import argparse
 
+import matplotlib
+matplotlib.use('TKAgg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 
