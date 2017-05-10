@@ -34,6 +34,10 @@ modules. From this main directory, you can type:
 
 `pip install -r requirements.txt`
 
+Note that installing [feather](https://github.com/wesm/feather/tree/master/python) may not work this way. 
+If you have Anaconda, you can manually install feather first by typing `conda install feather-format -c conda-forge`
+and then re-run `pip install`.
+
 Then you just run make:
 
 `make`

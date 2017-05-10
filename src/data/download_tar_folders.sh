@@ -11,7 +11,8 @@ orig=${1#data/raw_otu_tables/}
 target=$1
 
 ## Download nash_chan_results.tar.gz from Zenodo to data/raw_otu_tables/nash_chan_results.tar.gz
-wget -O $1 https://zenodo.org/record/569601/files/$orig
+# --no-check-certificate in case you're on a secure connection, like MIT Secure...
+wget -O $1 https://zenodo.org/record/569601/files/$orig --no-check-certificate
 # Need to update timestamp on file, otherwise it keeps the timestamp from
 # upload day to Zenodo
 touch $1

@@ -5,7 +5,6 @@ numpy==1.11.1
 scipy==0.18.1
 feather_format==0.3.1
 dendropy==4.2.0
-feather==0.9.1dev
 seaborn==0.7.1
 scikit_learn==0.18.1
 PyYAML==3.12
