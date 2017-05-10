@@ -14,7 +14,7 @@ from statsmodels.sandbox.stats.multicomp import multipletests
 import os, sys
 # Add src/util to path and import modules from files there
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
-sys.path.append(src_dir)
+sys.path.insert(0, src_dir)
 from FileIO import get_dataset_ids, read_dataset_files
 from util import raw2abun
 

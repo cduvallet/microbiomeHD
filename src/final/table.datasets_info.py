@@ -12,7 +12,7 @@ import argparse
 
 # Add this repo to the path
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
-sys.path.append(src_dir)
+sys.path.insert(0, src_dir)
 import FileIO as fio
 import Formatting as fmt
 

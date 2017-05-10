@@ -10,7 +10,7 @@ import feather
 
 # Add this repo to the path
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
-sys.path.append(src_dir)
+sys.path.insert(0, src_dir)
 from util import raw2abun
 
 def read_yaml(yamlfile, batch_data_dir):

@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 # Add this repo to the path
 import os, sys
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
-sys.path.append(src_dir)
+sys.path.insert(0, src_dir)
 import Formatting as fmt
 
 p = argparse.ArgumentParser()

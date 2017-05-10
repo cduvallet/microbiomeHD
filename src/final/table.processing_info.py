@@ -11,7 +11,7 @@ import numpy as np
 # Add this repo to the path
 import os, sys
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
-sys.path.append(src_dir)
+sys.path.insert(0, src_dir)
 from SummaryParser import SummaryParser
 import Formatting as fmt
 import FileIO as fio
