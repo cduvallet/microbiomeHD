@@ -4,6 +4,9 @@ Useful functions in formatting tables and figures.
 """
 import numpy as np
 import pandas as pd
+
+import matplotlib
+matplotlib.use('TKAgg')
 import seaborn as sns
 
 def get_dataset_order(df):
