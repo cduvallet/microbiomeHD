@@ -38,6 +38,9 @@ Note that installing [feather](https://github.com/wesm/feather/tree/master/pytho
 If you have Anaconda, you can manually install feather first by typing `conda install feather-format -c conda-forge`
 and then re-run `pip install`.
 
+You also need to install the NCBI EDirect command line tools for making the tree. Instructions on how
+to do that are on the NCBI [documentation](https://www.ncbi.nlm.nih.gov/books/NBK179288/).
+
 Then you just run make:
 
 `make`

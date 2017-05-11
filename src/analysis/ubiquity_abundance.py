@@ -6,6 +6,9 @@ healthy, case, and all patients. It writes a tidy dataframe.
 import argparse
 import pandas as pd
 import numpy as np
+
+import matplotlib
+matplotlib.use('TKAgg')
 import seaborn as sns
 
 # Add this repo to the path
