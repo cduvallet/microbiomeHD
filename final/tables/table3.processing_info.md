@@ -1,0 +1,32 @@
+dataset_label | data_type | barcodes_removed | primers_trimmed | quality_method | quality_cutoff | length_trim
+----------|----------|----------|----------|----------|----------|----------
+Kang 2013, ASD | fastq | No | Yes | -fastq_truncqual | 25 | 200
+Son 2015, ASD | fastq | No | Yes | -fastq_truncqual | 25 | 200
+Schubert 2014, CDI | fastq | No | Yes | -fastq_truncqual | 25 | 150
+Vincent 2013, CDI | fastq | No | Yes | -fastq_truncqual | 20 | 101
+Youngster 2014, CDI | fastq | No | No | -fastq_truncqual | 25 | 200
+Baxter 2016, CRC | fastq | No | No | -fastq_truncqual | 25 | 250
+Chen 2012, CRC | fastq | Yes | Yes | -fastq_truncqual | 25 | 200
+Wang 2012, CRC | fastq | Yes | Yes | -fastq_truncqual | 25 | 150
+Zackular 2014, CRC | fastq | No | No | -fastq_truncqual | 25 | 200
+Zeller 2014, CRC | fastq | No | No | -fastq_truncqual | 25 | 200
+Singh 2015, EDD | fasta | n/a | n/a | n/a | n/a | 200
+Dinh 2015, HIV | fastq | No | No | -fastq_truncqual | 25 | 200
+Lozupone 2013, HIV | fastq | No | No | -fastq_truncqual | 25 | 150
+Noguera-Julian 2016, HIV | fastq | No | Yes | -fastq_truncqual | 25 | 200
+Gevers 2014, IBD | fastq | No | No | -fastq_truncqual | 25 | 200
+Morgan 2012, IBD | fastq | No | Yes | -fastq_truncqual | 25 | 200
+Papa 2012, IBD | fasta | n/a | n/a | n/a | n/a | 200
+Willing 2009, IBD | fastq | No | Yes | -fastq_maxee | 2 | 200
+Zhang 2013, LIV | fastq | No | Yes | -fastq_truncqual | 25 | 200
+Wong 2013, NASH | fastq | No | No | -fastq_truncqual | 25 | 200
+Zhu 2013, NASH | fasta | n/a | n/a | n/a | n/a | 200
+Goodrich 2014, OB | fastq | No | No | -fastq_truncqual | 25 | 200
+Ross 2015, OB | fastq | No | No | -fastq_truncqual | 25 | 150
+Turnbaugh 2009, OB | fasta | n/a | n/a | n/a | n/a | 200
+Zhu 2013, OB | fasta | n/a | n/a | n/a | n/a | 200
+Zupancic 2012, OB | fastq | No | No | -fastq_truncqual | 25 | 200
+Scheperjans 2015, PAR | fastq | No | Yes | -fastq_truncqual | 25 | 200
+Scher 2013, ART | fastq | No | Yes | -fastq_truncqual | 25 | 200
+Alkanani 2015, T1D | fastq | No | No | -fastq_maxee | 2 | 200
+Mejia-Leon 2014, T1D | fastq | Yes | Yes | -fastq_truncqual | 25 | 150
