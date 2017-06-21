@@ -13,6 +13,8 @@ asd_kang:
     data_source: SRA study SRP017161
     metadata_source: SRA
     paper: http://dx.doi.org/10.1371/journal.pone.0068322
+    dna_extraction_text: " QIAamp (Qiagen, CA) DNA   Stool   Mini   Kit   (Protocol:   Isolation   of   DNA   from   larger volumes of stool). We first collected one gram (wet weight) of stool sample per extraction, added 10 ml ASL lysis buffer solution, and vortexed   it   vigorously   until   the   stool   sample   was   thoroughly homogenized. Then, we used 2 ml of the lysate and followed the manufacturer’s   recommendations."
+    dna_extraction: lysis_buffer
 asd_son:
     folder: asd_son_results
     region: V1-V2
@@ -28,6 +30,8 @@ asd_son:
     data_source: SRA study SRP057700
     metadata_source: SRA
     paper: http://dx.doi.org/10.1371/journal.pone.0137725
+    dna_extraction_text: "ZR Fecal DNA MiniPre"
+    dna_extraction: bead_beating
 cdi_schubert:
     folder: cdi_schubert_results
     region: V3-V5
@@ -44,6 +48,8 @@ cdi_schubert:
     data_source: mothur.org/CDI_MicrobiomeModeling
     metadata_source: mothur.org/CDI_MicrobiomeModeling
     paper: http://dx.doi.org/10.1128/mBio.01021-14
+    dna_extraction_text: "PowerSoil-htp 96-well soil DNA isoltion kit (MO Bio Laboratories, Carlsbad, CA) on an EpMotion 5075 liquid-handling workstation"
+    dna_extraction: bead_beating
 cdi_vincent:
     folder: cdi_vincent_v3v5_results
     region: V3-V5
@@ -60,6 +66,8 @@ cdi_vincent:
     data_source: email authors
     metadata_source: email authors
     paper: http://dx.doi.org/10.1186/2049-2618-1-18
+    dna_extraction_text: "DNA IQ System (Promega Corporation, Madison, WI, USA) ... To extract stains, just heat your sample in Lysis Buffer for 30 minutes and centrifuge. DNA IQ™ Resin then is added, and samples are washed using a magnetic stand."
+    dna_extraction: lysis_buffer
 cdi_youngster:
     folder: cdi_youngster_results
     region: V4
@@ -78,6 +86,8 @@ cdi_youngster:
     data_source: SRA study SRP040146
     metadata_source: email authors
     paper: http://dx.doi.org/10.1093/cid/ciu135
+    dna_extraction_text: "All fecal samples were stored at −80°C. DNA was extracted, and the V4 region of the 16S gene was sequenced using an Illumina MiSeq (Illumina, San Diego, California) as described previously [Caporaso et al, ISME Journal 2012, Ultra-high-throughput microbial community analysis on the Illumina HiSeq and MiSeq platforms]"
+    dna_extraction: unknown
 crc_baxter:
     folder: crc_baxter_results
     region: V4
@@ -94,6 +104,8 @@ crc_baxter:
     data_source: SRA study SRP062005
     metadata_source: SRA
     paper: http://dx.doi.org/10.1186/s13073-016-0290-3
+    dna_extraction_text: "DNA was extracted from approximately 50 mg of fecal material from each participant using the PowerSoil-htp 96 Well Soil DNA isolation kit (MO BIO Laboratories) and   an   epMotion   5075   automated   pipetting   system (Eppendorf)."
+    dna_extraction: bead_beating
 crc_chen:
     folder: crc_xiang_results
     region: V1-V3
@@ -109,6 +121,8 @@ crc_chen:
     data_source: SRA study SRP009633
     metadata_source: SRA sample description
     paper: http://dx.doi.org/10.1371/journal.pone.0039743
+    dna_extraction_text: "Genomic DNA was extracted from tissue and swab samples by using   the   QIAamp   DNA   Mini   Kit   (Qiagen,   Hilden,   Germany) according   to  the   manufacturer’s   instructions  with   minor  modifications. Bacterial   cells   in   swabs   were   dislodged   by   vigorous agitation in 1 ml PBS. The cells were pelleted by centrifugation at 17,000 g   for   10 min.   The   pellets   were   resuspended   in   80 ml. Bacterial   cells   in   swabs   were   dislodged   by   vigorous agitation in 1 ml PBS. The cells were pelleted by centrifugation at 17,000 g   for   10 min.   The   pellets   were   resuspended   in   80 ml"
+    dna_extraction: unsure
 crc_wang:
     folder: crc_zhao_results
     region: V3
@@ -124,6 +138,8 @@ crc_wang:
     data_source: SRA study SRP005150
     metadata_source: SRA study description
     paper: http://dx.doi.org/10.1038/ismej.2011.109}
+    dna_extraction_text: "Bacterial   cells   in   swabs   were   dislodged   by   vigorous agitation in 1 ml PBS. The cells were pelleted by centrifugation at 17,000 g   for   10 min.   The   pellets   were   resuspended   in   80 ml"
+    dna_extraction: bead_beating
 crc_zackular:
     folder: crc_zackular_results
     region: V4
@@ -140,6 +156,8 @@ crc_zackular:
     data_source: mothur.org/MicrobiomeBiomarkerCRC
     metadata_source: mothur.org/MicrobiomeBiomarkerCRC
     paper: http://dx.doi.org/10.1158/1940-6207.CAPR-14-0129
+    dna_extraction_text: "Microbial genomic DNA was extracted using the Power-Soil-htp 96 Well Soil DNA Isolation Kit (Mo Bio Laboratories) using an EPMotion 5075 pipetting system."
+    dna_extraction: bead_beating
 crc_zeller:
     folder: crc_zeller_results
     region: V4
@@ -156,6 +174,8 @@ crc_zeller:
     data_source: ENA study PRJEB6070
     metadata_source: Table S1 and S2
     paper: http://dx.doi.org/10.15252/msb.20145645
+    dna_extraction_text: "Genomic   DNA   was   extracted   from   frozen   or   RNAlater-preserved   fecal   samples   as   previously   described   (Furet   et  al, 2009)   using   the   GNOME   DNA   Isolation   Kit   (MP   Biomedicals) with   the   following   minor   modifications:   cell   lysis/denaturation was   performed   (30 min,   55°C)   before   protease   digestion   was carried   out   overnight   (55°C),   and   RNAse   digestion   (50  ll, 30 min,   55°C)   was   performed   after   mechanical   lysis."
+    dna_extraction: lysis_buffer
 #crc_wu:
 #    folder: crc_zhu_results
 #    region: V3
@@ -189,6 +209,8 @@ edd_singh:
     data_source: http://dx.doi.org/10.6084/m9.figshare.1447256
     metadata_source: Additional File 4
     paper: http://dx.doi.org/10.1186/s40168-015-0109-2
+    dna_extraction_text: "QIAamp DNA Stool Mini Kit (QIAGEN; Valencia, CA) ...  Four stools were compared using the manufacturer’s instructions, except for the addition of a denaturation step (95 °C) followed by   bead   beating   for   the   QIAamp   kit   to   enhance   DNA isolation   of   gram-positive   bacteria   as   described"
+    dna_extraction: bead_beating
 hiv_dinh:
     folder: hiv_dinh_results
     region: V3-V5
@@ -204,6 +226,8 @@ hiv_dinh:
     data_source: SRA study SRP039076
     metadata_source: SRA
     paper: http://dx.doi.org/10.1093/infdis/jiu409
+    dna_extraction_text: "from other paper... After enzymatic digestion with lysozyme, lysostaphin, mutanolysin, and proteinase K, followed by bead-beating at 4°C, DNA was extracted from stool samples using the QIAamp DNA Stool Minikit (Qiagen, Germantown, MD) according to the manufacturer’s protocol."
+    dna_extraction: bead_beating
 #hiv_dubourg:
 #    folder: hiv_dubourg_results
 #    region: V3-V4
@@ -236,6 +260,8 @@ hiv_lozupone:
     data_source: ENA study PRJEB4335
     metadata_source: Qiita study 1700
     paper: http://dx.doi.org/10.1016/j.chom.2013.08.006
+    dna_extraction_text: "DNA was extracted using the standard Power Soil Kit protocol (MoBio)"
+    dna_extraction: bead_beating
 hiv_noguerajulian:
     folder: hiv_noguerajulian_results
     region: V3-V4
@@ -254,6 +280,8 @@ hiv_noguerajulian:
     data_source: SRA study SRP068240
     metadata_source: SRA
     paper: https://doi.org/10.1016%2Fj.ebiom.2016.01.032
+    dna_extraction_text: "DNA extraction was performed using the PowerSoil DNA Extraction Kit (MO BIO Laboratories, Carlsbad, CA, US)"
+    dna_extraction: bead_beating
 ibd_gevers:
     folder: ibd_gevers_2014_results
     region: V4
@@ -271,6 +299,8 @@ ibd_gevers:
     data_source: SRA study SRP040765
     metadata_source: Table S2
     paper: http://dx.doi.org/10.1016/j.chom.2014.02.005
+    dna_extraction_text: " Nucleotides were isolated from these biopsies using the Qiagen AllPrep Mini Kit, with a mean yield of 10.5 ug per sample."
+    dna_extraction: lysis_buffer
 ibd_morgan:
     folder: ibd_huttenhower_results
     region: V3-V5
@@ -289,6 +319,8 @@ ibd_morgan:
     data_source: SRA study SRP015953
     metadata_source: http://huttenhower.sph.harvard.edu/ibd2012
     paper: http://dx.doi.org/10.1186/gb-2012-13-9-r79
+    dna_extraction_text: "DNA from stool and biopsy samples was extracted using the QIAamp DNA Stool Mini Kit (Qiagen, Inc., Valencia, CA, USA) according to manufacturer’s instructions and as described previously [87]. The manufacturer’s protocol was altered to accommodate larger stool volumes and to improve homogenization using bead-beating at several steps: a) a minimum of 2 ml of Buffer ASL and 300 mg of stool was used in the protocol; b) a ratio of 700 μl of Buffer ASL per 100 mg of stool weight was used for larger volumes using no more than 1,500 mg of stool and 10.5 ml of Buffer ASL; c) following the addition of Buffer ASL to each sample (step 2), 0.70 mm Garnet Beads (MO BIO Laboratories, Inc., Carlsbad, CA, USA) were added to the suspension and vortexed for 10 seconds; d) a second bead-beating was performed following the heating of the suspension (step 3) in 0.1 mm Glass Bead Tubes (MO BIO Laboratories, Inc.), and vortexed for 10 minutes."
+    dna_extraction: bead_beating
 ibd_papa:
     folder: ibd_alm_results
     region: V3-V5
@@ -307,6 +339,8 @@ ibd_papa:
     data_source: email authors
     metadata_source: email authors
     paper: http://dx.doi.org/10.1371/journal.pone.0039242
+    dna_extraction_text: "DNA from stool and biopsy samples was extracted using the QIAamp DNA Stool Mini Kit (Qiagen, Inc., Valencia, CA, USA) according to manufacturer’s instructions and as described previously [87]. The manufacturer’s protocol was altered to accommodate larger stool volumes and to improve homogenization using bead-beating at several steps: a) a minimum of 2 ml of Buffer ASL and 300 mg of stool was used in the protocol; b) a ratio of 700 μl of Buffer ASL per 100 mg of stool weight was used for larger volumes using no more than 1,500 mg of stool and 10.5 ml of Buffer ASL; c) following the addition of Buffer ASL to each sample (step 2), 0.70 mm Garnet Beads (MO BIO Laboratories, Inc., Carlsbad, CA, USA) were added to the suspension and vortexed for 10 seconds; d) a second bead-beating was performed following the heating of the suspension (step 3) in 0.1 mm Glass Bead Tubes (MO BIO Laboratories, Inc.), and vortexed for 10 minutes."
+    dna_extraction: bead_beating
 ibd_willing:
     folder: ibd_engstrand_maxee_results
     region: V5-V6
@@ -327,6 +361,8 @@ ibd_willing:
     data_source: email authors
     metadata_source: email authors
     paper: http://dx.doi.org/10.1053/j.gastro.2010.08.049
+    dna_extraction_text: "DNA was extracted from 250 mg of feces using the MoBio Power Soil DNA Kit (Solana Beach, CA) according to the manufacturer’s instructions."
+    dna_extraction: bead_beating
 mhe_zhang:
     folder: mhe_zhang_results
     region: V1-V2
@@ -340,12 +376,13 @@ mhe_zhang:
     name_assignment: qiime_blast
     analysis_tools: qiime, R, sigmaplot, networkanalyzer
     analyses: beta_diversity, unifrac, pca, pca_unifrac, univariate, network, diversity, functional, core_otus
-    dna_extraction: bead_beating, qiaamp_stool_mini_kit
     patient_geo: china
     patient_geo_city: kunming
     data_source: SRA study SRP015698
     metadata_source: SRA
     paper: http://dx.doi.org/10.1038/ajg.2013.221
+    dna_extraction_text: "Although frozen, an aliquot (180 – 220 mg) of each sample was  suspended  in  a  solution  containing  200 μl buffer ATL (Qiagen Kit Buffer for tissue lysis, Shanghai, China  ) and 200 μl of a slurry of  0.1-mm-diameter  zirconia  /  silica  beads  (BioSpec  Products, Bartlesville, OK). The mixed sample was then lysed by mechanical disruption  with  a  bead  beater  (BioSpec  Products)  set  on  high for  2   min  at  20    °  C,  followed  by  extraction  with  the  QIAamp DNA  Stool  Mini  Kit  (Qiagen)  using  the  manufacturer’s  protocols for isolation of DNA for pathogen detection. The lysis temperature  was  increased  to  95°C  for  cells  that  proved  to  be  difficult  to  lyse.  DNA  from  each  sample  was  eluted  in  a  final volume of 200   μ  l elution buffer and stored at −20°C."
+    dna_extraction: bead_beating
 nash_wong:
     folder: nash_chan_results
     region: V1-V2
@@ -363,6 +400,8 @@ nash_wong:
     data_source: SRA study SRP011160
     metadata_source: SRA
     paper: http://dx.doi.org/10.1371/journal.pone.0062885
+    dna_extraction_text: "180 mg   material   was   removed from   the   surface   and   core   of   the   frozen   stool   samples,   mixed manually, and the total DNA was purified by QIAamp DNA Stool Mini Kit (Qiagen, Inc, Hilden, Germany)."
+    dna_extraction: lysis_buffer
 nash_zhu:
     folder: nash_ob_baker_results
     region: V4
@@ -379,6 +418,8 @@ nash_zhu:
     data_source: MG-RAST, study mgp1195
     metadata_source: MG-RAST
     paper: http://dx.doi.org/10.1002/hep.26093
+    dna_extraction_text: "Genomic DNA was isolated from stool samples using the DNeasy Blood and Tissue Kit (Qiagen, Valencia,   CA)   and   mechanical   lysis."
+    dna_extraction: lysis_buffer
 #ob_escobar:
 #    folder: ob_escobar_results
 #    region: V1-V3
@@ -410,6 +451,8 @@ ob_goodrich:
     data_source: ENA studies PRJEB6702 and PRJEB6705
     metadata_source: ENA
     paper: http://dx.doi.org/10.1016/j.cell.2014.09.053
+    dna_extraction_text: "Genomic DNA was isolated from an aliquot of ∼100 mg from each sample using the PowerSoil® - htp DNA isolation kit (MoBio Laboratories Ltd, Carlsbad, CA)."
+    dna_extraction: bead_beating
 ob_ross:
     folder: ob_ross_results
     region: V1-V3
@@ -425,6 +468,8 @@ ob_ross:
     data_source: SRA study SRP053023
     metadata_source: SRA
     paper: http://dx.doi.org/10.1186/s40168-015-0072-y
+    dna_extraction_text: "The   samples   were thawed, vortexed, and a wide-bore tip was used to transfer approximately 750 μL of the slurry to a MoBio PowerSoil garnet   bead   tube   (Mo   Bio   Laboratories,   Carlsbad,   CA, USA). The stool was processed according to the kit instructions and eluted into 50  μL."
+    dna_extraction: bead_beating
 ob_turnbaugh:
     folder: ob_gordon_2008_v2_results
     region: V2
@@ -440,6 +485,8 @@ ob_turnbaugh:
     data_source: https://gordonlab.wustl.edu/NatureTwins_2008/TurnbaughNature_11_30_08.html
     metadata_source: Table S1
     paper: http://dx.doi.org/10.1038/nature07540
+    dna_extraction_text: "Ten to twenty grams of each sample was pulverized in liquid nitrogen with a mortar and pestle. An aliquot (approximately 500 mg) of each sample was then suspended, while frozen, in a solution containing 500 ml of extraction buffer (200 mM Tris (pH 8.0), 200 mM NaCl, 20 mM EDTA), 210 ml of 20% SDS, 500 ml of a mixture of phenol:chloroform:isoamyl alcohol (25:24:1, pH 7.9), and   500 ml   of   a   slurry   of   0.1-mm   diameter   zirconia/silica   beads   (BioSpec Products). Microbial cells were subsequently lysed by mechanical disruption with a bead beater (BioSpec Products) set on high for 2 min at room temperature, followed by extraction with phenol:chloroform:isoamyl alcohol, and precipitation with isopropanol."
+    dna_extraction: bead_beating
 ob_zhu:
     folder: nash_ob_baker_results
     region: V4
@@ -456,6 +503,8 @@ ob_zhu:
     data_source: MG-RAST, study mgp1195 (same data as nash_zhu)
     metadata_source: MG-RAST
     paper: http://dx.doi.org/10.1002/hep.26093
+    dna_extraction_text: "Genomic DNA was isolated from stool samples using the DNeasy Blood and Tissue Kit (Qiagen, Valencia,   CA)   and   mechanical   lysis."
+    dna_extraction: lysis_buffer
 ob_zupancic:
     folder: ob_zupancic_results
     region: V1-V3
@@ -474,6 +523,8 @@ ob_zupancic:
     paper: http://dx.doi.org/10.1371/journal.pone.0043052
     condition:
         visit_number: [1]
+    dna_extraction_text: "For   DNA   extraction,   a   0.3 g   stool   aliquot   was   transferred   to a   DNA/RNA-free   sterile   tube,   and   1 ml   of   phosphate-buffered saline was added to the sample. Cell lysis was initiated by adding 50 mL   of   lyzosyme   (10 mg/mL)   and   6 mL   of   mutanolysin (25,000 U/mL;   Sigma-   Aldrich).   After   a1   hour   incubation   at 37uC,   each   sample   was   further   lysed   by   addition   of   10 ml Proteinase   K   and   50 ml   10%   SDS,   followed   by   incubation   at 55uC for 45 minutes. The samples were then disrupted by bead beating, which was performed in a FP120 FastPrep at 6.0 m/s for 40 sec using 0.1 mm silica spheres (QBiogen Lysis Matrix B). The resulting crude lysate was processed using the ZYMO Fecal DNA Kit (Zymogen) according to the manufacturer’s recommendations."
+    dna_extraction: bead_beating
 par_scheperjans:
     folder: par_scheperjans_results
     region: V1-V3
@@ -489,6 +540,8 @@ par_scheperjans:
     data_source: ENA study PRJEB4927
     metadata_source: sample names
     paper: http://dx.doi.org/10.1002/mds.26069
+    dna_extraction_text: "Total DNA was extracted using the PSP Spin Stool DNA Plus Kit (STRATEC Molecular). -- Note: this kit has an optional bead beating step, assuming that the authors did it here..."
+    dna_extraction: bead_beating
 ra_scher:
     folder: ra_littman_results
     region: V1-V2
@@ -506,6 +559,8 @@ ra_scher:
     data_source: SRA study SRP023463
     metadata_source: SRA
     paper: http://dx.doi.org/10.7554/eLife.01202
+    dna_extraction_text: "DNA was extracted using a combination of the MoBio Power Soil kit (Mo Bio Laboratories,  Inc, Carlsbad, CA, USA) and a mechanical disruption (bead-beater) method based on a previously  described protocol (Ubeda et al., 2010)."
+    dna_extraction: bead_beating
 t1d_alkanani:
     folder: t1d_alkanani_results
     region: V4
@@ -524,6 +579,8 @@ t1d_alkanani:
     data_source: email authors
     metadata_source: email authors
     paper: http://dx.doi.org/10.2337/db14-1847
+    dna_extraction_text: unknown
+    dna_extraction: unknown
 t1d_mejialeon:
     folder: t1d_mejialeon_results
     region: V4
@@ -540,3 +597,5 @@ t1d_mejialeon:
     data_source: email authors
     metadata_source: email authors
     paper: http://dx.doi.org/10.1038/srep03814
+    dna_extraction_text: "For stool samples the QIAamp DNA Stool Mini Kit (QIAGENH) was used."
+    dna_extraction: lysis_buffer
