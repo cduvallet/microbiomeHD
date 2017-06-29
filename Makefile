@@ -89,7 +89,12 @@ $(manual_meta_analysis):
 # respective scripts, rather than being passed in as inputs.
 qvalues = data/analysis_results/q-val_all_results.mean.kruskal-wallis.case-control.txt
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
+# Based on counting heuristic (significant in at least 2 diseases)
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
+# +/- 1 based on combining qvalues
+overall_qvalues_stouffer = data/analysis_results/meta.stouffer.q-0.05.across_all_diseases.txt
+# Raw combined pvalues
+qvalues_stouffer = data/analysis_results/meta.stouffer_qvalues.txt
 
 dataset_info = data/analysis_results/datasets_info.txt
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
@@ -111,6 +116,7 @@ rf_param_search: $(rf_param_search)
 qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
 alpha: $(alpha_divs) $(alpha_pvals)
 rf_results: $(rf_results)
+stouffer: $(overall_qvalues_stouffer)
 
 ## 1. q-values files for all genera across all studies
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
@@ -126,6 +132,10 @@ $(overall_qvalues): $(meta_qvalues)
 		rm -f $(meta_qvalues); \
 		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
 	fi
+
+# Need to make the Stouffer combined pvalues separately
+$(overall_qvalues_stouffer): src/analysis/meta_analyze_stouffer.py $(qvalues) $(dataset_info)
+	python $< $(qvalues) $(dataset_info) $(qvalues_stouffer) $@
 
 ## 4. dysbiosis metrics
 $(dysbiosis): src/analysis/dysbiosis_metrics.py $(qvalues) $(dataset_info) $(overall_qvalues) $(rf_results)
