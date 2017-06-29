@@ -21,9 +21,17 @@ p = argparse.ArgumentParser()
 p.add_argument('datadir', help='directory with clean OTU tables and metadata.')
 p.add_argument('outfile', help='out file with tidy RF results')
 p.add_argument('--randomstate', help='random state seed', default=12345)
+p.add_argument('--core', help='path to file with core bugs, which has genera '
+    + 'in rows and column "overall" with non-NaN values indicating coreness',
+    default=None)
 args = p.parse_args()
 
 dfdict = read_dfdict_data(args.datadir)
+
+## If we should make classifiers using only the core bugs, grab those now
+if args.core is not None:
+    overall = pd.read_csv(args.core, sep='\t', index_col=0)
+    core_bugs = overall.dropna().index.tolist()
 
 tidyresults = []
 
@@ -38,6 +46,10 @@ for dataset in dfdict.keys():
 
     df = collapse_taxonomic_contents_df(df,'genus')
 
+    if args.core is not None:
+        keep_bugs = [i for i in core_bugs if i in df.columns]
+        df = df[keep_bugs]
+
     rf, X, Y = prep_classifier(df, H_smpls, dis_smpls, args.randomstate)
     results = cv_and_roc(rf, X, Y, random_state=args.randomstate)
     # Directly calling pd.DataFrame.from_dict doesn't work because
@@ -50,6 +62,7 @@ for dataset in dfdict.keys():
     resultsdf['dataset'] = dataset
     resultsdf['H_smpls'] = len(H_smpls)
     resultsdf['dis_smpls'] = len(dis_smpls)
+    resultsdf['num_features'] = df.shape[1]
     tidyresults.append(resultsdf)
 
 tidydf = pd.concat(tidyresults, ignore_index=True)
