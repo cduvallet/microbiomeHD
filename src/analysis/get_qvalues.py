@@ -91,18 +91,25 @@ if __name__ == "__main__":
         classes_list = fio.get_classes(meta)
         if len(classes_list[0]) == 0 or len(classes_list[1]) == 0:
             raise ValueError('Something wrong with ' + dataset + ' metadata.')
-        H_smpls, dis_smpls = fio.get_samples(meta, classes_list)
 
-        # Do some stats. 'results' is a dataframe with two
-        # columns, 'p' and 'test-stat'
-        results = util.compare_otus_teststat(
-            df, H_smpls, dis_smpls, method=stats_method,
-            multi_comp='fdr')
+        # Initialize results sub-dict
+        dfdict[dataset]['comparisons'] = {}
 
-        dfdict.update(
-            {dataset: {
-                'df': df, 'dis_smpls': dis_smpls,
-                'H_smpls': H_smpls, 'results': results}})
+        for dis_label in classes_list[1]:
+            comparison = classes_list[0][0] + '_vs_' + dis_label
+
+            sub_list = [classes_list[0], [dis_label]]
+            H_smpls, dis_smpls = fio.get_samples(meta, sub_list)
+
+            # Do some stats. 'results' is a dataframe with two
+            # columns, 'p' and 'test-stat'
+            results = util.compare_otus_teststat(
+                df, H_smpls, dis_smpls, method=stats_method,
+                multi_comp='fdr')
+
+            dfdict[dataset]['comparisons'][comparison] = \
+                {'df': df, 'dis_smpls': dis_smpls,
+                 'H_smpls': H_smpls, 'results': results}
 
     ## Manipulate each dataset's results with values signed
     ## according to median and mean effects in dis - H
@@ -110,22 +117,27 @@ if __name__ == "__main__":
     mean_allresults_lst = None
     allpvals = None
     for dataset in dfdict:
-        ## Manipulate the results dataframe
-        # into a df with signed values according to direction of change
-        # Calculates using both mean and median.
-        results = dfdict[dataset]['results']
-        df = dfdict[dataset]['df']
-        dis_smpls = dfdict[dataset]['dis_smpls']
-        H_smpls = dfdict[dataset]['H_smpls']
+        for comp in dfdict[dataset]['comparisons']:
+            ## Manipulate the results dataframe
+            # into a df with signed values according to direction of change
+            # Calculates using both mean and median.
+            results = dfdict[dataset]['comparisons'][comp]['results']
+            df = dfdict[dataset]['comparisons'][comp]['df']
+            dis_smpls = dfdict[dataset]['comparisons'][comp]['dis_smpls']
+            H_smpls = dfdict[dataset]['comparisons'][comp]['H_smpls']
 
-        med_results, mean_results = sign_results(results, df, dis_smpls, H_smpls, dataset, col='q')
+            med_results, mean_results = sign_results(results, df, dis_smpls, H_smpls, dataset, col='q')
 
-        try:
-            med_allresults_lst.append(med_results)
-            mean_allresults_lst.append(mean_results)
-        except AttributeError:
-            med_allresults_lst = [med_results]
-            mean_allresults_lst = [mean_results]
+            # Update df names to have both the dataset and the comparison
+            med_results.name = dataset + '-' + comp
+            mean_results.name = dataset + '-' + comp
+
+            try:
+                med_allresults_lst.append(med_results)
+                mean_allresults_lst.append(mean_results)
+            except AttributeError:
+                med_allresults_lst = [med_results]
+                mean_allresults_lst = [mean_results]
 
     print('Doing univariate tests... Finished')
 

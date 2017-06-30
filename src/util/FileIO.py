@@ -154,10 +154,10 @@ def get_classes(meta):
     -------
     list, [['DiseaseState' label for control samples], ['DiseaseState' label for case samples]]
     """
-    controls = ['H',  'nonCDI', 'nonGVHD', 'nonIBD']
+    controls = ['H', 'nonIBD']
     diseases = ['ASD', 'CD', 'CDI', 'CIRR', 'CRC', 'EDD', 'GVHD', 'HIV',
                 'MHE', 'NASH', 'OB', 'PAR', 'PSA', 'RA', 'T1D', 'T2D',
-                 'UC']
+                 'UC', 'nonCDI']
 
     labels = list(set(meta['DiseaseState']))
     return [[i for i in labels if i in controls], [j for j in labels if j in diseases]]

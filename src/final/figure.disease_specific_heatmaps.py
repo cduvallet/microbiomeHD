@@ -74,6 +74,10 @@ def plot_disease_heatmap(disdf, samplesizes, vmax=None, with_labels=False):
         ax_heatmap.set_xticks(range(0, disdf.shape[1]))
         ax_heatmap.set_xticklabels('')
 
+    # Temporary: hard-code in the dataset labels here
+    ax_heatmap.set_xticks(range(disdf.shape[1]))
+    ax_heatmap.set_xticklabels(disdf.columns.tolist(), rotation=45)
+
     return fig
 
 p = argparse.ArgumentParser()
@@ -96,12 +100,12 @@ args = p.parse_args()
 # Read in pvalues. df has datasets in columns, genera in rows
 df = pd.read_csv(args.qvalues, sep='\t', index_col=0)
 # Replace edd_singh with cdi_singh (for text parsing reasons)
-df.columns = ['cdi_singh' if i == 'edd_singh' else i for i in df.columns]
+df.columns = ['cdi_singh-H_vs_EDD' if i == 'edd_singh-H_vs_EDD' else i for i in df.columns]
 # Name the index 'otu' for future melting etc
 df.index.name = 'otu'
 
 samplesizes = pd.read_csv(args.dataset_info, sep='\t')
-samplesizes = samplesizes.replace('edd_singh', 'cdi_singh')
+samplesizes = samplesizes.replace('edd_singh-H_vs_EDD', 'cdi_singh-H_vs_EDD')
 samplesizes = samplesizes.sort_values(by='total', ascending=False)
 
 ## Replace pvalues with +/- 1 if significant or not
@@ -121,7 +125,9 @@ disdf = disdf.applymap(lambda x: np.sign(x)*abs(np.log10(abs(x))))
 # Re-order rows
 disdf = disdf.loc[disdf.sum(axis=1).sort_values(ascending=False).index]
 # Re-order columns by sample size
-disdf = disdf[[i for i in samplesizes['dataset'] if i in keep_datasets]]
+print('TODO: need to figure out how to re-order the columns now that '
+      'my datasets arent labeled the same as in datasets_info.txt...')
+#disdf = disdf[[i for i in samplesizes['dataset'] if i in keep_datasets]]
 fig = plot_disease_heatmap(disdf, samplesizes, vmax=abs(np.log10(args.qthresh)),
                            with_labels=args.labels)
 fig.tight_layout()
