@@ -104,6 +104,7 @@ alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
 
 rf_results = data/analysis_results/rf_results.txt
 rf_core = data/analysis_results/rf_results.core_only.txt
+rf_core_random = data/analysis_results/rf_results.random_genera.txt
 rf_param_search = data/analysis_results/rf_results.parameter_search.txt
 
 ubiquity = data/analysis_results/ubiquity_abundance_calculations.txt
@@ -116,7 +117,7 @@ rf_param_search: $(rf_param_search)
 # Some other nice subsets of the analyses, mostly for testing
 qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
 alpha: $(alpha_divs) $(alpha_pvals)
-rf_results: $(rf_results) $(rf_core)
+rf_results: $(rf_results) $(rf_core) $(rf_core_random)
 stouffer: $(overall_qvalues_stouffer)
 
 ## 1. q-values files for all genera across all studies
@@ -173,6 +174,9 @@ $(ubiquity): src/analysis/ubiquity_abundance.py $(clean_otu_tables) $(clean_meta
 ## 9. Random forest using only core bugs
 $(rf_core): src/analysis/classifiers.py $(clean_otu_tables) $(overall_qvalues)
 	python $< --core $(overall_qvalues) data/clean_tables $(rf_core)
+
+$(rf_core_random): src/analysis/classifiers_random_genera.py $(clean_otu_tables) $(overall_qvalues)
+	python $< --core $(overall_qvalues) data/clean_tables $(rf_core_random)
 
 #######################
 ##### PHYLOT TREE #####
