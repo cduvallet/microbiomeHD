@@ -105,6 +105,7 @@ alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
 rf_results = data/analysis_results/rf_results.txt
 rf_core = data/analysis_results/rf_results.core_only.txt
 rf_param_search = data/analysis_results/rf_results.parameter_search.txt
+rf_h_v_dis = data/analysis_results/rf_results.healthy_vs_disease.txt
 
 ubiquity = data/analysis_results/ubiquity_abundance_calculations.txt
 
@@ -116,7 +117,7 @@ rf_param_search: $(rf_param_search)
 # Some other nice subsets of the analyses, mostly for testing
 qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
 alpha: $(alpha_divs) $(alpha_pvals)
-rf_results: $(rf_results) $(rf_core)
+rf_results: $(rf_results) $(rf_core) $(rf_h_v_dis)
 stouffer: $(overall_qvalues_stouffer)
 
 ## 1. q-values files for all genera across all studies
@@ -171,8 +172,12 @@ $(ubiquity): src/analysis/ubiquity_abundance.py $(clean_otu_tables) $(clean_meta
 	$(overall_qvalues) $@
 
 ## 9. Random forest using only core bugs
-$(rf_core): src/analysis/classifiers.py $(clean_otu_tables) $(overall_qvalues)
-	python $< --core $(overall_qvalues) data/clean_tables $(rf_core)
+$(rf_core): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_files) $(overall_qvalues)
+	python $< --core $(overall_qvalues) data/clean_tables $@
+
+## 10. Random forest for general healthy vs disease classifier
+$(rf_h_v_dis): src/analysis/healthy_disease_classifier.py $(clean_otu_tables) $(clean_metadata_files)
+	python $< data/clean_tables $@
 
 #######################
 ##### PHYLOT TREE #####
@@ -411,7 +416,8 @@ supp_qvals = final/supp-files/file-S1.qvalues.txt
 supp_disease = final/supp-files/file-S2.disease_specific_genera.txt
 supp_overall = final/supp-files/file-S3.core_genera.txt
 supp_litsearch = final/supp-files/file-S4.literature_results.txt
-supp_files: $(supp_qvals) $(supp_disease) $(supp_overall) $(supp_litsearch)
+supp_effects = final/supp-files/file-S5.effects.txt
+supp_files: $(supp_qvals) $(supp_disease) $(supp_overall) $(supp_litsearch) $(supp_effects)
 
 $(supp_qvals): $(qvalues)
 	cp $(qvalues) $@
@@ -423,4 +429,7 @@ $(supp_overall): src/final/supp-file.convert_meta_analysis_results.py $(overall_
 	python $< $(overall_qvalues) $@
 
 $(supp_litsearch): $(manual_meta_analysis)
+	cp $< $@
+
+$(supp_effects): $(logfold)
 	cp $< $@
