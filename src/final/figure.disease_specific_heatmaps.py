@@ -115,6 +115,16 @@ datasets = df.columns
 
 keep_datasets = [i for i in datasets if i.startswith(args.disease)]
 
+if args.disease == "ibd":
+    # Manually do it for now bc I have a fever...
+    keep_datasets = ['ibd_gevers-nonIBD_vs_CD',
+                     'ibd_papa-nonIBD_vs_CD',
+                     'ibd_morgan-H_vs_CD',
+                     'ibd_willing-H_vs_CD',
+                     'ibd_papa-nonIBD_vs_UC',
+                     'ibd_morgan-H_vs_UC',
+                     'ibd_willing-H_vs_UC']
+
 disdf = dfsig[keep_datasets]
 # Keep only OTUs which were signficant in at least one study
 disdf = df.loc[disdf.apply(abs).sum(axis=1) != 0, keep_datasets]
