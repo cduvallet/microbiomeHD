@@ -19,6 +19,7 @@ fileio = src/util/FileIO.py
 summaryparser = src/util/SummaryParser.py
 
 all: data analysis figures tables supp_files
+reviewer_comments: reviewer_analysis
 
 # All of the files associated with the RF parameter search
 rf_params: rf_param_search rf_param_figures
@@ -110,6 +111,7 @@ rf_h_v_dis = data/analysis_results/rf_results.healthy_vs_disease.txt
 ubiquity = data/analysis_results/ubiquity_abundance_calculations.txt
 
 analysis: qvals $(dysbiosis) alpha rf_results
+reviewer_analysis: $(rf_core)
 
 # Make this separately, because it takes forever
 rf_param_search: $(rf_param_search)
@@ -117,7 +119,7 @@ rf_param_search: $(rf_param_search)
 # Some other nice subsets of the analyses, mostly for testing
 qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
 alpha: $(alpha_divs) $(alpha_pvals)
-rf_results: $(rf_results) $(rf_core) $(rf_h_v_dis)
+rf_results: $(rf_results) $(rf_h_v_dis)
 stouffer: $(overall_qvalues_stouffer)
 
 ## 1. q-values files for all genera across all studies

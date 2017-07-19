@@ -39,14 +39,18 @@ def get_citation(dataset):
     else:
         return '-'.join(dataset.split('_'))
 
-parser = argparse.ArgumentParser(description='Read and write basic info about the datasets.')
+parser = argparse.ArgumentParser(description='Read and write basic info '
+    + 'about the datasets.')
 parser.add_argument('yaml_file', help='yaml file with all dataset info')
 parser.add_argument('raw_data_dir', help='directory with raw data')
-parser.add_argument('clean_data_dir', help='directory with clean OTU tables and metadata')
+parser.add_argument('clean_data_dir', help='directory with clean OTU tables '
+    + 'and metadata')
 parser.add_argument('dataset_info', help='out file with the tab-delimited, '
-                    + 'unformatted information.')
-parser.add_argument('main_table', help='out file with table for main text (tex file)')
-parser.add_argument('supp_table', help='out file with supplementary table (tex file)')
+    + 'unformatted information.')
+parser.add_argument('main_table', help='out file with table for main text '
+    + '(tex file)')
+parser.add_argument('supp_table', help='out file with supplementary table '
+    + '(tex file)')
 args = parser.parse_args()
 
 yamlinfo = fio.read_yaml(args.yaml_file, args.raw_data_dir)
@@ -94,7 +98,8 @@ stats.to_csv(args.dataset_info, sep='\t', index=False)
 ## Format and save Table 1 latex and markdown files
 
 # Re-order dataframe to match order in Figure 1
-stats['dataset'] = stats['dataset'].apply(lambda x: x if x != 'edd_singh' else 'cdi_singh')
+stats['dataset'] = stats['dataset']\
+    .apply(lambda x: x if x != 'edd_singh' else 'cdi_singh')
 _, dataset_order = fmt.get_dataset_order(stats)
 stats['dataset'] = stats['dataset'].astype('category')
 stats['dataset'].cat.set_categories(dataset_order, inplace=True)
