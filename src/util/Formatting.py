@@ -33,9 +33,16 @@ def get_dataset_order(df):
     """
     df = df.sort_values(by='total', ascending=False)
 
-    ## Set up dataset order
-    disease_order = ['crc', 'ob', 'ibd', 'cdi', 'hiv', 'asd', 't1d', 'nash',
-                     'mhe', 'ra', 'par']
+    ## Set up dataset order. For diseases with multiple case groups,
+    ## combined disease state is written first, with separate cases after it
+    disease_order = ['crc', 'ob',
+                     'ibd', 'cd', 'uc',
+                     'cdi', 'noncdi',
+                     'hiv', 'asd', 't1d', 'nash',
+                     'art', 'ra', 'psa',
+                     'liv', 'cirr', 'mhe',
+                     'par']
+    disease_order = [i + '_' for i in disease_order]
     dataset_order = np.concatenate(
         [df.loc[
             df['dataset'].apply(lambda x:  x.startswith(d)), 'dataset'
@@ -48,6 +55,7 @@ def get_labeldict(dataset_order):
     d = {'asd_kang': 'Kang 2013, ASD',
          'asd_son': 'Son 2015, ASD',
          'cdi_schubert': 'Schubert 2014, CDI',
+         'noncdi_schubert': 'Schubert 2014, nonCDI',
          'cdi_singh': 'Singh 2015, EDD',
          'cdi_vincent': 'Vincent 2013, CDI',
          'cdi_youngster': 'Youngster 2014, CDI',
@@ -61,10 +69,19 @@ def get_labeldict(dataset_order):
          'hiv_lozupone': 'Lozupone 2013, HIV',
          'hiv_noguerajulian': 'Noguera-Julian 2016, HIV',
          'ibd_gevers': 'Gevers 2014, IBD',
+         'cd_gevers': 'Gevers 2014, CD',
          'ibd_morgan': 'Morgan 2012, IBD',
+         'cd_morgan': 'Morgan 2012, CD',
+         'uc_morgan': 'Morgan 2012, UC',
          'ibd_papa': 'Papa 2012, IBD',
+         'cd_papa': 'Papa 2012, CD',
+         'uc_papa': 'Papa 2012, UC',
          'ibd_willing': 'Willing 2009, IBD',
-         'mhe_zhang': 'Zhang 2013, LIV',
+         'cd_willing': 'Willing 2009, CD',
+         'uc_willing': 'Willing 2009, UC',
+         'liv_zhang': 'Zhang 2013, LIV',
+         'mhe_zhang': 'Zhang 2013, MHE',
+         'cirr_zhang': 'Zhang 2013, CIRR',
          'nash_wong': 'Wong 2013, NASH',
          'nash_zhu': 'Zhu 2013, NASH',
          'ob_goodrich': 'Goodrich 2014, OB',
@@ -73,13 +90,17 @@ def get_labeldict(dataset_order):
          'ob_zhu': 'Zhu 2013, OB',
          'ob_zupancic': 'Zupancic 2012, OB',
          'par_scheperjans': 'Scheperjans 2015, PAR',
-         'ra_scher': 'Scher 2013, ART',
+         'art_scher': 'Scher 2013, ART',
+         'ra_scher': 'Scher 2013, RA',
+         'psa_scher': 'Scher 2013, PSA',
          't1d_alkanani': 'Alkanani 2015, T1D',
          't1d_mejialeon': 'Mejia-Leon 2014, T1D'}
     return {i: d[i] for i in dataset_order}
 
 def get_labeldict_for_overlap(dataset_order):
-    """Dictionary for dataset labels for the percent overlap figure."""
+    """
+    Dictionary for dataset labels for the percent overlap figure.
+    """
     d = {'asd_kang': 'Kang (ASD)',
          'asd_son': 'Son (ASD)',
          'cdi_schubert': 'Schubert (CDI)',
@@ -99,7 +120,7 @@ def get_labeldict_for_overlap(dataset_order):
          'ibd_morgan': 'Morgan (IBD)',
          'ibd_papa': 'Papa (IBD)',
          'ibd_willing': 'Willing (IBD)',
-         'mhe_zhang': 'Zhang (LIV)',
+         'liv_zhang': 'Zhang (LIV)',
          'nash_wong': 'Wong (NASH)',
          'nash_zhu': 'Zhu (NASH)',
          'ob_goodrich': 'Goodrich (OB)',
@@ -108,7 +129,7 @@ def get_labeldict_for_overlap(dataset_order):
          'ob_zhu': 'Zhu (OB)',
          'ob_zupancic': 'Zupancic (OB)',
          'par_scheperjans': 'Scheperjans (PAR)',
-         'ra_scher': 'Scher (ART)',
+         'art_scher': 'Scher (ART)',
          't1d_alkanani': 'Alkanani (T1D)',
          't1d_mejialeon': 'Mejia-Leon (T1D)'}
     return {i: d[i] for i in dataset_order}

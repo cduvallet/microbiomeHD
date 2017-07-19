@@ -115,7 +115,7 @@ k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Clostridiales_Incert
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Defluviitaleaceae;g__Defluviitalea					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Eubacteriaceae;g__Acetobacterium					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Eubacteriaceae;g__Anaerofustis					
-k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Eubacteriaceae;g__Eubacterium					
+k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Eubacteriaceae;g__Eubacterium			health		
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Eubacteriaceae;g__Pseudoramibacter					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Gracilibacteraceae;g__Gracilibacter					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Incertae_Sedis_XI;g__Anaerosphaera					
@@ -146,7 +146,7 @@ k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__P
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Pseudobutyrivibrio					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Robinsoniella					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Roseburia			health		disease
-k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Ruminococcus2		health			
+k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Ruminococcus2		health	disease		
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Shuttleworthia					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Lachnospiraceae;g__Syntrophococcus					
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Peptococcaceae_1;g__Dehalobacter					
@@ -160,7 +160,7 @@ k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__A
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Anaerofilum			health		
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Anaerotruncus			health		
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Butyricicoccus			health		
-k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Clostridium_III					
+k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Clostridium_III			health		
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Clostridium_IV		health	health		health
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Ethanoligenens			health		
 k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Faecalibacterium			health		
@@ -239,7 +239,7 @@ k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Burkholderiales;f__Oxalob
 k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Burkholderiales;f__Oxalobacteraceae;g__Herminiimonas					
 k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Burkholderiales;f__Oxalobacteraceae;g__Oxalobacter			health		
 k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Burkholderiales;f__Sutterellaceae;g__Parasutterella			health		
-k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Burkholderiales;f__Sutterellaceae;g__Sutterella					
+k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Burkholderiales;f__Sutterellaceae;g__Sutterella			health		
 k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Methylophilales;f__Methylophilaceae;g__Methylobacillus					
 k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Neisseriales;f__Neisseriaceae;g__Eikenella					
 k__Bacteria;p__Proteobacteria;c__Betaproteobacteria;o__Neisseriales;f__Neisseriaceae;g__Kingella					

@@ -1,5 +1,6 @@
 dataset_label | data_source | metadata_source
 ----------|----------|----------
+Scher 2013, ART | SRA study SRP023463 | SRA
 Kang 2013, ASD | SRA study SRP017161 | SRA
 Son 2015, ASD | SRA study SRP057700 | SRA
 Schubert 2014, CDI | mothur.org/CDI_MicrobiomeModeling | mothur.org/CDI_MicrobiomeModeling
@@ -27,6 +28,5 @@ Turnbaugh 2009, OB | https://gordonlab.wustl.edu/NatureTwins_2008/TurnbaughNatur
 Zhu 2013, OB | MG-RAST, study mgp1195 (same data as nash_zhu) | MG-RAST
 Zupancic 2012, OB | SRA study SRP002465 | SRA
 Scheperjans 2015, PAR | ENA study PRJEB4927 | sample names
-Scher 2013, ART | SRA study SRP023463 | SRA
 Alkanani 2015, T1D | email authors | email authors
 Mejia-Leon 2014, T1D | email authors | email authors

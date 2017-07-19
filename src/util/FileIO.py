@@ -139,28 +139,81 @@ def read_dataset_files(datasetid, clean_folder):
 
     return df, meta
 
-def get_classes(meta):
+def get_classes(meta, dataset='', noncdi=False):
     """
     Returns classes_list for supervised comparison. List of accepted controls
     and diseases is hard-coded in this function.
 
-    Looks in meta['DiseaseState'] to return [[control label(s)], [disease label(s)]]
+    Looks in meta['DiseaseState'] to return
+    [[control label(s)], [disease label(s)]]
 
     Parameters
     ----------
-    meta          pandas df with 'DiseaseState' column
+    meta : pandas DataFrame
+        metadata with 'DiseaseState' column
+    dataset : str
+        dataset ID, used in ValueError message, if one of the classes has
+        no labels
+    noncdi : bool
+        whether to include nonCDI in the diseases list
 
     Returns
     -------
-    list, [['DiseaseState' label for control samples], ['DiseaseState' label for case samples]]
+    classes_list : list
+        [list of control lables, list of case labels]
     """
     controls = ['H', 'nonIBD']
     diseases = ['ASD', 'CD', 'CDI', 'CIRR', 'CRC', 'EDD', 'GVHD', 'HIV',
                 'MHE', 'NASH', 'OB', 'PAR', 'PSA', 'RA', 'T1D', 'T2D',
-                 'UC', 'nonCDI']
+                 'UC']
+    if noncdi:
+        diseases.append('nonCDI')
 
     labels = list(set(meta['DiseaseState']))
-    return [[i for i in labels if i in controls], [j for j in labels if j in diseases]]
+
+    classes_list = [[i for i in labels if i in controls],
+                    [j for j in labels if j in diseases]]
+
+    if len(classes_list[0]) == 0 or len(classes_list[1]) == 0:
+        raise ValueError('Something wrong with ' + dataset + ' DiseaseState.')
+
+    return classes_list
+
+# def get_separate_case_classes(meta, dataset=''):
+#     """
+#     Returns list of case labels for diseases which need expanded analyses
+#     that consider the heterogeneity of case patients.
+#
+#     This is mostly a stand-in for a place to hard-code in some diseases,
+#     which are different than the above get_classes() function (because, for
+#     example, we don't want to include nonCDI cases in that function but we
+#     do here).
+#
+#     Parameters
+#     ----------
+#     meta : pandas DataFrame
+#         metadata with 'DiseaseState' column
+#     dataset : str
+#         dataset ID, used in ValueError message, if one of the classes has
+#         no labels
+#
+#     Returns
+#     -------
+#     classes_list : list
+#         [list of control lables, list of case labels]
+#     """
+#     controls = ['H', 'nonIBD']
+#     diseases = ['nonCDI', 'UC', 'CD', 'CIRR', 'MHE', 'RA', 'PSA', 'EDD', 'CDI']
+#
+#     labels = list(set(meta['DiseaseState']))
+#
+#     classes_list = [[i for i in labels if i in controls],
+#                     [j for j in labels if j in diseases]]
+#
+#     if len(classes_list[0]) == 0 or len(classes_list[1]) == 0:
+#         raise ValueError('Something wrong with ' + dataset + ' DiseaseState.')
+#
+#     return classes_list
 
 def get_samples(meta, classes_list):
     """
@@ -192,7 +245,7 @@ def get_dataset_ids(clean_folder):
 
     return [d for d in datasets if d + '.otu_table.clean.feather' in files and d + '.metadata.clean.feather' in files]
 
-def read_dfdict_data(datadir):
+def read_dfdict_data(datadir, subset=None):
     """
     Read in all df's, metadata, dis_smpls, H_smpls, and classes_list for all
     datasets in datadir.
@@ -202,6 +255,10 @@ def read_dfdict_data(datadir):
     datadir : str
         path to directory with all of the dataset.otu_table.clean
         and dataset.metadata.clean files
+    subset : str
+        path to file with subset of datasets to read. Each dataset ID should
+        be on one line, and should have a corresonding fnotu and fnmeta,
+        as defined in read_dataset_files() function.
 
     Returns
     -------
@@ -212,8 +269,15 @@ def read_dfdict_data(datadir):
     print('Reading datasets...')
     # Initialize dict to store all dataframes
     dfdict = {}
-    # Get the univariate results for each dataset
-    datasetids = get_dataset_ids(datadir)
+
+    # If subset of datasets are given, read only those
+    if subset is not None:
+        with open(subset, 'r') as f:
+            datasetids = f.read().splitlines()
+    else:
+        datasetids = get_dataset_ids(datadir)
+
+    # Read each dataset and convert to relative abundance
     for dataset in datasetids:
         print(dataset),
         ## Read dataset

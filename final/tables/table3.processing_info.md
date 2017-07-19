@@ -1,5 +1,6 @@
 dataset_label | data_type | barcodes_removed | primers_trimmed | quality_method | quality_cutoff | length_trim
 ----------|----------|----------|----------|----------|----------|----------
+Scher 2013, ART | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Kang 2013, ASD | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Son 2015, ASD | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Schubert 2014, CDI | fastq | No | Yes | -fastq_truncqual | 25 | 150
@@ -27,6 +28,5 @@ Turnbaugh 2009, OB | fasta | n/a | n/a | n/a | n/a | 200
 Zhu 2013, OB | fasta | n/a | n/a | n/a | n/a | 200
 Zupancic 2012, OB | fastq | No | No | -fastq_truncqual | 25 | 200
 Scheperjans 2015, PAR | fastq | No | Yes | -fastq_truncqual | 25 | 200
-Scher 2013, ART | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Alkanani 2015, T1D | fastq | No | No | -fastq_maxee | 2 | 200
 Mejia-Leon 2014, T1D | fastq | Yes | Yes | -fastq_truncqual | 25 | 150

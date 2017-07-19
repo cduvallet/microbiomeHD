@@ -94,10 +94,10 @@ def plot_fig1(dysbiosis, dataset_order, samplesizes):
                       'asd': "#6992cf", #blue "#7566c9", #blueish purple
                       't1d': "#c98746", #brown
                       'nash': "#4aac8b", #teal-ish
-                      'mhe': "#cc436f", #dark pink
+                      'liv': "#cc436f", #dark pink
                       'hiv': "#B86958", #"#ca553b",#rusty red
                       'par': "#c07198", #dark pink}
-                      'ra': "#d59847" #orange
+                      'art': "#d59847" #orange
                       }
     # Make color palette dictionary that has all of the datasets
     diseases = set([i.split('_')[0] for i in dataset_order])

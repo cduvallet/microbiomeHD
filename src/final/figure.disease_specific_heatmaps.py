@@ -100,12 +100,12 @@ args = p.parse_args()
 # Read in pvalues. df has datasets in columns, genera in rows
 df = pd.read_csv(args.qvalues, sep='\t', index_col=0)
 # Replace edd_singh with cdi_singh (for text parsing reasons)
-df.columns = ['cdi_singh-H_vs_EDD' if i == 'edd_singh-H_vs_EDD' else i for i in df.columns]
+df = df.rename(columns={'edd_singh': 'cdi_singh'})
 # Name the index 'otu' for future melting etc
 df.index.name = 'otu'
 
 samplesizes = pd.read_csv(args.dataset_info, sep='\t')
-samplesizes = samplesizes.replace('edd_singh-H_vs_EDD', 'cdi_singh-H_vs_EDD')
+samplesizes = samplesizes.replace('edd_singh', 'cdi_singh')
 samplesizes = samplesizes.sort_values(by='total', ascending=False)
 
 ## Replace pvalues with +/- 1 if significant or not
@@ -114,16 +114,6 @@ dfsig = df.applymap(sigmap)
 datasets = df.columns
 
 keep_datasets = [i for i in datasets if i.startswith(args.disease)]
-
-if args.disease == "ibd":
-    # Manually do it for now bc I have a fever...
-    keep_datasets = ['ibd_gevers-nonIBD_vs_CD',
-                     'ibd_papa-nonIBD_vs_CD',
-                     'ibd_morgan-H_vs_CD',
-                     'ibd_willing-H_vs_CD',
-                     'ibd_papa-nonIBD_vs_UC',
-                     'ibd_morgan-H_vs_UC',
-                     'ibd_willing-H_vs_UC']
 
 disdf = dfsig[keep_datasets]
 # Keep only OTUs which were signficant in at least one study
@@ -135,9 +125,7 @@ disdf = disdf.applymap(lambda x: np.sign(x)*abs(np.log10(abs(x))))
 # Re-order rows
 disdf = disdf.loc[disdf.sum(axis=1).sort_values(ascending=False).index]
 # Re-order columns by sample size
-print('TODO: need to figure out how to re-order the columns now that '
-      'my datasets arent labeled the same as in datasets_info.txt...')
-#disdf = disdf[[i for i in samplesizes['dataset'] if i in keep_datasets]]
+disdf = disdf[[i for i in samplesizes['dataset'] if i in keep_datasets]]
 fig = plot_disease_heatmap(disdf, samplesizes, vmax=abs(np.log10(args.qthresh)),
                            with_labels=args.labels)
 fig.tight_layout()

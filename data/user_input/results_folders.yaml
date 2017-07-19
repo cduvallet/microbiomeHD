@@ -7,7 +7,7 @@ asd_kang:
     analysis_tools: mothur, qiime
     analyses: diversity, multivariate, univariate, logistic regression, BF ratio, enterotypes
     year: 2013
-    sample_size: 
+    sample_size:
         H: 20
         ASD: 20
     data_source: SRA study SRP017161
@@ -58,7 +58,7 @@ cdi_vincent:
     otu_calling: mothur, 97%, avg_neighbor
     name_assignment: rdp
     analysis_tools: mothur, pvclust, stata, R
-    analyses: pca_jaccard, beta_diversity, diversity, lasso, logistic_regression, multivariate, associated_with_metadata 
+    analyses: pca_jaccard, beta_diversity, diversity, lasso, logistic_regression, multivariate, associated_with_metadata
     sample_size:
         H: 25
         CDI: 25
@@ -166,7 +166,7 @@ crc_zeller:
     otu_calling: mothur, uclust, 98%, map_to_silva_otus
     name_assignment: map_to_silva_otus, silva
     analysis_tools: R, mocat
-    analyses: metagenomics, functional_analyses, diversity, BF_ratio, enterotypes, univariate, logistic_regression, compare_other_data, tissue_vs_stool 
+    analyses: metagenomics, functional_analyses, diversity, BF_ratio, enterotypes, univariate, logistic_regression, compare_other_data, tissue_vs_stool
     sample_size:
         H: 75
         CRC: 41
@@ -239,9 +239,9 @@ hiv_dinh:
 #   otu_calling: 97%, uclust
 #   name_assignment: manual_blast_against_silva
 #   analysis_tools: qiime, flash, graphpad
-#   analyses: diversity, pcoa, adonis, lefse, correlate_immune_markers, compare_other_dataset, 
+#   analyses: diversity, pcoa, adonis, lefse, correlate_immune_markers, compare_other_dataset,
 #   dna_extraction: fastprep_bio, glass_beads
-#   why_excluded: more samples in data than reported in paper; claire emailed on 1/25 
+#   why_excluded: more samples in data than reported in paper; claire emailed on 1/25
 hiv_lozupone:
     folder: hiv_lozupone_results
     region: V4
@@ -256,7 +256,7 @@ hiv_lozupone:
     name_assignment: rdp_on_gg_db
     analysis_tools: qiime, source_tracker
     analyses: pca, pca_unifrac, diversity, rf, correlate_other_clinical_markers, meta_analysis, compare_to_other_studies, anova, immunologic_assays
-    dna_extraction: powersoil 
+    dna_extraction: powersoil
     data_source: ENA study PRJEB4335
     metadata_source: Qiita study 1700
     paper: http://dx.doi.org/10.1016/j.chom.2013.08.006
@@ -287,7 +287,7 @@ ibd_gevers:
     region: V4
     sequencer: Miseq
     year: 2014
-    condition: 
+    condition:
         sample_location: [stool]
     otu_calling: qiime, closed_ref_gg, 97%?
     name_assignment: closed_ref_gg
@@ -306,7 +306,7 @@ ibd_morgan:
     region: V3-V5
     sequencer: "454"
     year: 2012
-    condition: 
+    condition:
         SampleType: [stool]
     sample_size:
         H: 18
@@ -345,7 +345,7 @@ ibd_willing:
     folder: ibd_engstrand_maxee_results
     region: V5-V6
     sequencer: "454"
-    condition: 
+    condition:
         SampleType: [stool]
     sample_size:
         UC: 16
@@ -356,14 +356,14 @@ ibd_willing:
     year: 2009
     otu_calling: 95%, RDPII
     name_assignment: blast_rdp
-    analysis_tools: stata, 
+    analysis_tools: stata,
     analyses: pls_da, core_healthy_otus, beta_diversity, diversity, tissue_vs_stool
     data_source: email authors
     metadata_source: email authors
     paper: http://dx.doi.org/10.1053/j.gastro.2010.08.049
     dna_extraction_text: "DNA was extracted from 250 mg of feces using the MoBio Power Soil DNA Kit (Solana Beach, CA) according to the manufacturer’s instructions."
     dna_extraction: bead_beating
-mhe_zhang:
+liv_zhang:
     folder: mhe_zhang_results
     region: V1-V2
     sequencer: "454"
@@ -391,7 +391,7 @@ nash_wong:
     otu_calling: uclust, usearch, 97%
     name_assignment: rdp
     analysis_tools: R, MetaboAnalyst, fasttree, fast_unifrac
-    analyses: pls_da, univariate, pca_unifrac, beta_diversity, diversity, 
+    analyses: pls_da, univariate, pca_unifrac, beta_diversity, diversity,
     sample_size:
         H: 22
         NASH: 16
@@ -425,14 +425,14 @@ nash_zhu:
 #    region: V1-V3
 #    sequencer: "454"
 #    year: 2014
-#    sample_size: 
+#    sample_size:
 #        H: 10
 #        OW: 10
 #        OB: 10
 #    otu_calling: uclust, pynast, 80%, 95%, 97%
 #    name_assignment: rdp_on_gg_db
 #    analysis_tools: qiime, fast_unifrac, R
-#    analyses: diversity, beta_diversity, linear_regressions, geography, metadata_correlations 
+#    analyses: diversity, beta_diversity, linear_regressions, geography, metadata_correlations
 ob_goodrich:
     folder: ob_goodrich_results
     region: V4
@@ -542,7 +542,7 @@ par_scheperjans:
     paper: http://dx.doi.org/10.1002/mds.26069
     dna_extraction_text: "Total DNA was extracted using the PSP Spin Stool DNA Plus Kit (STRATEC Molecular). -- Note: this kit has an optional bead beating step, assuming that the authors did it here..."
     dna_extraction: bead_beating
-ra_scher:
+art_scher:
     folder: ra_littman_results
     region: V1-V2
     sequencer: "454"

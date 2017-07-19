@@ -40,9 +40,12 @@ clean_otu_tables := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed '
 # define the metadata file names from the dataset IDs in the results_folders.yaml
 clean_metadata_files := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.metadata.clean.feather/g' | sed 's/^/data\/clean_tables\//g')
 
+dataset_info = data/analysis_results/datasets_info.txt
+split_dataset_info = data/analysis_results/datasets_info.split_cases.txt
+
 raw_data: $(raw_tar_files)
 clean_data: $(clean_otu_tables) $(clean_metadata_files)
-data: raw_data clean_data $(manual_meta_analysis)
+data: raw_data clean_data $(manual_meta_analysis) $(dataset_info)
 
 ## 1. Download the raw tar.gz files from Zenodo into data/raw_otu_tables,
 ## only if the file doesn't already exist. Also extract the files.
@@ -80,6 +83,14 @@ $(clean_metadata_files): $(clean_otu_tables)
 $(manual_meta_analysis):
 	echo -e "You can find the manual meta analysis files in data/lit_search"
 
+## 4. Dataset info - table with basic information about the datasets
+$(dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
+	python $< $(yaml_file) data/raw_otu_tables data/clean_tables $@
+
+# Same as above, but with case patients split into separate groups
+$(split_dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
+	python $< $(yaml_file) data/raw_otu_tables data/clean_tables $@ --split-cases
+
 ####################
 ##### ANALYSES #####
 ####################
@@ -87,7 +98,7 @@ $(manual_meta_analysis):
 ## Define the target analysis files
 # Note that the file names for these qvalues files are hard-coded in the
 # respective scripts, rather than being passed in as inputs.
-qvalues = data/analysis_results/q-val_all_results.mean.kruskal-wallis.case-control.txt
+qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.case-control.txt
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
 # Based on counting heuristic (significant in at least 2 diseases)
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
@@ -96,7 +107,6 @@ overall_qvalues_stouffer = data/analysis_results/meta.stouffer.q-0.05.across_all
 # Raw combined pvalues
 qvalues_stouffer = data/analysis_results/meta.stouffer_qvalues.txt
 
-dataset_info = data/analysis_results/datasets_info.txt
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
 
 alpha_divs = data/analysis_results/alpha_diversity.txt
@@ -121,7 +131,7 @@ stouffer: $(overall_qvalues_stouffer)
 
 ## 1. q-values files for all genera across all studies
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
-	python src/analysis/get_qvalues.py data/clean_tables data/analysis_results
+	python $< data/clean_tables $@
 
 ## 2. meta-analysis results (+/- 1's) for each disease
 $(meta_qvalues): src/analysis/meta_analyze.py $(qvalues)
@@ -266,17 +276,10 @@ table4 = final/tables/table4.data_metadata_sources.tex
 tables: $(table1) $(table2) $(table3) $(table4)
 
 # tables-1-2.dataset_info.py makes table1, table2, and dataset_info
-$(table1): src/final/table.datasets_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
-	python $< $(yaml_file) data/raw_otu_tables data/clean_tables \
-	$(dataset_info) $(table1) $(table2)
+$(table1): src/final/table.datasets_info.py $(dataset_info)
+	python $< $(dataset_info) $(table1) $(table2)
 
 $(table2): $(table1)
-	@if test -f $@; then :; else \
-		rm -f $(table1); \
-		$(MAKE) $(AM_MAKEFLAGS) $(table1); \
-	fi
-
-$(dataset_info): $(table1)
 	@if test -f $@; then :; else \
 		rm -f $(table1); \
 		$(MAKE) $(AM_MAKEFLAGS) $(table1); \

@@ -68,36 +68,46 @@ def sign_results(results, df, dis_smpls, H_smpls, dataset, col):
 
     return med_results, mean_results
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('clean_data_dir', help='directory with clean OTU and metadata tables')
-    parser.add_argument('out_dir', help='directory to save output q values file to')
-    args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument('clean_data_dir', help='directory with clean OTU and '
+    + ' metadata tables')
+parser.add_argument('out_file', help='path to write qvalues to')
+parser.add_argument('--subset', help='file with list of dataset IDs that '
+    + 'should be analyzed, if you want to analyze only a subset of the '
+    + 'datasets in clean_data_dir. Dataset IDs should match IDs in file '
+    + 'names, and be one per line.', default=None)
+parser.add_argument('--split-cases', help='flag to analyze each case type '
+    + 'separately.', action='store_true')
+args = parser.parse_args()
 
-    qthresh = 0.05
-    stats_method = 'kruskal-wallis'
+qthresh = 0.05
+stats_method = 'kruskal-wallis'
 
-    dfdict = fio.read_dfdict_data(args.clean_data_dir)
+dfdict = fio.read_dfdict_data(args.clean_data_dir, subset=args.subset)
 
-    print('Doing univariate tests...')
-    for dataset in dfdict:
-        df = dfdict[dataset]['df']
-        meta = dfdict[dataset]['meta']
+print('Doing univariate tests...')
+resultsdict = {}
 
-        # Collapse to genus level
-        df = util.collapse_taxonomic_contents_df(df, 'genus')
+for dataset in dfdict:
+    df = dfdict[dataset]['df']
+    meta = dfdict[dataset]['meta']
 
-        # Get samples in each class
-        classes_list = fio.get_classes(meta)
-        if len(classes_list[0]) == 0 or len(classes_list[1]) == 0:
-            raise ValueError('Something wrong with ' + dataset + ' metadata.')
+    # Collapse to genus level
+    df = util.collapse_taxonomic_contents_df(df, 'genus')
 
-        # Initialize results sub-dict
-        dfdict[dataset]['comparisons'] = {}
 
+    if args.split_cases:
+        # Get samples in each class. Note that the two fio.get_classes
+        # functions are basically the same, just with different diseases
+        # hard-coded in.
+        classes_list = fio.get_classes(meta, dataset, noncdi=True)
+
+        # Go through each case group one by one
         for dis_label in classes_list[1]:
-            comparison = classes_list[0][0] + '_vs_' + dis_label
+            # old dataset = ibd_alm, new dataset = uc_alm
+            newdataset = dis_label.lower() + '_' + dataset.split('_')[1]
 
+            # Get samples
             sub_list = [classes_list[0], [dis_label]]
             H_smpls, dis_smpls = fio.get_samples(meta, sub_list)
 
@@ -107,45 +117,54 @@ if __name__ == "__main__":
                 df, H_smpls, dis_smpls, method=stats_method,
                 multi_comp='fdr')
 
-            dfdict[dataset]['comparisons'][comparison] = \
-                {'df': df, 'dis_smpls': dis_smpls,
+            resultsdict[newdataset] = {
+                 'df': df, 'dis_smpls': dis_smpls,
                  'H_smpls': H_smpls, 'results': results}
 
-    ## Manipulate each dataset's results with values signed
-    ## according to median and mean effects in dis - H
-    med_allresults_lst = None
-    mean_allresults_lst = None
-    allpvals = None
-    for dataset in dfdict:
-        for comp in dfdict[dataset]['comparisons']:
-            ## Manipulate the results dataframe
-            # into a df with signed values according to direction of change
-            # Calculates using both mean and median.
-            results = dfdict[dataset]['comparisons'][comp]['results']
-            df = dfdict[dataset]['comparisons'][comp]['df']
-            dis_smpls = dfdict[dataset]['comparisons'][comp]['dis_smpls']
-            H_smpls = dfdict[dataset]['comparisons'][comp]['H_smpls']
+    else:
+        classes_list = fio.get_classes(meta, dataset)
+        # Just combine all cases together
+        H_smpls, dis_smpls = fio.get_samples(meta, classes_list)
 
-            med_results, mean_results = sign_results(results, df, dis_smpls, H_smpls, dataset, col='q')
+        # Do some stats. 'results' is a dataframe with two
+        # columns, 'p' and 'test-stat'
+        results = util.compare_otus_teststat(
+            df, H_smpls, dis_smpls, method=stats_method,
+            multi_comp='fdr')
 
-            # Update df names to have both the dataset and the comparison
-            med_results.name = dataset + '-' + comp
-            mean_results.name = dataset + '-' + comp
+        resultsdict[dataset] = {
+            'df': df, 'meta': meta,
+            'dis_smpls': dis_smpls, 'H_smpls': H_smpls,
+            'results': results}
 
-            try:
-                med_allresults_lst.append(med_results)
-                mean_allresults_lst.append(mean_results)
-            except AttributeError:
-                med_allresults_lst = [med_results]
-                mean_allresults_lst = [mean_results]
+## Manipulate each dataset's results with values signed
+## according to median and mean effects in dis - H
+med_allresults_lst = []
+mean_allresults_lst = []
 
-    print('Doing univariate tests... Finished')
+for dataset in resultsdict:
+    ## Manipulate the results dataframe
+    # into a df with signed values according to direction of change
+    # Calculates using both mean and median.
+    results = resultsdict[dataset]['results']
+    df = resultsdict[dataset]['df']
+    dis_smpls = resultsdict[dataset]['dis_smpls']
+    H_smpls = resultsdict[dataset]['H_smpls']
 
-    ## Concat list of signed results series into a dataframe with genera in rows, datasets in columns
-    med_allresults =  pd.concat(med_allresults_lst, axis=1)
-    mean_allresults =  pd.concat(mean_allresults_lst, axis=1)
+    med_results, mean_results = \
+        sign_results(results, df, dis_smpls, H_smpls, dataset, col='q')
 
-    medfile = os.path.join(args.out_dir, 'q-val_all_results.median.{}.case-control.txt'.format(stats_method))
-    meanfile = os.path.join(args.out_dir, 'q-val_all_results.mean.{}.case-control.txt'.format(stats_method))
-    med_allresults.to_csv(medfile, sep='\t')
-    mean_allresults.to_csv(meanfile, sep='\t')
+    med_allresults_lst.append(med_results)
+    mean_allresults_lst.append(mean_results)
+
+print('Doing univariate tests... Finished')
+
+## Concat list of signed results series into a dataframe with
+## genera in rows, datasets in columns
+med_allresults =  pd.concat(med_allresults_lst, axis=1)
+mean_allresults =  pd.concat(mean_allresults_lst, axis=1)
+
+# Note: I don't ever use the median-based results in the paper, but this
+# is where you could find them.
+#med_allresults.to_csv(medfile, sep='\t')
+mean_allresults.to_csv(args.out_file, sep='\t')
