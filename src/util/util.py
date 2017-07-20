@@ -217,22 +217,28 @@ def cv_and_roc(rf, X, Y, num_cv=5, random_state=None):
     mean_tpr = 0.0
     mean_fpr = np.linspace(0, 1, 100)
     conf_mat = np.asarray([[0,0],[0,0]])
-    y_probs = np.array([])
-    y_trues = np.array([])
+    y_probs = np.empty_like(Y, dtype=float)
+    y_trues = np.empty_like(Y)
+    cv_count = 0
+    cv_counts = np.empty_like(Y)
     for train_index, test_index in cv:
         X_train, X_test = X[train_index], X[test_index]
         Y_train, Y_test = Y[train_index], Y[test_index]
         probs = rf.fit(X_train, Y_train).predict_proba(X_test)[:,1]
 
         # Store probability and true Y for later
-        y_probs = np.append(y_probs, probs)
-        y_trues = np.append(y_trues, Y_test)
+        y_probs[test_index] = probs
+        y_trues[test_index] = Y_test # literally redundant, but keep it to maintain backward compatibility
         y_pred = rf.predict(X_test)
         # Compute ROC curve and area under the curve
         fpr, tpr, thresholds = roc_curve(Y_test, probs)
         mean_tpr += interp(mean_fpr, fpr, tpr)
         # Compute confusion matrix
         conf_mat += confusion_matrix(Y_test, y_pred, labels=[0,1])
+
+        # Track which fold each sample was tested in
+        cv_counts[test_index] = cv_count
+        cv_count += 1
 
     mean_tpr /= len(cv)
     roc_auc = auc(mean_fpr, mean_tpr)
@@ -241,6 +247,6 @@ def cv_and_roc(rf, X, Y, num_cv=5, random_state=None):
 
     return {i: j for i, j in
             zip(('roc_auc', 'conf_mat', 'mean_fpr', 'mean_tpr',
-                'fisher_p', 'y_prob', 'y_true'),
+                'fisher_p', 'y_prob', 'y_true', 'test_fold'),
                (roc_auc, conf_mat, mean_fpr, mean_tpr, fisher_p,
-               y_probs, y_trues))}
+               y_probs, y_trues, cv_counts))}

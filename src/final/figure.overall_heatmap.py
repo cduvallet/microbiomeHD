@@ -67,16 +67,16 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
     #hspace = 0.2    #the amount of height reserved for white space between subplots
 
     ## Set up 3 grid specs on my plot
-    fig = plt.figure(figsize=(12,10))
+    fig = plt.figure(figsize=(13,10))
     # Left bar has one heatmap (order level)
     gsL = gridspec.GridSpec(1, 1)
     gsL.update(left=0.12, right=0.14, bottom=0.15, top=0.95)
     # Middle bar has two heatmaps (one with one column, one with four columns)
     gsM = gridspec.GridSpec(1,5)
-    gsM.update(left=0.16, right=0.3, wspace=0.6, bottom=0.15, top=0.95)
+    gsM.update(left=0.16, right=0.27, wspace=0.6, bottom=0.15, top=0.95)
     # Right bar has a bunch of heatmaps (one for each disease)
     gsR = gridspec.GridSpec(1, mean_toplot.shape[1])
-    gsR.update(left=0.31, right=0.98, wspace=0.3, bottom=0.15, top=0.95)
+    gsR.update(left=0.28, right=0.86, wspace=0.3, bottom=0.15, top=0.95)
 
     ## Phylogeny, left axis
     # axL1 has order-level colors (only column in phylodf)
@@ -99,7 +99,7 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
     axM2.imshow(disease_df.values, interpolation='nearest', aspect='auto',
         cmap=sns.diverging_palette(220,20,center='dark',as_cmap=True))
     axM2.set_yticklabels([])
-    axM2.set_xticks(range(0, disease_df.shape[1]))
+    axM2.set_xticks(np.arange(0.4, disease_df.shape[1] + 0.4))
     axM2.set_xticklabels(disease_df.columns, rotation=45,
         fontsize='small', ha='right')
     axM2.set_ylim(axM2.get_ylim()[0], axM2.get_ylim()[1] - 0.5)
@@ -139,6 +139,13 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
         ax.spines['left'].set_color('gray')
         ax.spines['right'].set_color('gray')
         ax.spines['top'].set_color('gray')
+
+    # Add genus labels to right-most axis
+    ax.yaxis.tick_right()
+    ax.yaxis.set_label_position('right')
+    labels = [i.split(';')[-1][3:] for i in subdf.index]
+    ax.set_yticks(np.arange(0.5, len(labels) + 0.5))
+    ax.set_yticklabels(labels, fontsize=6, va='bottom')
 
     return fig
 
