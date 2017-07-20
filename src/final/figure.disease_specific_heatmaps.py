@@ -113,7 +113,10 @@ sigmap = lambda x: np.sign(x) if abs(x) < args.qthresh else 0
 dfsig = df.applymap(sigmap)
 datasets = df.columns
 
-keep_datasets = [i for i in datasets if i.startswith(args.disease)]
+disease = args.disease + '_'
+keep_datasets = [i for i in datasets if i.startswith(disease)]
+if disease == 'cdi_' and 'noncdi_schubert' in datasets:
+    keep_datasets.append('noncdi_schubert')
 
 disdf = dfsig[keep_datasets]
 # Keep only OTUs which were signficant in at least one study

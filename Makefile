@@ -88,8 +88,8 @@ $(dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(cle
 	python $< $(yaml_file) data/raw_otu_tables data/clean_tables $@
 
 # Same as above, but with case patients split into separate groups
-$(split_dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files)
-	python $< $(yaml_file) data/raw_otu_tables data/clean_tables $@ --split-cases
+$(split_dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files) $(split_datasets)
+	python $< $(yaml_file) data/raw_otu_tables data/clean_tables $@ --split-cases --subset $(split_datasets)
 
 ####################
 ##### ANALYSES #####
@@ -118,16 +118,23 @@ rf_param_search = data/analysis_results/rf_results.parameter_search.txt
 
 ubiquity = data/analysis_results/ubiquity_abundance_calculations.txt
 
+# Reviewer comment: split analysis for UC/CD case patients
+split_datasets = data/user_input/split_cases_datasets.txt
+split_qvalues = data/analysis_results/qvalus.mean.kruskal-wallis.split-cases.txt
+split_rf = data/analysis_results/rf_results.split_cases.txt
+split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
+
 analysis: qvals $(dysbiosis) alpha rf_results
 
 # Make this separately, because it takes forever
 rf_param_search: $(rf_param_search)
 
 # Some other nice subsets of the analyses, mostly for testing
-qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues)
+qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(split_qvalues)
 alpha: $(alpha_divs) $(alpha_pvals)
 rf_results: $(rf_results) $(rf_core)
 stouffer: $(overall_qvalues_stouffer)
+reviewer: $(split_qvalues) $(split_dysbiosis) $(split_rf) review_fig
 
 ## 1. q-values files for all genera across all studies
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
@@ -183,6 +190,18 @@ $(ubiquity): src/analysis/ubiquity_abundance.py $(clean_otu_tables) $(clean_meta
 ## 9. Random forest using only core bugs
 $(rf_core): src/analysis/classifiers.py $(clean_otu_tables) $(overall_qvalues)
 	python $< --core $(overall_qvalues) data/clean_tables $(rf_core)
+
+## 10. Reviewer comment: re-do major analyses for subgroups of case patients
+## separately
+$(split_qvalues): src/analysis/get_qvalues.py $(split_datasets) $(clean_otu_tables) $(clean_metadata_files)
+	python $< data/clean_tables $@ --subset $(split_datasets) --split-cases
+
+$(split_rf): src/analysis/classifiers.py $(split_datasets) $(clean_otu_tables) $(clean_metadata_files)
+	python $< data/clean_tables $@ --subset $(split_datasets) --split-cases
+
+$(split_dysbiosis): src/analysis/dysbiosis_metrics.py $(split_qvalues) $(split_dataset_info) $(overall_qvalues) $(split_rf)
+	python $< $(split_qvalues) $(split_dataset_info) \
+	$(overall_qvalues) $(split_rf) $@
 
 #######################
 ##### PHYLOT TREE #####
@@ -306,6 +325,7 @@ rf_param_figures: figure10 figure11
 
 ## Define figure file names
 figure1 = final/figures/figure1.samplesize_auc_extent_direction.png
+figure1_split = final/figures/figure1_split.png
 
 # Disease-specific heatmaps
 figure2 = final/figures/figure2.cdi_heatmap.png \
@@ -318,7 +338,12 @@ figure6 = final/figures/figure6.cdi_heatmap.with_labels.png \
 		  final/figures/figure6.ibd_heatmap.with_labels.png \
 		  final/figures/figure6.hiv_heatmap.with_labels.png \
 		  final/figures/figure6.crc_heatmap.with_labels.png
-
+figure2_split = final/figures/figure2_split.cdi_heatmap.png \
+                final/figures/figure2_split.cd_heatmap.png \
+                final/figures/figure2_split.uc_heatmap.png
+figure6_split = final/figures/figure6_split.cdi_heatmap.with_labels.png \
+                final/figures/figure6_split.cd_heatmap.with_labels.png \
+                final/figures/figure6_split.uc_heatmap.with_labels.png
 # Core response
 figure3a = final/figures/figure3a.core_disease_with_phylo.png
 figure3b = final/figures/figure3b.core_overlap.png
@@ -353,14 +378,22 @@ figure9: $(figure9)
 figure10: $(figure10)
 figure11: $(figure11)
 
+review_fig: $(figure1_split) $(figure2_split) $(figure6_split)
+
 # Figure 1: sample size, AUC, extent and direction of shifts
 $(figure1): src/final/figure.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
 	python $< $(dysbiosis) $(dataset_info) $(figure1)
+
+$(figure1_split): src/final/figure.samplesize_auc_extent_direction.py $(split_dysbiosis) $(split_dataset_info)
+	python $< $(split_dysbiosis) $(split_dataset_info) $@ --edd
 
 # Figure 2: disease heatmaps without labels
 # $* contains the disease string, $@ is the target file
 final/figures/figure2.%_heatmap.png: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info)
 	python $< $* $(qvalues) $(dataset_info) $@
+
+final/figures/figure2_split.%_heatmap.png: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info)
+	python $< $* $(split_qvalues) $(split_dataset_info) $@
 
 # Figure 3A: Core heatmaps: disease-wise, core, and phylogeny
 $(figure3a): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean)
@@ -385,6 +418,9 @@ $(figure5): src/final/figure.roc_curves.py $(rf_results)
 # Figure 6: Disease-specific heatmap with labels
 final/figures/figure6.%_heatmap.with_labels.png: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info)
 	python $< $* $(qvalues) $(dataset_info) $@ --labels
+
+final/figures/figure6_split.%_heatmap.with_labels.png: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info)
+	python $< $* $(split_qvalues) $(split_dataset_info) $@ --labels
 
 # Figure 7: Core heatmap with labels
 $(figure7): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean)

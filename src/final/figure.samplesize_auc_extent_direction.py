@@ -67,7 +67,7 @@ def stemplot(x, y, data, order, ax, palette, marker='o', size=7):
 
     return ax
 
-def plot_fig1(dysbiosis, dataset_order, samplesizes):
+def plot_fig1(dysbiosis, dataset_order, samplesizes, edd_color=False):
     """
     Make figure 1 with sample sizes, AUCs, number of significant genera,
     and direction of shift.
@@ -85,27 +85,40 @@ def plot_fig1(dysbiosis, dataset_order, samplesizes):
         order of datasets to plot on the x-axis.
     samplesizes : pandas dataframe
         df with at least 'dataset' and 'total' columns
+    edd_color : bool
+        whether to separate the edd study with a manually defined color
     """
     # Set up colors for each dataset
     disease_colors = {'cdi': "#61AA60", #"#43b944", #green
+                      'noncdi': "#4d8734", #darker green
+                      'edd': "#4b847a", # teal green
                       'ibd': "#996CCE", #"#9c69db", #purple #"#64ac48", blueish?
+                      'uc': "#bc78c2", #dark pinkish
+                      'cd': "#7a78c2", #"#9c69db", #purple #"#64ac48", blueish?
                       'ob':  "#F0C948", #"#f0c540", #golden  "#c25abc", #?
                       'crc': "#F56484", # "#f11c4f", #red/pink    #"#9a963f",
                       'asd': "#6992cf", #blue "#7566c9", #blueish purple
                       't1d': "#c98746", #brown
                       'nash': "#4aac8b", #teal-ish
                       'liv': "#cc436f", #dark pink
+                      'cirr': "#cc436f", #dark pink
+                      'mhe': "#cc436f", #dark pink
                       'hiv': "#B86958", #"#ca553b",#rusty red
                       'par': "#c07198", #dark pink}
-                      'art': "#d59847" #orange
+                      'art': "#d59847", #orange
+                      'ra': "#d59847", #orange
+                      'psa': "#d59847" #orange
                       }
     # Make color palette dictionary that has all of the datasets
-    diseases = set([i.split('_')[0] for i in dataset_order])
+    # Note: need trailing underscore so that cd studies are not considered cdi
+    diseases = set([i.split('_')[0] + '_' for i in dataset_order])
     colors = {}
     for d in diseases:
         dis_datasets = [i for i in dataset_order if i.startswith(d)]
         colors.update({i: j for i, j in zip(dis_datasets,
-            len(dis_datasets)*[sns.light_palette(disease_colors[d])[-1]])})
+            len(dis_datasets)*[sns.light_palette(disease_colors[d[:-1]])[-1]])})
+        if edd_color:
+            colors['cdi_singh'] = disease_colors['edd']
 
     ### Plot
     sns.set_style('white', {'ytick.direction': 'in', 'ytick.major.size': 2.0,
@@ -116,7 +129,7 @@ def plot_fig1(dysbiosis, dataset_order, samplesizes):
     # set the space between the subplots.
     # To set the space between the two gridspecs (top and bottom), need to
     # change h_pad in call to tight_layout() at the very bottom!
-    fig = plt.figure(figsize=(8,8))
+    fig = plt.figure(figsize=(0.27*len(dataset_order),8))
     gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
     # Bottom gridspec has sample size and AUCs
     gs_bottom = gridspec.GridSpecFromSubplotSpec(2, 1, subplot_spec=gs[1],
@@ -250,6 +263,8 @@ p = argparse.ArgumentParser()
 p.add_argument('dysbiosis', help='path to tidy table with dysbiosis metrics')
 p.add_argument('dataset_info', help='path to table with samplesize info')
 p.add_argument('out_file', help='file to save figure as')
+p.add_argument('--edd', help='flag to color edd_singh differently than cdi',
+    action='store_true')
 args = p.parse_args()
 
 dysbiosis = pd.read_csv(args.dysbiosis, sep='\t')
@@ -261,5 +276,5 @@ dataset_info = dataset_info.replace('edd_singh', 'cdi_singh')
 
 _, dataset_order = fmt.get_dataset_order(dataset_info)
 
-fig = plot_fig1(dysbiosis, dataset_order, dataset_info)
+fig = plot_fig1(dysbiosis, dataset_order, dataset_info, args.edd)
 fig.savefig(args.out_file)

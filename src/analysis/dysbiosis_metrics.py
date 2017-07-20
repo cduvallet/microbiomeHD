@@ -240,7 +240,7 @@ def get_dysbiosis_metrics(diseases, datasets, df, pthresh, samplesizes,
     for dis in diseases:
         print(dis)
         ## Prepare subset df
-        keep_datasets = [i for i in datasets if i.startswith(dis)]
+        keep_datasets = [i for i in datasets if i.startswith(dis + '_')]
         disdf = df[keep_datasets]
         # Keep only genera which are significant in at least one study
         disdf = disdf.loc[disdf.applymap(sigmap).apply(abs).sum(axis=1) != 0]
