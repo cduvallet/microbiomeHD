@@ -56,41 +56,45 @@ def reorder_index_from_tree(fntree, original_index):
     return reordered_index
 
 p = argparse.ArgumentParser()
-p.add_argument('qvalues_in', help='qvalues file with OTUs in rows, datasets '
-               + 'in columns, and signed qvalues in values.')
-p.add_argument('meta_sig', help='file with disease-wise significant bugs')
-p.add_argument('overall_sig', help='file with overall significant bugs')
+p.add_argument('--disease-df', help='file with disease-wise significant bugs')
+p.add_argument('--overall', help='file with overall significant bugs')
+p.add_argument('--qvalues', help='file with clean qvalues file. If this is '
+    + 'given, the input file(s) will keep only the rows also in this file.')
+p.add_argument('--do-qvals', help='whether to reorder the given qvalues file.',
+    action='store_true')
 p.add_argument('fntree', help='path to tree file (newick)')
-p.add_argument('--qthresh', help='significant q threshold (default: '
-               + ' %(default)s)', default=0.05)
-
 args = p.parse_args()
 
-qvalues = pd.read_csv(args.qvalues_in, sep='\t', index_col=0)
-disease_df = pd.read_csv(args.meta_sig, sep='\t', index_col=0)
-overall_df = pd.read_csv(args.overall_sig, sep='\t', index_col=0)
-qthresh = float(args.qthresh)
+if args.qvalues is not None:
+    sig_otus = pd.read_csv(args.qvalues, sep='\t', index_col=0).index
+elif args.disease_df is not None:
+    sig_otus = pd.read_csv(args.disease_df, sep='\t', index_col=0).index
+elif args.overall is not None:
+    sig_otus = pd.read_csv(args.overall, sep='\t', index_col=0).index
 
-# Keep only OTUs which were significant in at least one study
-sig_otus = list(\
-           qvalues.loc[\
-               (qvalues.applymap(abs) < qthresh).sum(axis=1) > 0]\
-           .index)
-
-# Re-order these significant OTUs according to the tree
+# Re-order rows according to the tree
 sig_otus = reorder_index_from_tree(args.fntree, sig_otus)
 
-## Update the other meta-analysis dataframes to have the same rows
-overall_df = overall_df.loc[sig_otus]
-qvalues = qvalues.loc[sig_otus]
-disease_df = disease_df.loc[sig_otus]
+if args.do_qvals and args.qvalues:
+    qvalues = pd.read_csv(args.qvalues, sep='\t', index_col=0)
+    qvalues = qvalues.loc[sig_otus]
+    newf = args.qvalues.rsplit('.txt', 1)[0] + '_ordered.txt'
+    qvalues.to_csv(newf, sep='\t')
 
-# And re-order the disease_df manually
-disease_df = disease_df[['crc', 'ob', 'ibd', 'cdi', 'hiv']]
+if args.disease_df:
+    disease_df = pd.read_csv(args.disease_df, sep='\t', index_col=0)
+    # Re-order rows
+    disease_df = disease_df.loc[sig_otus]
+    # And re-order columns manually
+    disease_df = disease_df[['ob', 'crc', 'ibd', 'cdi', 'hiv']]
+    # Write to file
+    newf = args.disease_df.rsplit('.txt', 1)[0] + '.sig_ordered.txt'
+    disease_df.to_csv(newf, sep='\t')
 
-newf = args.qvalues_in.rsplit('.txt', 1)[0] + '.sig_ordered.txt'
-qvalues.to_csv(newf, sep='\t')
-newf = args.meta_sig.rsplit('.txt', 1)[0] + '.sig_ordered.txt'
-disease_df.to_csv(newf, sep='\t')
-newf = args.overall_sig.rsplit('.txt', 1)[0] + '.sig_ordered.txt'
-overall_df.to_csv(newf, sep='\t')
+if args.overall:
+    overall_df = pd.read_csv(args.overall, sep='\t', index_col=0)
+    # Reorder rows
+    overall_df = overall_df.loc[sig_otus]
+    # Write to file
+    newf = args.overall.rsplit('.txt', 1)[0] + '.sig_ordered.txt'
+    overall_df.to_csv(newf, sep='\t')

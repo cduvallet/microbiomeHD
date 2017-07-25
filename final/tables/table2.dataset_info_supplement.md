@@ -10,7 +10,6 @@ Youngster 2014, CDI | 2014 | 4 | H | 19 | CDI | 15081.0 | Miseq | V4 | \cite{cdi
 Baxter 2016, CRC | 2016 | 172 | H | 120 | CRC | 9913.5 | Miseq | V4 | \cite{crc-baxter}
 Chen 2012, CRC | 2012 | 22 | H | 21 | CRC | 1152.0 | 454 | V1-V3 | \cite{crc-xiang}
 Wang 2012, CRC | 2012 | 54 | H | 44 | CRC | 161.0 | 454 | V3 | \cite{crc-zhao}
-Zackular 2014, CRC | 2014 | 30 | H | 30 | CRC | 56242.0 | MiSeq | V4 | \cite{crc-zackular}
 Zeller 2014, CRC | 2014 | 75 | H | 41 | CRC | 120989.0 | MiSeq | V4 | \cite{crc-zeller}
 Dinh 2015, HIV | 2015 | 15 | H | 21 | HIV | 3248.5 | 454 | V3-V5 | \cite{hiv-dinh}
 Lozupone 2013, HIV | 2013 | 13 | H | 23 | HIV | 3262.0 | MiSeq | V4 | \cite{lozupone2013alterations}

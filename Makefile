@@ -103,9 +103,11 @@ qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.case-control.txt
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
 # Based on counting heuristic (significant in at least 2 diseases)
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
-# +/- 1 based on combining qvalues
+# Based on counting heuristic excluding diarrhea datasets
+nocdi_overall = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases_except_cdi.txt
+# +/- 1 labels, based on combining qvalues with Stouffer's method
 overall_qvalues_stouffer = data/analysis_results/meta.stouffer.q-0.05.across_all_diseases.txt
-# Raw combined pvalues
+# Raw combined pvalues from Stouffer's method
 qvalues_stouffer = data/analysis_results/meta.stouffer_qvalues.txt
 
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
@@ -127,7 +129,7 @@ split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
 analysis: qvals $(dysbiosis) alpha rf_results
-reviewer_analysis: $(rf_core)
+reviewer_analysis: $(rf_core) $(overall_qvalues_stouffer) $(stouffer) $(nocdi_overall) $(split_qvalues) $(split_dysbiosis) $(split_rf)
 
 # Make this separately, because it takes forever
 rf_param_search: $(rf_param_search)
@@ -136,8 +138,6 @@ rf_param_search: $(rf_param_search)
 qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(split_qvalues)
 alpha: $(alpha_divs) $(alpha_pvals)
 rf_results: $(rf_results) $(rf_h_v_dis)
-stouffer: $(overall_qvalues_stouffer)
-reviewer: $(split_qvalues) $(split_dysbiosis) $(split_rf) review_fig
 
 ## 1. q-values files for all genera across all studies
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
@@ -154,7 +154,11 @@ $(overall_qvalues): $(meta_qvalues)
 		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
 	fi
 
-# Need to make the Stouffer combined pvalues separately
+# Overall meta-analysis with heuristic, excluding diarrhea datasets
+$(nocdi_overall): src/analysis/meta_analyze.py $(qvalues)
+	python $< --no-cdi $(qvalues) data/analysis_results 0.05 2
+
+# Overall meta-analysis using Stouffer's method for combining pvalues
 $(overall_qvalues_stouffer): src/analysis/meta_analyze_stouffer.py $(qvalues) $(dataset_info)
 	python $< $(qvalues) $(dataset_info) $(qvalues_stouffer) $@
 
@@ -256,28 +260,35 @@ $(final_tree_file): src/analysis/update_tree.py $(phyloT_file) $(genera_file)
 # Re-order rows in qvalues and meta-analysis files phylogenetically
 # Keep only genera which were significant in at least one study
 # Also make the logfold change qvalues file
+qvalues_clean_tmp = $(subst txt,sig.txt,$(qvalues))
 qvalues_clean = $(subst txt,sig_ordered.txt,$(qvalues))
 meta_clean = $(subst txt,sig_ordered.txt,$(meta_qvalues))
 overall_clean = $(subst txt,sig_ordered.txt,$(overall_qvalues))
 logfold = $(subst txt,log2change.sig_ordered.txt,$(qvalues))
 
+# Different core definitions
+nocdi_clean = $(subst txt,sig_ordered.txt,$(nocdi_overall))
+stouffer_clean = $(subst txt,sig_ordered.txt,$(stouffer))
+
 for_plotting: $(qvalues_clean) $(meta_clean) $(overall_clean) $(logfold)
 
-$(qvalues_clean): src/analysis/reorder_qvalues.py $(qvalues) $(meta_qvalues) $(overall_qvalues) $(final_tree_file)
-	python src/analysis/reorder_qvalues.py $(qvalues) --qthresh 0.05  \
-	$(meta_qvalues) $(overall_qvalues) $(final_tree_file)
+$(qvalues_clean_tmp): src/analysis/clean_qvalues.py $(qvalues)
+	python $< $(qvalues)
 
-$(meta_clean): $(qvalues_clean)
-	@if test -f $@; then :; else \
-		rm -f $(meta_clean); \
-		$(MAKE) $(AM_MAKEFLAGS) $(qvalues_clean); \
-	fi
+$(qvalues_clean): src/analysis/reorder_qvalues.py $(qvalues_clean_tmp) $(final_tree_file)
+	python $< --do-qvals --qvalues $(qvalues_clean_tmp) $(final_tree_file)
 
-$(overall_clean): $(qvalues_clean)
-	@if test -f $@; then :; else \
-		rm -f $(overall_clean); \
-		$(MAKE) $(AM_MAKEFLAGS) $(qvalues_clean); \
-	fi
+$(meta_clean): src/analysis/reorder_qvalues.py $(meta_qvalues) $(final_tree_file) $(qvalues_clean)
+	python $< --disease-df $(meta_qvalues) --qvalues $(qvalues_clean) $(final_tree_file)
+
+$(overall_clean): src/analysis/reorder_qvalues.py $(overall_qvalues) $(final_tree_file) $(qvalues_clean)
+	python $< --overall $(overall_qvalues) --qvalues $(qvalues_clean) $(final_tree_file)
+
+$(nocdi_clean): src/analysis/reorder_qvalues.py $(nocdi_overall) $(final_tree_file)
+	python $< --overall $(nocdi_overall) $(final_tree_file)
+
+$(stouffer_clean): src/analysis/reorder_qvalues.py $(nocdi_overall) $(final_tree_file)
+	python $< --overall $(stouffer_overall) $(final_tree_file)
 
 ## Calculate logfold change for all of the "clean" genera
 # (i.e sig in at least one study, phylogenetically ordered)
@@ -327,51 +338,56 @@ figures: main_figures supp_figures
 
 # Some subset of figures
 main_figures: figure1 figure2 figure3
-supp_figures: figure4 figure5 figure6 figure7 figure8 figure9
+supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure1_split figure2_split figure6_split healthy_dis_rf
 rf_param_figures: figure10 figure11
 
 ## Define figure file names
-figure1 = final/figures/figure1.samplesize_auc_extent_direction.png
-figure1_split = final/figures/figure1_split.png
+figure1 = final/figures/figure1.samplesize_auc_extent_direction.pdf
+figure1_split = final/figures/figure1_split.samplesize_auc_extent_direction.pdf
 
 # Disease-specific heatmaps
-figure2 = final/figures/figure2.cdi_heatmap.png \
-          final/figures/figure2.ob_heatmap.png \
-		  final/figures/figure2.ibd_heatmap.png \
-		  final/figures/figure2.hiv_heatmap.png \
-		  final/figures/figure2.crc_heatmap.png
-figure6 = final/figures/figure6.cdi_heatmap.with_labels.png \
-          final/figures/figure6.ob_heatmap.with_labels.png \
-		  final/figures/figure6.ibd_heatmap.with_labels.png \
-		  final/figures/figure6.hiv_heatmap.with_labels.png \
-		  final/figures/figure6.crc_heatmap.with_labels.png
-figure2_split = final/figures/figure2_split.cdi_heatmap.png \
-                final/figures/figure2_split.cd_heatmap.png \
-                final/figures/figure2_split.uc_heatmap.png
-figure6_split = final/figures/figure6_split.cdi_heatmap.with_labels.png \
-                final/figures/figure6_split.cd_heatmap.with_labels.png \
-                final/figures/figure6_split.uc_heatmap.with_labels.png
+figure2 = final/figures/figure2.cdi_heatmap.pdf \
+          final/figures/figure2.ob_heatmap.pdf \
+		  final/figures/figure2.ibd_heatmap.pdf \
+		  final/figures/figure2.hiv_heatmap.pdf \
+		  final/figures/figure2.crc_heatmap.pdf
+figure6 = final/figures/figure6.cdi_heatmap.with_labels.pdf \
+          final/figures/figure6.ob_heatmap.with_labels.pdf \
+		  final/figures/figure6.ibd_heatmap.with_labels.pdf \
+		  final/figures/figure6.hiv_heatmap.with_labels.pdf \
+		  final/figures/figure6.crc_heatmap.with_labels.pdf
+figure2_split = final/figures/figure2_split.cdi_heatmap.pdf \
+                final/figures/figure2_split.cd_heatmap.pdf \
+                final/figures/figure2_split.uc_heatmap.pdf
+figure6_split = final/figures/figure6_split.cdi_heatmap.with_labels.pdf \
+                final/figures/figure6_split.cd_heatmap.with_labels.pdf \
+                final/figures/figure6_split.uc_heatmap.with_labels.pdf
 # Core response
-figure3a = final/figures/figure3a.core_disease_with_phylo.png
-figure3b = final/figures/figure3b.core_overlap.png
-figure3c = final/figures/figure3c.abundance.png \
-           final/figures/figure3c.ubiquity.png
-figure7 = final/figures/figure7.core_disease_with_phylo.with_labels.png
+figure3a = final/figures/figure3a.core_disease_with_phylo.pdf
+figure3b = final/figures/figure3b.core_overlap.pdf
+figure3c = final/figures/figure3c.abundance.pdf \
+           final/figures/figure3c.ubiquity.pdf
+figure7 = final/figures/figure7.core_disease_with_phylo.with_labels.pdf
 
 # Alpha diversity
-figure4 = final/figures/figure4.alpha_diversity.png
+figure4 = final/figures/figure4.alpha_diversity.shannon.pdf
 
 # RF supplementary figures
-figure5 = final/figures/figure5.roc_curves.png
+figure5 = final/figures/figure5.roc_curves.pdf
 
 # Figure 8 and 9 are the big ol' heatmaps. Not done yet.
-figure8 = final/figures/figure8.overall_heatmap_log10qvalues.png
-figure9 = final/figures/figure9.overall_heatmap_log2effect.png
+figure8 = final/figures/figure8.overall_heatmap_log10qvalues.pdf
+figure9 = final/figures/figure9.overall_heatmap_log2effect.pdf
 
 # Note: figures 11 and 12 should NOT be in make 'all',
 # they should be with rf_params
-figure10 = final/figures/figure10.rf_params_gini.png
-figure11 = final/figures/figure11.rf_params_entropy.png
+figure10 = final/figures/figure10.rf_params_gini.pdf
+figure11 = final/figures/figure11.rf_params_entropy.pdf
+
+# Need to figure out where these fit in...
+rf_dataset_out = final/figures/figure.rf_healthy_disease.dataset_out.pdf
+rf_disease_out = final/figures/figure.rf_healthy_disease.disease_out.pdf
+healthy_dis_rf: $(rf_dataset_out) $(rf_disease_out)
 
 figure1: $(figure1)
 figure2: $(figure2)
@@ -384,70 +400,84 @@ figure8: $(figure8)
 figure9: $(figure9)
 figure10: $(figure10)
 figure11: $(figure11)
+figure1_split: $(figure1_split)
+figure2_split: $(figure2_split)
+figure6_split: $(figure6_split)
 
-review_fig: $(figure1_split) $(figure2_split) $(figure6_split)
+## Figure dependencies
+fmt = src/util/Formatting.py
 
 # Figure 1: sample size, AUC, extent and direction of shifts
-$(figure1): src/final/figure.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info)
+$(figure1): src/final/figure.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info) $(fmt)
 	python $< $(dysbiosis) $(dataset_info) $(figure1)
 
-$(figure1_split): src/final/figure.samplesize_auc_extent_direction.py $(split_dysbiosis) $(split_dataset_info)
+$(figure1_split): src/final/figure.samplesize_auc_extent_direction.py $(split_dysbiosis) $(split_dataset_info) $(fmt)
 	python $< $(split_dysbiosis) $(split_dataset_info) $@ --edd
 
 # Figure 2: disease heatmaps without labels
 # $* contains the disease string, $@ is the target file
-final/figures/figure2.%_heatmap.png: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info)
+final/figures/figure2.%_heatmap.pdf: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info) $(fmt)
 	python $< $* $(qvalues) $(dataset_info) $@
 
-final/figures/figure2_split.%_heatmap.png: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info)
+final/figures/figure2_split.%_heatmap.pdf: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info) $(fmt)
 	python $< $* $(split_qvalues) $(split_dataset_info) $@
 
 # Figure 3A: Core heatmaps: disease-wise, core, and phylogeny
-$(figure3a): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean)
+$(figure3a): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean) $(fmt)
 	python $< $(meta_clean) $(overall_clean) $@
 
 # Figure 3B: Percent overlap
-$(figure3b): src/final/figure.percent_overlap.py $(dysbiosis) $(dataset_info)
+$(figure3b): src/final/figure.percent_overlap.py $(dysbiosis) $(dataset_info) $(fmt)
 	python $< $(dysbiosis) $(dataset_info) $@
 
 # Figure 3C: Ubiquity and abundance
-final/figures/figure3c.%.png: src/final/figure.ubiquity_abundance_boxplots.py $(ubiquity)
+final/figures/figure3c.%.pdf: src/final/figure.ubiquity_abundance_boxplots.py $(ubiquity)
 	python $< $(ubiquity) $* $@
 
 # Figure 4: alpha diversities
-$(figure4): src/final/figure.alpha_diversity.py $(alpha_divs)
-	python $< $(alpha_divs) $@
+$(figure4): src/final/figure.alpha_diversity.py $(alpha_divs) $(fmt)
+	python $< $(alpha_divs) $(subst .shannon.pdf,,$@)
 
 # Figure 5: ROC curves
-$(figure5): src/final/figure.roc_curves.py $(rf_results)
+$(figure5): src/final/figure.roc_curves.py $(rf_results) $(fmt)
 	python $< $(rf_results) $@
 
 # Figure 6: Disease-specific heatmap with labels
-final/figures/figure6.%_heatmap.with_labels.png: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info)
+final/figures/figure6.%_heatmap.with_labels.pdf: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info) $(fmt)
 	python $< $* $(qvalues) $(dataset_info) $@ --labels
 
-final/figures/figure6_split.%_heatmap.with_labels.png: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info)
+final/figures/figure6_split.%_heatmap.with_labels.pdf: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info) $(fmt)
 	python $< $* $(split_qvalues) $(split_dataset_info) $@ --labels
 
 # Figure 7: Core heatmap with labels
-$(figure7): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean)
+$(figure7): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean) $(fmt)
 	python $< $(meta_clean) $(overall_clean) $@ --labels
 
 # Figure 8: Overall heatmap with q values
-$(figure8): src/final/figure.overall_heatmap.py $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info)
+$(figure8): src/final/figure.overall_heatmap.py $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
 	python $< $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $@ --plot-log10
 
 # Figure 9: Overall hetamap with effect
-$(figure9): src/final/figure.overall_heatmap.py $(logfold) $(meta_clean) $(overall_clean) $(dataset_info)
+$(figure9): src/final/figure.overall_heatmap.py $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
 	python $< $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $@
 
 # Figure 10: RF parameter search, gini criteria
-$(figure10): src/final/figure.rf_params.py $(rf_param_search)
+$(figure10): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
 	python $< $(rf_param_search) gini $@
 
 # Figure 11: RF parameter search, entropy criteria
-$(figure11): src/final/figure.rf_params.py $(rf_param_search)
+$(figure11): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
 	python $< $(rf_param_search) entropy $@
+
+# Figure something: healthy vs disease classifier
+$(rf_dataset_out): src/final/figure.healthy_vs_disease_classifier.py $(rf_results) $(rf_h_v_dis)
+	python $< $(rf_results) $(rf_h_v_dis) $(rf_dataset_out) $(rf_disease_out)
+
+$(rf_disease_out): $(rf_dataset_out)
+	@if test -f $@; then :; else \
+		rm -f $<; \
+		$(MAKE) $(AM_MAKEFLAGS) $<; \
+	fi
 
 ###############################
 ##### SUPPLEMENTARY FILES #####

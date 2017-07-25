@@ -242,7 +242,7 @@ overall_meta = pd.read_csv(args.overall, sep='\t', index_col=0)
 dataset_info = pd.read_csv(args.dataset_info, sep='\t')
 
 if not (main_values.index == disease_meta.index).all() and \
-       (main_values.index == overall.index).all():
+       (main_values.index == overall_meta.index).all():
     raise ValueError("Rows in the three heatmaps are not the same!")
 
 # capitalize disease abbreviations

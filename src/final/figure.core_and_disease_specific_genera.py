@@ -99,9 +99,9 @@ if args.labels:
     labels = [i.split(';')[-1][3:] for i in labeldf.index]
 
     axL1.set_yticks(range(0, len(labeldf)))
-    axL1.set_yticklabels(labels,fontsize='xx-small', rotation=180, va='bottom')
+    axL1.set_yticklabels(labels,fontsize='xx-small', rotation=180, va='center')
 
 else:
     axL1.set_yticklabels([])
 
-plt.savefig(args.out)
+plt.savefig(args.out, dpi=1100)

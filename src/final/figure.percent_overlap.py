@@ -28,13 +28,14 @@ args = p.parse_args()
 # Prepare data for plotting
 dysbiosis = pd.read_csv(args.dysbiosis, sep='\t')
 samplesizes = pd.read_csv(args.dataset_info, sep='\t')
+samplesizes = samplesizes.replace('edd_singh', 'cdi_singh')
 _, dataset_order = fmt.get_dataset_order(samplesizes)
+dataset_order = [i if i != 'cdi_singh' else 'edd_singh' for i in dataset_order]
 
 toplot = dysbiosis.query('metric == "perc_overlap"')
 toplot['value'] = toplot['value'].astype(float)
 toplot = toplot.dropna()
 neworder = [i for i in dataset_order if i in toplot['label'].tolist()]
-
 labeldict = fmt.get_labeldict_for_overlap(neworder)
 
 # Plot

@@ -38,7 +38,7 @@ def plot_disease_heatmap(disdf, samplesizes, vmax=None, with_labels=False):
     if 'dataset' in samplesizes.columns:
         samplesizes.index = samplesizes['dataset']
 
-    fig = plt.figure(figsize=(10,0.2*disdf.shape[0]))
+    fig = plt.figure(figsize=(10,0.15*disdf.shape[0]))
     sns.set_style('white')
     ax_heatmap = plt.gca()
 
@@ -73,10 +73,6 @@ def plot_disease_heatmap(disdf, samplesizes, vmax=None, with_labels=False):
         ax_heatmap.set_yticklabels([])
         ax_heatmap.set_xticks(range(0, disdf.shape[1]))
         ax_heatmap.set_xticklabels('')
-
-    # Temporary: hard-code in the dataset labels here
-    ax_heatmap.set_xticks(range(disdf.shape[1]))
-    ax_heatmap.set_xticklabels(disdf.columns.tolist(), rotation=45)
 
     return fig
 

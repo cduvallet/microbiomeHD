@@ -9,7 +9,6 @@ Youngster 2014, CDI | fastq | No | No | -fastq_truncqual | 25 | 200
 Baxter 2016, CRC | fastq | No | No | -fastq_truncqual | 25 | 250
 Chen 2012, CRC | fastq | Yes | Yes | -fastq_truncqual | 25 | 200
 Wang 2012, CRC | fastq | Yes | Yes | -fastq_truncqual | 25 | 150
-Zackular 2014, CRC | fastq | No | No | -fastq_truncqual | 25 | 200
 Zeller 2014, CRC | fastq | No | No | -fastq_truncqual | 25 | 200
 Singh 2015, EDD | fasta | n/a | n/a | n/a | n/a | 200
 Dinh 2015, HIV | fastq | No | No | -fastq_truncqual | 25 | 200

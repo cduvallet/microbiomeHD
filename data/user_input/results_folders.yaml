@@ -140,24 +140,24 @@ crc_wang:
     paper: http://dx.doi.org/10.1038/ismej.2011.109}
     dna_extraction_text: "Bacterial   cells   in   swabs   were   dislodged   by   vigorous agitation in 1 ml PBS. The cells were pelleted by centrifugation at 17,000 g   for   10 min.   The   pellets   were   resuspended   in   80 ml"
     dna_extraction: bead_beating
-crc_zackular:
-    folder: crc_zackular_results
-    region: V4
-    sequencer: MiSeq
-    year: 2014
-    sample_size:
-        H: 30
-        adenoma: 30
-        CRC: 30
-    otu_calling: 97%
-    name_assignment: rdp
-    analysis_tools: lefse, stata
-    analyses: lefse, logit_regression_model, bayesian_adenoma_vs_healthy, logit_plus_metadata
-    data_source: mothur.org/MicrobiomeBiomarkerCRC
-    metadata_source: mothur.org/MicrobiomeBiomarkerCRC
-    paper: http://dx.doi.org/10.1158/1940-6207.CAPR-14-0129
-    dna_extraction_text: "Microbial genomic DNA was extracted using the Power-Soil-htp 96 Well Soil DNA Isolation Kit (Mo Bio Laboratories) using an EPMotion 5075 pipetting system."
-    dna_extraction: bead_beating
+# crc_zackular:
+#     folder: crc_zackular_results
+#     region: V4
+#     sequencer: MiSeq
+#     year: 2014
+#     sample_size:
+#         H: 30
+#         adenoma: 30
+#         CRC: 30
+#     otu_calling: 97%
+#     name_assignment: rdp
+#     analysis_tools: lefse, stata
+#     analyses: lefse, logit_regression_model, bayesian_adenoma_vs_healthy, logit_plus_metadata
+#     data_source: mothur.org/MicrobiomeBiomarkerCRC
+#     metadata_source: mothur.org/MicrobiomeBiomarkerCRC
+#     paper: http://dx.doi.org/10.1158/1940-6207.CAPR-14-0129
+#     dna_extraction_text: "Microbial genomic DNA was extracted using the Power-Soil-htp 96 Well Soil DNA Isolation Kit (Mo Bio Laboratories) using an EPMotion 5075 pipetting system."
+#     dna_extraction: bead_beating
 crc_zeller:
     folder: crc_zeller_results
     region: V4

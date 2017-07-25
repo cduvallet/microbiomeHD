@@ -9,7 +9,6 @@ Youngster 2014, CDI | SRA study SRP040146 | email authors
 Baxter 2016, CRC | SRA study SRP062005 | SRA
 Chen 2012, CRC | SRA study SRP009633 | SRA sample description
 Wang 2012, CRC | SRA study SRP005150 | SRA study description
-Zackular 2014, CRC | mothur.org/MicrobiomeBiomarkerCRC | mothur.org/MicrobiomeBiomarkerCRC
 Zeller 2014, CRC | ENA study PRJEB6070 | Table S1 and S2
 Singh 2015, EDD | http://dx.doi.org/10.6084/m9.figshare.1447256 | Additional File 4
 Dinh 2015, HIV | SRA study SRP039076 | SRA

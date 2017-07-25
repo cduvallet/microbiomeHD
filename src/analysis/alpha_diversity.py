@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 import argparse
 
+import skbio.diversity.alpha as alph
+
 from scipy.stats import ranksums, ttest_ind
 from scipy.stats.mstats import kruskalwallis
 from statsmodels.sandbox.stats.multicomp import multipletests
@@ -66,7 +68,8 @@ def get_all_pvals(df, groupcol, valuecol, method='kruskalwallis'):
                 pvals[g1 + '_vs_' + g2] = p
     return pvals
 
-def get_layered_pvals(df, groupcol, valuecol, subset_by, pval_method='kruskalwallis'):
+def get_layered_pvals(df, groupcol, valuecol, subset_by,
+                      pval_method='kruskalwallis'):
     """
     Get pvalues for all pairwise combinations in groupcol.
     Performs calculating separately for each group in subset_by columns.
@@ -96,35 +99,68 @@ def get_layered_pvals(df, groupcol, valuecol, subset_by, pval_method='kruskalwal
                                       method=pval_method)
     return pvals
 
-def ShannonIndex(numList):
-    ## Calculate Shannon Entropy
-    SU = sum(numList)
-    SDI = 0.0
-    for num in numList:
-    	freq = float(num)/SU
-    	if freq>0:
-	    	SDI = SDI - freq * np.log(freq)
-    return SDI
-
-def alpha_diversity(df):
+def alpha_diversity(df, metric='shannon'):
     """
     Calculate shannon diversity of all samples in df.
 
     Parameters
     ----------
-    df               dataframe with samples in rows, OTUs in columns
+    df : pandas DataFarme
+        dataframe with samples in rows, OTUs in columns
+    metric : str
+        'shannon', 'chao1', 'simpson'
 
     Returns
     -------
-    alpha            pandas dataframe with samples in rows, one column ['SDI']
+    alpha : pandas Series
+        pandas series with samples in rows
     """
 
-    return df.apply(hf.ShannonIndex, axis=1)
+    alphafun = alph.shannon
+    if metric == 'chao1':
+        alphafun = alph.chao1
+    elif metric == 'simpson':
+        alphafun = alph.simpson
+    elif metric != 'shannon':
+        print('Unknown alpha diversity metric. Doing Shannon Index.')
+
+    return df.apply(alphafun, axis=1)
+
+def make_alpha_df(df, meta, study, metric):
+    """
+    Make the alpha diversity tidy dataframe.
+
+    Parameters
+    ----------
+    df: pandas DataFrame
+        samples in rows, OTUs in columns
+    meta : pandas DataFrame
+        samples in rows, 'DiseaseState' column
+    study : str
+        study label
+    metric : str
+        alpha diversity metric
+
+    Returns
+    -------
+    alpha : pandas DataFrame
+        tidy dataframe with ['sample', 'alpha', 'alpha_metric', 'study',
+        'DiseaseState'] columns
+    """
+    alpha = alpha_diversity(df, metric).reset_index()
+    alpha.columns = ['sample', 'alpha']
+    alpha['alpha_metric'] = metric
+    alpha['study'] = dataset
+    # Label diseases based on index, which is now in first column
+    alpha['DiseaseState'] = alpha['sample']\
+        .apply(lambda x: meta.loc[x, 'DiseaseState'])
+    return alpha
 
 
 p = argparse.ArgumentParser()
 p.add_argument('datadir', help='directory with clean OTU tables and metadata.')
-p.add_argument('alphas_out', help='out file with all alpha diversities for all samples')
+p.add_argument('alphas_out', help='out file with all alpha diversities for '
+    + 'all samples')
 p.add_argument('pvals_out', help='out file with all alpha diversity p-values')
 
 args = p.parse_args()
@@ -139,29 +175,27 @@ for dataset in datasetids:
     print(dataset),
     ## Read dataset
     df, meta = read_dataset_files(dataset, datadir)
-    df = raw2abun(df)
 
-    ## Calculate alpha diversity of all samples
-    alpha = df.apply(ShannonIndex, axis=1).reset_index()
-    alpha.columns = ['sample', 'SDI']
-    alpha['study'] = dataset
-    # Label diseases based on index, which is now in first column
-    alpha['DiseaseState'] = alpha['sample'].apply(lambda x: meta.loc[x, 'DiseaseState'])
-    alphas.append(alpha)
+    for metric in ['shannon', 'chao1', 'simpson']:
+        alpha = make_alpha_df(df, meta, dataset, metric)
+        alphas.append(alpha)
 
 alphasdf = pd.concat(alphas, ignore_index=True)
-#alphasdf['SDI'] = alphasdf["SDI"].astype(float)
-#alphasdf['study_type'] = [i.split('_')[0] for i in alphasdf['study']]
 
 alphasdf.to_csv(args.alphas_out, sep='\t', index=False)
 
 # Because I'm using the entire OTU table, some of these samples don't have disease metadata.
 # I don't want to compare "NaN" labeled samples with anything because they mean nothing.
-alphasdf = alphasdf.query('DiseaseState != " "')
-alphasdf = alphasdf.dropna(subset=['DiseaseState'])
-pvals = get_layered_pvals(alphasdf, 'DiseaseState', 'SDI', 'study')
-pvalsdf = pd.DataFrame.from_dict(pvals).stack().reset_index()
-pvalsdf.columns = ['comparison', 'study', 'p']
-pvalsdf['q'] = multipletests(pvalsdf['p'])[1]
+alphasdf = alphasdf.query('DiseaseState != " "').dropna(subset=['DiseaseState'])
 
+pvals = []
+for g, subdf in alphasdf.groupby('alpha_metric'):
+    pval = get_layered_pvals(subdf, 'DiseaseState', 'alpha', 'study')
+    pval = pd.DataFrame.from_dict(pval).stack().reset_index()
+    pval.columns = ['comparison', 'study', 'p']
+    pval['q'] = multipletests(pval['p'])[1]
+    pval['alpha_metric'] = g
+    pvals.append(pval)
+
+pvalsdf = pd.concat(pvals)
 pvalsdf.to_csv(args.pvals_out, sep='\t', index=False)

@@ -88,27 +88,7 @@ def plot_fig1(dysbiosis, dataset_order, samplesizes, edd_color=False):
     edd_color : bool
         whether to separate the edd study with a manually defined color
     """
-    # Set up colors for each dataset
-    disease_colors = {'cdi': "#61AA60", #"#43b944", #green
-                      'noncdi': "#4d8734", #darker green
-                      'edd': "#4b847a", # teal green
-                      'ibd': "#996CCE", #"#9c69db", #purple #"#64ac48", blueish?
-                      'uc': "#bc78c2", #dark pinkish
-                      'cd': "#7a78c2", #"#9c69db", #purple #"#64ac48", blueish?
-                      'ob':  "#F0C948", #"#f0c540", #golden  "#c25abc", #?
-                      'crc': "#F56484", # "#f11c4f", #red/pink    #"#9a963f",
-                      'asd': "#6992cf", #blue "#7566c9", #blueish purple
-                      't1d': "#c98746", #brown
-                      'nash': "#4aac8b", #teal-ish
-                      'liv': "#cc436f", #dark pink
-                      'cirr': "#cc436f", #dark pink
-                      'mhe': "#cc436f", #dark pink
-                      'hiv': "#B86958", #"#ca553b",#rusty red
-                      'par': "#c07198", #dark pink}
-                      'art': "#d59847", #orange
-                      'ra': "#d59847", #orange
-                      'psa': "#d59847" #orange
-                      }
+    disease_colors = fmt.get_disease_colors()
     # Make color palette dictionary that has all of the datasets
     # Note: need trailing underscore so that cd studies are not considered cdi
     diseases = set([i.split('_')[0] + '_' for i in dataset_order])

@@ -6,6 +6,7 @@
 *#
 *.DS_Store
 *.png
+*.pdf
 final/tables/*.tex
 final/tables/*.txt
 *.feather
