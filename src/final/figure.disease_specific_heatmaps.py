@@ -59,6 +59,15 @@ def plot_disease_heatmap(disdf, samplesizes, vmax=None, with_labels=False):
         for dataset in disdf:
             label = dataset.split('_')[1]
             label = upper(label[0]) + label[1:]
+            # Definitely a better way to do this but oh well...
+            if dataset == 'cdi_schubert2':
+                label = 'Schubert\n(nonCDI)'
+            elif dataset == 'cdi_schubert':
+                label = 'Schubert\n(CDI)'
+            elif dataset in ['edd_singh', 'cdi_singh']:
+                label = 'Singh\n(EDD)'
+            elif dataset in ['cdi_vincent', 'cdi_youngster']:
+                label += '\n(CDI)'
             label += '\n' + str(samplesizes.loc[dataset, 'N_ctrl']) \
                   + '\n' + str(samplesizes.loc[dataset, 'N_dis'])
             labels.append(label)
@@ -96,12 +105,15 @@ args = p.parse_args()
 # Read in pvalues. df has datasets in columns, genera in rows
 df = pd.read_csv(args.qvalues, sep='\t', index_col=0)
 # Replace edd_singh with cdi_singh (for text parsing reasons)
-df = df.rename(columns={'edd_singh': 'cdi_singh'})
+df = df.rename(columns={'edd_singh': 'cdi_singh',
+                        'noncdi_schubert': 'cdi_schubert2'})
 # Name the index 'otu' for future melting etc
 df.index.name = 'otu'
 
 samplesizes = pd.read_csv(args.dataset_info, sep='\t')
-samplesizes = samplesizes.replace('edd_singh', 'cdi_singh')
+samplesizes = samplesizes\
+    .replace('edd_singh', 'cdi_singh')\
+    .replace('noncdi_schubert', 'cdi_schubert2')
 samplesizes = samplesizes.sort_values(by='total', ascending=False)
 
 ## Replace pvalues with +/- 1 if significant or not
@@ -111,8 +123,6 @@ datasets = df.columns
 
 disease = args.disease + '_'
 keep_datasets = [i for i in datasets if i.startswith(disease)]
-if disease == 'cdi_' and 'noncdi_schubert' in datasets:
-    keep_datasets.append('noncdi_schubert')
 
 disdf = dfsig[keep_datasets]
 # Keep only OTUs which were signficant in at least one study

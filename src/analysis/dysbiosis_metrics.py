@@ -541,15 +541,19 @@ dfauc = pd.read_csv(args.rf_results, sep='\t')
 qthresh = args.qthresh
 
 # Need to convert edd_singh to cdi_singh for pattern-matching purposes...
-dfpvals.columns = [i if i != 'edd_singh' else 'cdi_singh'
-                   for i in dfpvals.columns]
-samplesizes.index = [i if i != 'edd_singh' else 'cdi_singh'
-                     for i in samplesizes.index]
-dfauc = dfauc.replace('edd_singh', 'cdi_singh')
+dfpvals = dfpvals.rename(columns={'edd_singh': 'cdi_singh',
+    'noncdi_schubert': 'cdi_schubert2'})
+samplesizes = samplesizes.rename(index={'edd_singh': 'cdi_singh',
+    'noncdi_schubert': 'cdi_schubert2'})
+dfauc = dfauc\
+    .replace('edd_singh', 'cdi_singh')\
+    .replace('noncdi_schubert', 'cdi_schubert2')
 
 dysbiosis = get_dysbiosis_df(dfpvals, qthresh, samplesizes, overall, dfauc)
 
 # Okay switch back to edd_singh
-dysbiosis = dysbiosis.replace('cdi_singh', 'edd_singh')
+dysbiosis = dysbiosis\
+    .replace('cdi_singh', 'edd_singh')\
+    .replace('cdi_schubert2', 'noncdi_schubert')
 
 dysbiosis.to_csv(args.dysbiosis_out, sep='\t', index=False)

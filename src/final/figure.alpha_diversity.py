@@ -90,10 +90,14 @@ alphasdf = pd.read_csv(args.alpha, sep='\t')
 # Remove un-annotated samples
 alphasdf = alphasdf.replace(' ', np.nan).replace('IBDundef', np.nan).dropna()
 
+# Get rid of noncdi_schubert study and replace cdi_schubert's ignore-nonCDI
+alphasdf = alphasdf.query('study != "noncdi_schubert"')
+alphasdf = alphasdf.replace('ignore-nonCDI', 'nonCDI')
+
 # Sort datasets alphabetically, with edd_singh grouped with the CDI studies
-col_order = sorted([i if i != 'edd_singh' else 'cdi_singh'
-                    for i in alphasdf['study'].unique()])
-col_order = [i if i != 'cdi_singh' else 'edd_singh' for i in col_order]
+alphasdf['study'] = alphasdf['study'].replace('edd_singh', 'cdi_singh')
+col_order = sorted(alphasdf['study'].unique())
+#col_order = [i if i != 'cdi_singh' else 'edd_singh' for i in col_order]
 
 # ob_zhu is duplicate of nash_zhu, remove it.
 col_order.remove('nash_zhu')

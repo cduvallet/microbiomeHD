@@ -1,31 +1,32 @@
-dataset_label | N_ctrl | controls | N_dis | cases | citation
+dataset_label | controls | N_ctrl | cases | N_dis | citation
 ----------|----------|----------|----------|----------|----------
-Baxter 2016, CRC | 172 | H | 120 | CRC | \cite{crc-baxter}
-Zeller 2014, CRC | 75 | H | 41 | CRC | \cite{crc-zeller}
-Wang 2012, CRC | 54 | H | 44 | CRC | \cite{crc-zhao}
-Chen 2012, CRC | 22 | H | 21 | CRC | \cite{crc-xiang}
-Goodrich 2014, OB | 428 | H | 185 | OB | \cite{ob-goodrich}
-Turnbaugh 2009, OB | 61 | H | 195 | OB | \cite{ob-gordon}
-Zupancic 2012, OB | 96 | H | 101 | OB | \cite{ob-zupancic}
-Ross 2015, OB | 26 | H | 37 | OB | \cite{ob-ross}
-Zhu 2013, OB | 16 | H | 25 | OB | \cite{nash-baker}
-Gevers 2014, IBD | 16 | nonIBD | 146 | CD | \cite{ibd-gevers}
-Morgan 2012, IBD | 18 | H | 108 | UC, CD | \cite{ibd-hut}
-Papa 2012, IBD | 24 | nonIBD | 66 | UC, CD | \cite{ibd-papa}
-Willing 2009, IBD | 35 | H | 45 | UC, CD | \cite{ibd-engstrand}
-Singh 2015, EDD | 82 | H | 201 | EDD | \cite{edd-singh}
-Schubert 2014, CDI | 154 | H | 93 | CDI | \cite{cdi-schubert}
-Vincent 2013, CDI | 25 | H | 25 | CDI | \cite{cdi-vincent}
-Youngster 2014, CDI | 4 | H | 19 | CDI | \cite{cdi-youngster}
-Noguera-Julian 2016, HIV | 34 | H | 205 | HIV | \cite{noguera2016gut}
-Lozupone 2013, HIV | 13 | H | 23 | HIV | \cite{lozupone2013alterations}
-Dinh 2015, HIV | 15 | H | 21 | HIV | \cite{hiv-dinh}
-Son 2015, ASD | 44 | H | 59 | ASD | \cite{asd-son}
-Kang 2013, ASD | 20 | H | 19 | ASD | \cite{asd-kb}
-Alkanani 2015, T1D | 55 | H | 57 | T1D | \cite{t1d-alkanani}
-Mejia-Leon 2014, T1D | 8 | H | 21 | T1D | \cite{t1d-mejia}
-Wong 2013, NASH | 22 | H | 16 | NASH | \cite{nash-chan}
-Zhu 2013, NASH | 16 | H | 22 | NASH | \cite{nash-baker}
-Scher 2013, ART | 28 | H | 86 | PSA, RA | \cite{art-scher}
-Zhang 2013, LIV | 25 | H | 46 | CIRR, MHE | \cite{liv-zhang}
-Scheperjans 2015, PAR | 74 | H | 74 | PAR | \cite{par-schep}
+Singh 2015, EDD | H | 82 | EDD | 201 | \cite{edd-singh}
+Schubert 2014, CDI | H | 154 | CDI | 93 | \cite{cdi-schubert}
+Schubert 2014, nonCDI | H | 154 | nonCDI | 89 | \cite{cdi-schubert}
+Vincent 2013, CDI | H | 25 | CDI | 25 | \cite{cdi-vincent}
+Youngster 2014, CDI | H | 4 | CDI | 19 | \cite{cdi-youngster}
+Goodrich 2014, OB | H | 428 | OB | 185 | \cite{ob-goodrich}
+Turnbaugh 2009, OB | H | 61 | OB | 195 | \cite{ob-gordon}
+Zupancic 2012, OB | H | 96 | OB | 101 | \cite{ob-zupancic}
+Ross 2015, OB | H | 26 | OB | 37 | \cite{ob-ross}
+Zhu 2013, OB | H | 16 | OB | 25 | \cite{nash-baker}
+Baxter 2016, CRC | H | 172 | CRC | 120 | \cite{crc-baxter}
+Zeller 2014, CRC | H | 75 | CRC | 41 | \cite{crc-zeller}
+Wang 2012, CRC | H | 54 | CRC | 44 | \cite{crc-zhao}
+Chen 2012, CRC | H | 22 | CRC | 21 | \cite{crc-xiang}
+Gevers 2014, IBD | nonIBD | 16 | CD | 146 | \cite{ibd-gevers}
+Morgan 2012, IBD | H | 18 | UC, CD | 108 | \cite{ibd-hut}
+Papa 2012, IBD | nonIBD | 24 | UC, CD | 66 | \cite{ibd-papa}
+Willing 2009, IBD | H | 35 | UC, CD | 45 | \cite{ibd-engstrand}
+Noguera-Julian 2016, HIV | H | 34 | HIV | 205 | \cite{noguera2016gut}
+Dinh 2015, HIV | H | 15 | HIV | 21 | \cite{hiv-dinh}
+Lozupone 2013, HIV | H | 13 | HIV | 23 | \cite{lozupone2013alterations}
+Son 2015, ASD | H | 44 | ASD | 59 | \cite{asd-son}
+Kang 2013, ASD | H | 20 | ASD | 19 | \cite{asd-kb}
+Alkanani 2015, T1D | H | 55 | T1D | 57 | \cite{t1d-alkanani}
+Mejia-Leon 2014, T1D | H | 8 | T1D | 21 | \cite{t1d-mejia}
+Wong 2013, NASH | H | 22 | NASH | 16 | \cite{nash-chan}
+Zhu 2013, NASH | H | 16 | NASH | 22 | \cite{nash-baker}
+Scher 2013, ART | H | 28 | PSA, RA | 86 | \cite{ra-littman}
+Zhang 2013, LIV | H | 25 | CIRR, MHE | 46 | \cite{mhe-zhang}
+Scheperjans 2015, PAR | H | 74 | PAR | 74 | \cite{par-schep}

@@ -91,7 +91,7 @@ for dataset in dfdict.keys():
 
     if args.split_cases:
         # Get samples
-        classes_list = fio.get_classes(meta, dataset, noncdi=True)
+        classes_list = fio.get_classes(meta, dataset)
         # Iterate through case groups
         for dis_label in classes_list[1]:
             # e.g. old dataset = ibd_alm, new dataset = uc_alm

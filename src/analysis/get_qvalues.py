@@ -100,7 +100,7 @@ for dataset in dfdict:
         # Get samples in each class. Note that the two fio.get_classes
         # functions are basically the same, just with different diseases
         # hard-coded in.
-        classes_list = fio.get_classes(meta, dataset, noncdi=True)
+        classes_list = fio.get_classes(meta, dataset)
 
         # Go through each case group one by one
         for dis_label in classes_list[1]:

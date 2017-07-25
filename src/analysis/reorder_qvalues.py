@@ -6,54 +6,13 @@ one dataset.
 """
 
 import argparse
-import dendropy as dp
 import pandas as pd
 
-def reorder_index_from_tree(fntree, original_index):
-    """
-    Read a genus-level tree (tips are labeled with genus name) and reorder
-    a given index according to the tree
-
-    Parameters
-    ----------
-    fntree : str
-        File name with newick tree. It is expected that every
-        genus in the original_index is in this tree. If there is
-        a genus that isn't, this code prints out the genera
-        which are missing from the tree. You'll probably need to
-        either update the tree with update_phyloT_wrapper.sh, or
-        manually code in the missing genera in update_phyloT.py.
-
-    original_index : list, pandas index
-         List or pandas index from original df which needs to
-         be re-ordered. The original_index can have OTUs with all
-         taxonomic levels, or just family and genus level.
-
-    Return
-    ------
-    reordered_index
-    """
-
-    # From the original index, extract just the genus name
-    # and put into a dict - {genus: original_index_label}
-    genus2full = {i.split(';')[-1][3:]: i for i in original_index}
-
-    tree = dp.Tree.get(path=fntree, schema='newick')
-    genera = [i.label for i in tree.taxon_namespace]
-    # keep only genera from the tree that are in the original index.
-    genera = [i for i in genera if i in genus2full]
-
-
-    # make sure that all genera in the original_index are also in the tree
-    missinggenera = [i for i in genus2full if i not in genera]
-    if len(missinggenera) > 0:
-        print('The following genera are missing from your tree!:')
-        print('\n'.join(missinggenera))
-
-    # Re order the original index according to the tree order
-    reordered_index = [genus2full[i] for i in genera]
-
-    return reordered_index
+# Add src/util/ to the path
+import os, sys
+src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
+sys.path.insert(0, src_dir)
+from Formatting import reorder_index_from_tree
 
 p = argparse.ArgumentParser()
 p.add_argument('--disease-df', help='file with disease-wise significant bugs')
@@ -86,7 +45,7 @@ if args.disease_df:
     # Re-order rows
     disease_df = disease_df.loc[sig_otus]
     # And re-order columns manually
-    disease_df = disease_df[['ob', 'crc', 'ibd', 'cdi', 'hiv']]
+    disease_df = disease_df[['cdi', 'ob', 'crc', 'ibd', 'hiv']]
     # Write to file
     newf = args.disease_df.rsplit('.txt', 1)[0] + '.sig_ordered.txt'
     disease_df.to_csv(newf, sep='\t')

@@ -21,6 +21,7 @@ Willing 2009, IBD | fastq | No | Yes | -fastq_maxee | 2 | 200
 Zhang 2013, LIV | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Wong 2013, NASH | fastq | No | No | -fastq_truncqual | 25 | 200
 Zhu 2013, NASH | fasta | n/a | n/a | n/a | n/a | 200
+Schubert 2014, nonCDI | fastq | No | Yes | -fastq_truncqual | 25 | 150
 Goodrich 2014, OB | fastq | No | No | -fastq_truncqual | 25 | 200
 Ross 2015, OB | fastq | No | No | -fastq_truncqual | 25 | 150
 Turnbaugh 2009, OB | fasta | n/a | n/a | n/a | n/a | 200

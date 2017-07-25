@@ -39,6 +39,8 @@ for dataset in dfdict:
     df = collapse_taxonomic_contents_df(df, 'genus')
     if dataset == 'edd_singh':
         df.index = ['cdi_singh-' + i for i in df.index]
+    elif dataset == 'noncdi_schubert':
+        df.index = ['cdi_schubert2-' + i for i in df.index]
     else:
         df.index = [dataset + '-' + i for i in df.index]
     dfdict[dataset]['df'] = df
@@ -47,10 +49,11 @@ for dataset in dfdict:
     meta = dfdict[dataset]['meta']
     if dataset == 'edd_singh':
         meta.index = ['cdi_singh-' + i for i in meta.index]
+    elif dataset == 'noncdi_schubert':
+        meta.index = ['cdi_schubert2-' + i for i in meta.index]
     else:
         meta.index = [dataset + '-' + i for i in meta.index]
     dfdict[dataset]['meta'] = meta
-
 
 ## Concatenate OTU tables and corresponding metadata
 # Only keep datasets with *healthy* controls

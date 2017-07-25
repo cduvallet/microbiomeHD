@@ -50,6 +50,24 @@ cdi_schubert:
     paper: http://dx.doi.org/10.1128/mBio.01021-14
     dna_extraction_text: "PowerSoil-htp 96-well soil DNA isoltion kit (MO Bio Laboratories, Carlsbad, CA) on an EpMotion 5075 liquid-handling workstation"
     dna_extraction: bead_beating
+noncdi_schubert:
+    folder: cdi_schubert_results
+    region: V3-V5
+    sequencer: "454"
+    year: 2014
+    otu_calling: 97%, mothur
+    name_assignment: rdp
+    analysis_tools: lefse, R, stata
+    analyses: logit, logit_plus_metadata, diversity, community_types, LDA, lefse
+    sample_size:
+        CDI: 94
+        nonCDI: 89
+        H: 155
+    data_source: mothur.org/CDI_MicrobiomeModeling
+    metadata_source: mothur.org/CDI_MicrobiomeModeling
+    paper: http://dx.doi.org/10.1128/mBio.01021-14
+    dna_extraction_text: "PowerSoil-htp 96-well soil DNA isoltion kit (MO Bio Laboratories, Carlsbad, CA) on an EpMotion 5075 liquid-handling workstation"
+    dna_extraction: bead_beating
 cdi_vincent:
     folder: cdi_vincent_v3v5_results
     region: V3-V5

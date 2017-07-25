@@ -21,6 +21,7 @@ Willing 2009, IBD | email authors | email authors
 Zhang 2013, LIV | SRA study SRP015698 | SRA
 Wong 2013, NASH | SRA study SRP011160 | SRA
 Zhu 2013, NASH | MG-RAST, study mgp1195 | MG-RAST
+Schubert 2014, nonCDI | mothur.org/CDI_MicrobiomeModeling | mothur.org/CDI_MicrobiomeModeling
 Goodrich 2014, OB | ENA studies PRJEB6702 and PRJEB6705 | ENA
 Ross 2015, OB | SRA study SRP053023 | SRA
 Turnbaugh 2009, OB | https://gordonlab.wustl.edu/NatureTwins_2008/TurnbaughNature_11_30_08.html | Table S1

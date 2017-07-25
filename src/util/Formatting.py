@@ -4,9 +4,9 @@ Useful functions in formatting tables and figures.
 """
 import numpy as np
 import pandas as pd
+import dendropy as dp
 
 import matplotlib
-matplotlib.use('TKAgg')
 import seaborn as sns
 
 def get_dataset_order(df):
@@ -35,9 +35,8 @@ def get_dataset_order(df):
 
     ## Set up dataset order. For diseases with multiple case groups,
     ## combined disease state is written first, with separate cases after it
-    disease_order = ['ob', 'crc',
+    disease_order = ['cdi', 'ob', 'crc',
                      'ibd', 'cd', 'uc',
-                     'cdi', 'noncdi',
                      'hiv', 'asd', 't1d', 'nash',
                      'art', 'ra', 'psa',
                      'liv', 'cirr', 'mhe',
@@ -56,6 +55,7 @@ def get_labeldict(dataset_order):
          'asd_son': 'Son 2015, ASD',
          'cdi_schubert': 'Schubert 2014, CDI',
          'noncdi_schubert': 'Schubert 2014, nonCDI',
+         'cdi_schubert2': 'Schubert 2014, nonCDI',
          'cdi_singh': 'Singh 2015, EDD',
          'cdi_vincent': 'Vincent 2013, CDI',
          'cdi_youngster': 'Youngster 2014, CDI',
@@ -104,6 +104,8 @@ def get_labeldict_for_overlap(dataset_order):
     d = {'asd_kang': 'Kang (ASD)',
          'asd_son': 'Son (ASD)',
          'cdi_schubert': 'Schubert (CDI)',
+         'noncdi_schubert': 'Schubert (nonCDI)',
+         'cdi_schubert2': 'Schubert (nonCDI)',
          'cdi_singh': 'Singh (EDD)',
          'cdi_vincent': 'Vincent (CDI)',
          'cdi_youngster': 'Youngster (CDI)',
@@ -231,6 +233,52 @@ def get_disease_colors():
                       'psa': "#d59847" #orange
                       }
     return disease_colors
+
+def reorder_index_from_tree(fntree, original_index):
+    """
+    Read a genus-level tree (tips are labeled with genus name) and reorder
+    a given index according to the tree
+
+    Parameters
+    ----------
+    fntree : str
+        File name with newick tree. It is expected that every
+        genus in the original_index is in this tree. If there is
+        a genus that isn't, this code prints out the genera
+        which are missing from the tree. You'll probably need to
+        either update the tree with update_phyloT_wrapper.sh, or
+        manually code in the missing genera in update_phyloT.py.
+
+    original_index : list, pandas index
+         List or pandas index from original df which needs to
+         be re-ordered. The original_index can have OTUs with all
+         taxonomic levels, or just family and genus level.
+
+    Return
+    ------
+    reordered_index
+    """
+
+    # From the original index, extract just the genus name
+    # and put into a dict - {genus: original_index_label}
+    genus2full = {i.split(';')[-1][3:]: i for i in original_index}
+
+    tree = dp.Tree.get(path=fntree, schema='newick')
+    genera = [i.label for i in tree.taxon_namespace]
+    # keep only genera from the tree that are in the original index.
+    genera = [i for i in genera if i in genus2full]
+
+
+    # make sure that all genera in the original_index are also in the tree
+    missinggenera = [i for i in genus2full if i not in genera]
+    if len(missinggenera) > 0:
+        print('The following genera are missing from your tree!:')
+        print('\n'.join(missinggenera))
+
+    # Re order the original index according to the tree order
+    reordered_index = [genus2full[i] for i in genera]
+
+    return reordered_index
 
 ### Table writing stuff
 def convert_to_latex(row):

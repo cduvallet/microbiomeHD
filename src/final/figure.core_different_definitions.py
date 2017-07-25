@@ -17,7 +17,7 @@ import matplotlib.gridspec as gridspec
 import os, sys
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
 sys.path.insert(0, src_dir)
-from Formatting import get_phylo_colors
+from Formatting import get_phylo_colors, reorder_index_from_tree
 
 p = argparse.ArgumentParser()
 p.add_argument('heuristic', help='path to file with core/overall meta-analysis '
@@ -26,6 +26,7 @@ p.add_argument('diarrhea', help='path to file with core bugs defined without '
     + 'diarrhea datasets.')
 p.add_argument('stouffer', help='path to file with core bugs defined using '
     + 'Stouffers method.')
+p.add_argument('tree_file', help='path to newick tree to order rows')
 p.add_argument('out', help='out file to save figure to')
 p.add_argument('--labels', help='flag to add genus labels to plot. [default: '
     + '%(default)s]', action='store_true')
@@ -39,7 +40,11 @@ cdi_core.columns = ['2 diseases']
 nocdi_core.columns = ['No diarrhea']
 stouffer_core.columns = ['Stouffer']
 
+# This re-orders rows alphabetically I think
 core_all = pd.concat((stouffer_core, nocdi_core, cdi_core), axis=1)
+# Reorder phylogenetically
+ordered_rows = reorder_index_from_tree(args.tree_file, core_all.index)
+core_all = core_all.loc[ordered_rows]
 
 # Prepare for plotting
 phylodf, color_dict = get_phylo_colors(core_all.index)
@@ -84,7 +89,7 @@ if args.labels:
     # Get series with True/False if any of the values are not NaN
     labels = [i.split(';')[-1][3:] for i in core_all.index]
     axL1.set_yticks(range(0, core_all.shape[0]))
-    axL1.set_yticklabels(labels,fontsize='xx-small', rotation=180, va='bottom')
+    axL1.set_yticklabels(labels,fontsize='xx-small', rotation=180, va='center')
 
 else:
     axL1.set_yticklabels([])

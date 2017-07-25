@@ -28,9 +28,13 @@ args = p.parse_args()
 # Prepare data for plotting
 dysbiosis = pd.read_csv(args.dysbiosis, sep='\t')
 samplesizes = pd.read_csv(args.dataset_info, sep='\t')
-samplesizes = samplesizes.replace('edd_singh', 'cdi_singh')
+samplesizes = samplesizes\
+    .replace('edd_singh', 'cdi_singh')\
+    .replace('noncdi_schubert', 'cdi_schubert2')
 _, dataset_order = fmt.get_dataset_order(samplesizes)
 dataset_order = [i if i != 'cdi_singh' else 'edd_singh' for i in dataset_order]
+dataset_order = [i if i != 'cdi_schubert2' else 'noncdi_schubert'
+                 for i in dataset_order]
 
 toplot = dysbiosis.query('metric == "perc_overlap"')
 toplot['value'] = toplot['value'].astype(float)
@@ -43,7 +47,7 @@ sns.set_style('white', {'ytick.direction': 'in', 'ytick.major.size': 0.0})
 fig, ax = plt.subplots(figsize=(6,3))
 
 sns.barplot(x='label', y='value', data=toplot, order=neworder, ax=ax,
-            color="0.65")
+            color="0.65", linewidth=0)
 
 # Align rotated labels with actual bar
 ax.set_xticks(ax.get_xticks() + 0.4)

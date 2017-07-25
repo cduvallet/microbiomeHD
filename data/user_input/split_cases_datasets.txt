@@ -2,9 +2,5 @@ ibd_papa
 ibd_gevers
 ibd_morgan
 ibd_willing
-cdi_schubert
-edd_singh
-cdi_youngster
-cdi_vincent
 liv_zhang
 art_scher

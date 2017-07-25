@@ -139,7 +139,7 @@ def read_dataset_files(datasetid, clean_folder):
 
     return df, meta
 
-def get_classes(meta, dataset='', noncdi=False):
+def get_classes(meta, dataset=''):
     """
     Returns classes_list for supervised comparison. List of accepted controls
     and diseases is hard-coded in this function.
@@ -163,11 +163,9 @@ def get_classes(meta, dataset='', noncdi=False):
         [list of control lables, list of case labels]
     """
     controls = ['H', 'nonIBD']
-    diseases = ['ASD', 'CD', 'CDI', 'CIRR', 'CRC', 'EDD', 'GVHD', 'HIV',
+    diseases = ['ASD', 'CD', 'CDI', 'nonCDI', 'CIRR', 'CRC', 'EDD', 'HIV',
                 'MHE', 'NASH', 'OB', 'PAR', 'PSA', 'RA', 'T1D', 'T2D',
                  'UC']
-    if noncdi:
-        diseases.append('nonCDI')
 
     labels = list(set(meta['DiseaseState']))
 

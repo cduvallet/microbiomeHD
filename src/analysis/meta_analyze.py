@@ -46,7 +46,9 @@ def count_sig(allresults, qthresh=0.05):
                            var_name='dataset', value_name='significant')
 
     # Replace edd_singh with cdi_singh
-    meta_results = meta_results.replace('edd_singh', 'cdi_singh')
+    meta_results = meta_results\
+        .replace('edd_singh', 'cdi_singh')\
+        .replace('noncdi_schubert', 'cdi_schubert2')
     meta_results['disease'] = meta_results['dataset']\
         .apply(lambda x: x.split('_')[0])
     # Drop rows with either nan or 0 in 'significant' column (i.e. not significant, no effect)

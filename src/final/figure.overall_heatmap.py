@@ -100,7 +100,8 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
         cmap=sns.diverging_palette(220,20,center='dark',as_cmap=True))
     axM2.set_yticklabels([])
     axM2.set_xticks(np.arange(0.4, disease_df.shape[1] + 0.4))
-    axM2.set_xticklabels(disease_df.columns, rotation=45,
+    labels = disease_df.rename(columns={'CDI': 'Diarrhea'})
+    axM2.set_xticklabels(labels, rotation=45,
         fontsize='small', ha='right')
     axM2.set_ylim(axM2.get_ylim()[0], axM2.get_ylim()[1] - 0.5)
 
@@ -186,10 +187,13 @@ def prepare_heatmap_plot(main_values, disease_meta, overall_meta, dataset_info,
     """
 
     ## Prepare dataset orders
-    dataset_info = dataset_info.replace('edd_singh', 'cdi_singh')
+    dataset_info = dataset_info\
+        .replace('edd_singh', 'cdi_singh')\
+        .replace('noncdi_schubert', 'cdi_schubert2')
     _, dataset_order = fmt.get_dataset_order(dataset_info)
     # Need to convert edd_singh to cdi_singh
-    main_values = main_values.rename(columns={'edd_singh': 'cdi_singh'})
+    main_values = main_values.rename(columns={'edd_singh': 'cdi_singh',
+        'noncdi_schubert': 'cdi_schubert2'})
 
     ## Prepare phylogeny colors
     phylodf, color_dict = fmt.get_phylo_colors(main_values.index)
@@ -252,7 +256,6 @@ for_plotting = prepare_heatmap_plot(main_values, disease_meta,
                                     overall_meta, dataset_info,
                                     plot_log10=args.plot_log10,
                                     qthresh=args.qthresh)
-
 # Plot!
 sns.set_style('white')
 fig = plot_overall_heatmap_figure(*for_plotting)

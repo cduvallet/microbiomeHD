@@ -251,8 +251,12 @@ dysbiosis = pd.read_csv(args.dysbiosis, sep='\t')
 dataset_info = pd.read_csv(args.dataset_info, sep='\t')
 
 # Note: need to replace edd_singh with cdi_singh in basically everything.
-dysbiosis = dysbiosis.replace('edd_singh', 'cdi_singh')
-dataset_info = dataset_info.replace('edd_singh', 'cdi_singh')
+dysbiosis = dysbiosis\
+    .replace('edd_singh', 'cdi_singh')\
+    .replace('noncdi_schubert', 'cdi_schubert2')
+dataset_info = dataset_info\
+    .replace('edd_singh', 'cdi_singh')\
+    .replace('noncdi_schubert', 'cdi_schubert2')
 
 _, dataset_order = fmt.get_dataset_order(dataset_info)
 

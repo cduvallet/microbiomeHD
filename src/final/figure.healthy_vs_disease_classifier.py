@@ -8,6 +8,7 @@ import argparse
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy.stats import pearsonr
 
 # Add util to the path
 import os, sys
@@ -33,7 +34,11 @@ def plot_aucs(aucs, x_col, y_col, groupby_col, colors):
     ax.plot([0.5, 0.5], [0, 1], '--', c='0.95')
     ax.plot([0, 1], [0.5, 0.5], '--', c='0.95')
     for g, subdf in aucs.groupby(groupby_col):
-        ax.scatter(subdf[x_col], subdf[y_col], c=colors[g], label=g.upper())
+        if g == 'cdi':
+            label = 'diarrhea'
+        else:
+            label = g.upper()
+        ax.scatter(subdf[x_col], subdf[y_col], c=colors[g], label=label)
     ax.set_xlim([0, 1])
     ax.set_ylim([0, 1])
     fig.tight_layout()
@@ -61,7 +66,9 @@ disease_colors = fmt.get_disease_colors()
 ## Single-dataset results
 fn_rf_results = args.single_dataset_rf
 rf_results = pd.read_csv(fn_rf_results, sep='\t')
-rf_results = rf_results.replace('edd_singh', 'cdi_singh')
+rf_results = rf_results\
+    .replace('edd_singh', 'cdi_singh')\
+    .replace('noncdi_schubert', 'cdi_schubert2')
 rf_results['disease'] = rf_results['dataset'].map(lambda x: x.split('_')[0])
 
 ## Leave one dataset out
@@ -71,6 +78,8 @@ aucs = pd.merge(rf_results[['dataset', 'roc_auc', 'disease']].drop_duplicates(),
                 dataset_out[['dataset', 'auc', 'disease']].drop_duplicates())\
          .dropna()
 
+print('Leave one dataset out: r = {:.3f}, p = {:.3f}'
+    .format(*pearsonr(aucs['roc_auc'], aucs['auc'])))
 fig, ax, lgd = plot_aucs(aucs, 'roc_auc', 'auc', 'disease', disease_colors)
 ax.set_xlabel('AUC, single-dataset classifier')
 ax.set_ylabel('AUC, healthy vs. disease classifier')
@@ -90,6 +99,8 @@ aucs = disease_out[['disease', 'auc']].drop_duplicates()
 aucs.index = aucs['disease']
 aucs = aucs.rename(columns={'auc': 'auc_diseaseout'})
 aucs = pd.concat((aucs, mean_auc), axis=1).dropna()
+print('Leave one disease out: r = {:.3f}, p = {:.3f}'
+    .format(*pearsonr(aucs['mean_dataset_auc'], aucs['auc_diseaseout'])))
 # Plot
 fig, ax, lgd = plot_aucs(aucs, 'mean_dataset_auc', 'auc_diseaseout',
     'disease', disease_colors)

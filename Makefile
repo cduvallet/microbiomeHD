@@ -124,7 +124,7 @@ ubiquity = data/analysis_results/ubiquity_abundance_calculations.txt
 
 # Reviewer comment: split analysis for UC/CD case patients
 split_datasets = data/user_input/split_cases_datasets.txt
-split_qvalues = data/analysis_results/qvalus.mean.kruskal-wallis.split-cases.txt
+split_qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.split-cases.txt
 split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
@@ -268,7 +268,7 @@ logfold = $(subst txt,log2change.sig_ordered.txt,$(qvalues))
 
 # Different core definitions
 nocdi_clean = $(subst txt,sig_ordered.txt,$(nocdi_overall))
-stouffer_clean = $(subst txt,sig_ordered.txt,$(stouffer))
+stouffer_clean = $(subst txt,sig_ordered.txt,$(overall_qvalues_stouffer))
 
 for_plotting: $(qvalues_clean) $(meta_clean) $(overall_clean) $(logfold)
 
@@ -287,8 +287,8 @@ $(overall_clean): src/analysis/reorder_qvalues.py $(overall_qvalues) $(final_tre
 $(nocdi_clean): src/analysis/reorder_qvalues.py $(nocdi_overall) $(final_tree_file)
 	python $< --overall $(nocdi_overall) $(final_tree_file)
 
-$(stouffer_clean): src/analysis/reorder_qvalues.py $(nocdi_overall) $(final_tree_file)
-	python $< --overall $(stouffer_overall) $(final_tree_file)
+$(stouffer_clean): src/analysis/reorder_qvalues.py $(overall_qvalues_stouffer) $(final_tree_file)
+	python $< --overall $(overall_qvalues_stouffer) $(final_tree_file)
 
 ## Calculate logfold change for all of the "clean" genera
 # (i.e sig in at least one study, phylogenetically ordered)
@@ -338,7 +338,7 @@ figures: main_figures supp_figures
 
 # Some subset of figures
 main_figures: figure1 figure2 figure3
-supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure1_split figure2_split figure6_split healthy_dis_rf
+supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure1_split figure2_split figure6_split healthy_dis_rf core_defns
 rf_param_figures: figure10 figure11
 
 ## Define figure file names
@@ -356,11 +356,9 @@ figure6 = final/figures/figure6.cdi_heatmap.with_labels.pdf \
 		  final/figures/figure6.ibd_heatmap.with_labels.pdf \
 		  final/figures/figure6.hiv_heatmap.with_labels.pdf \
 		  final/figures/figure6.crc_heatmap.with_labels.pdf
-figure2_split = final/figures/figure2_split.cdi_heatmap.pdf \
-                final/figures/figure2_split.cd_heatmap.pdf \
+figure2_split = final/figures/figure2_split.cd_heatmap.pdf \
                 final/figures/figure2_split.uc_heatmap.pdf
-figure6_split = final/figures/figure6_split.cdi_heatmap.with_labels.pdf \
-                final/figures/figure6_split.cd_heatmap.with_labels.pdf \
+figure6_split = final/figures/figure6_split.cd_heatmap.with_labels.pdf \
                 final/figures/figure6_split.uc_heatmap.with_labels.pdf
 # Core response
 figure3a = final/figures/figure3a.core_disease_with_phylo.pdf
@@ -388,6 +386,10 @@ figure11 = final/figures/figure11.rf_params_entropy.pdf
 rf_dataset_out = final/figures/figure.rf_healthy_disease.dataset_out.pdf
 rf_disease_out = final/figures/figure.rf_healthy_disease.disease_out.pdf
 healthy_dis_rf: $(rf_dataset_out) $(rf_disease_out)
+
+# Different ways to define core bugs
+core_defns_fig = final/figures/figure.different_core_definitions.pdf
+core_defns: $(core_defns_fig)
 
 figure1: $(figure1)
 figure2: $(figure2)
@@ -478,6 +480,9 @@ $(rf_disease_out): $(rf_dataset_out)
 		rm -f $<; \
 		$(MAKE) $(AM_MAKEFLAGS) $<; \
 	fi
+
+$(core_defns_fig): src/final/figure.core_different_definitions.py $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file)
+	python $< --labels $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file) $@
 
 ###############################
 ##### SUPPLEMENTARY FILES #####

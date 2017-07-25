@@ -269,6 +269,18 @@ def fix_ob_zhu(meta):
     meta['DiseaseState'] = meta['DiseaseState'].replace('NASH', 'OB-NASH')
     return meta
 
+def fix_cdi_schubert(meta):
+    """
+    Fix the DiseaseState labels for case patients in cdi_schubert
+    """
+    meta['DiseaseState'] = meta['DiseaseState']\
+        .replace('nonCDI', 'ignore-nonCDI')
+    return meta
+
+def fix_noncdi_schubert(meta):
+    meta['DiseaseState'] = meta['DiseaseState'].replace('CDI', 'ignore-CDI')
+    return meta
+
 if __name__ == "__main__":
 
     args = parse_args()
@@ -292,7 +304,10 @@ if __name__ == "__main__":
         # Turn the nonNASH-OB into OB and the NASH into OB-NASH,
         # so that they're not recognized as cases in downstream analyses
         meta = fix_ob_zhu(meta)
-
+    elif dataset_id == 'cdi_schubert':
+        meta = fix_cdi_schubert(meta)
+    elif dataset_id == 'noncdi_schubert':
+        meta = fix_noncdi_schubert(meta)
 
     # Reset indices to write as feather format
     df = df.reset_index()

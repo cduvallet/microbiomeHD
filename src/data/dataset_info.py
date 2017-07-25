@@ -16,7 +16,7 @@ import FileIO as fio
 
 def get_citation(dataset):
     """
-    Get citation for each datasets, as in my refs.bib file
+    Get citation for each datasets, as in my refs.bib file.
     """
     d = {'asd_kang': 'asd-kb',
          'crc_chen': 'crc-xiang',
@@ -30,12 +30,26 @@ def get_citation(dataset):
          'ob_turnbaugh': 'ob-gordon',
          'ob_zhu': 'nash-baker',
          'par_scheperjans': 'par-schep',
+         'art_scher': 'ra-littman',
+         't1d_mejialeon': 't1d-mejia',
+         'cd_gevers': 'ibd-gevers',
+         'cd_morgan': 'ibd-hut',
+         'uc_morgan': 'ibd-hut',
+         'cd_papa': 'ibd-papa',
+         'uc_papa': 'ibd-papa',
+         'cd_willing': 'ibd-engstrand',
+         'uc_willing': 'ibd-engstrand',
+         'liv_zhang': 'mhe-zhang',
+         'cirr_zhang': 'mhe-zhang',
          'ra_scher': 'ra-littman',
-         't1d_mejialeon': 't1d-mejia'}
+         'psa_scher': 'ra-littman',
+         'noncdi_schubert': 'cdi-schubert',
+         'cdi_schubert2': 'cdi-schubert'}
     if dataset in d:
         return d[dataset]
     else:
         return '-'.join(dataset.split('_'))
+
 
 parser = argparse.ArgumentParser(description='Read and write basic info '
     + 'about the datasets.')
@@ -76,7 +90,7 @@ for dataset in datasetids:
     # Data-dependent info
     df, meta = fio.read_dataset_files(dataset, args.clean_data_dir)
     if args.split_cases:
-        classes_list = fio.get_classes(meta, noncdi=True)
+        classes_list = fio.get_classes(meta)
 
         for dis_label in classes_list[1]:
             # old dataset = ibd_alm, new dataset = uc_alm

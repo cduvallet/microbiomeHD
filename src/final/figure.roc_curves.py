@@ -26,10 +26,16 @@ args = p.parse_args()
 rfresults = pd.read_csv(args.rf_results, sep='\t')
 rfresults = rfresults.query('dataset != "cdi_youngster"')
 
-# Sort datasets alphabetically but group edd_singh with the CDIs
-col_order = sorted([i if i != 'edd_singh' else 'cdi_singh' for i
-                    in rfresults['dataset'].unique()])
+# Sort datasets alphabetically but group edd_singh and noncdi_schubert
+# with the CDIs
+col_order = sorted(
+    rfresults['dataset']\
+        .replace('edd_singh', 'cdi_singh')\
+        .replace('noncdi_schubert', 'cdi_schubert2')\
+    .unique())
 col_order = [i if i != 'cdi_singh' else 'edd_singh' for i in col_order]
+col_order = [i if i != 'cdi_schubert2' else 'noncdi_schubert'
+             for i in col_order]
 
 sns.set_style('white')
 g = sns.FacetGrid(data=rfresults, col='dataset', col_wrap=6,
