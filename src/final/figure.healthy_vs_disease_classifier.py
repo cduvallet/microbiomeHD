@@ -83,28 +83,32 @@ print('Leave one dataset out: r = {:.3f}, p = {:.3f}'
 fig, ax, lgd = plot_aucs(aucs, 'roc_auc', 'auc', 'disease', disease_colors)
 ax.set_xlabel('AUC, single-dataset classifier')
 ax.set_ylabel('AUC, healthy vs. disease classifier')
+ax.set_title('Leave one dataset out')
 fig.savefig(args.dataset_out_fig, bbox_extra_artists=(lgd,),
     bbox_inches='tight')
 
 ## Leave one disease out
 disease_out = pd.read_csv(args.h_v_dis_rf, sep='\t')\
-    .query('classifier == "disease_out"')
+    .query('classifier == "disease_out"')\
+    .dropna()
 
-# Average the original dataset AUCs by disease
-mean_auc = pd.DataFrame(rf_results.groupby('disease').mean()['roc_auc'])
-mean_auc = mean_auc.rename(columns={'roc_auc': 'mean_dataset_auc'})
+# # Average the original dataset AUCs by disease
+# mean_auc = pd.DataFrame(rf_results.groupby('disease').mean()['roc_auc'])
+# mean_auc = mean_auc.rename(columns={'roc_auc': 'mean_dataset_auc'})
 
 # Concatenate averaged results with leave-disease-out results
-aucs = disease_out[['disease', 'auc']].drop_duplicates()
-aucs.index = aucs['disease']
+aucs = disease_out[['dataset', 'auc']].drop_duplicates()
+aucs.index = aucs['dataset']
 aucs = aucs.rename(columns={'auc': 'auc_diseaseout'})
-aucs = pd.concat((aucs, mean_auc), axis=1).dropna()
+aucs = pd.merge(aucs,
+    rf_results[['dataset', 'roc_auc', 'disease']].drop_duplicates()).dropna()
 print('Leave one disease out: r = {:.3f}, p = {:.3f}'
-    .format(*pearsonr(aucs['mean_dataset_auc'], aucs['auc_diseaseout'])))
+    .format(*pearsonr(aucs['roc_auc'], aucs['auc_diseaseout'])))
 # Plot
-fig, ax, lgd = plot_aucs(aucs, 'mean_dataset_auc', 'auc_diseaseout',
+fig, ax, lgd = plot_aucs(aucs, 'roc_auc', 'auc_diseaseout',
     'disease', disease_colors)
-ax.set_xlabel('mean AUC, single-dataset classifier')
+ax.set_xlabel('AUC, single-dataset classifier')
 ax.set_ylabel('')
+ax.set_title('Leave one disease out')
 fig.savefig(args.disease_out_fig, bbox_extra_artists=(lgd,),
     bbox_inches='tight')

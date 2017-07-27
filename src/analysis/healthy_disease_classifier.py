@@ -18,6 +18,21 @@ sys.path.insert(0, src_dir)
 import FileIO as fio
 from util import collapse_taxonomic_contents_df, prep_classifier, cv_and_roc
 
+def test_dataset(rf, X_test, Y_test):
+    """
+    Test X_test with rf (which is a trained RandomForestClassifier).
+    Returns fpr, tpr lists and roc_auc float.
+    """
+
+    # Test
+    probs = rf.predict_proba(X_test)[:,1]
+    predictions = rf.predict(X_test)
+
+    fpr, tpr, thresholds = roc_curve(Y_test, probs)
+    roc_auc = auc(fpr, tpr)
+    return fpr, tpr, roc_auc
+
+
 p = argparse.ArgumentParser()
 p.add_argument('data_dir', help='path to directory with clean OTU tables and '
     'metadata.')
@@ -59,8 +74,8 @@ for dataset in dfdict:
 # Only keep datasets with *healthy* controls
 ignore_datasets = [d for d in dfdict
     if 'H' not in dfdict[d]['meta']['DiseaseState'].unique()]
-# This data is a duplicate of nash_zhu
-ignore_datasets += ['ob_zhu']
+# cdi_vincent only has five controls
+ignore_datasets.append('cdi_vincent')
 
 bigdf = pd.concat([dfdict[d]['df'] for d in dfdict if d not in ignore_datasets])
 # Fill NaN's with zeros (i.e. unobserved OTUs)
@@ -70,10 +85,14 @@ bigmeta = pd.concat([dfdict[d]['meta'] for d in dfdict
 
 # excludes: 'postFMT_CDI', None, ' '
 diseases = ['ASD', 'CD', 'CDI', 'nonCDI', 'CIRR', 'CRC', 'EDD', 'HIV',
-            'MHE', 'NASH', 'OB', 'OB-NASH', 'nonNASH-OB',
+            'MHE', 'NASH', 'OB',
             'PAR', 'PSA', 'RA', 'T1D', 'T2D', 'UC']
 classes_list = [['H'], diseases]
 [h_smpls, dis_smpls] = fio.get_samples(bigmeta, classes_list)
+
+# Get rid of the ob_zhu healthy samples so they are not duplicated in the
+# training set
+h_smpls = [i for i in h_smpls if not i.startswith('ob_zhu')]
 
 random_state = args.random_state
 
@@ -82,23 +101,26 @@ datasets = list(set([i.split('-')[0] for i in bigdf.index]))
 all_results = []
 for d in datasets:
     print(d)
+    # Train on all samples not in that dataset
     train_h = [i for i in h_smpls if not i.startswith(d)]
+    # Get rid of the healthy samples that match with ob_zhu dataset
+    if d == 'ob_zhu':
+        train_h = [i for i in train_h if not i.startswith('nash_zhu')]
+
     train_dis = [i for i in dis_smpls if not i.startswith(d)]
     rf, X_train, Y_train = prep_classifier(
         bigdf, train_h, train_dis, random_state)
-
-    test_h = [i for i in h_smpls if i.startswith(d)]
-    test_dis = [i for i in dis_smpls if i.startswith(d)]
-    _, X_test, Y_test = prep_classifier(bigdf, test_h, test_dis, random_state)
-
-    # Train
     rf = rf.fit(X_train, Y_train)
-    # Test
-    probs = rf.predict_proba(X_test)[:,1]
-    predictions = rf.predict(X_test)
 
-    fpr, tpr, thresholds = roc_curve(Y_test, probs)
-    roc_auc = auc(fpr, tpr)
+    # Test on that dataset
+    test_h = [i for i in h_smpls if i.startswith(d)]
+    # test_h will be empty for ob_zhu, the healthy samples are in nash_zhu
+    if d == 'ob_zhu':
+        test_h = [i for i in h_smpls if i.startswith('nash_zhu')]
+    test_dis = [i for i in dis_smpls if i.startswith(d)]
+
+    _, X_test, Y_test = prep_classifier(bigdf, test_h, test_dis, random_state)
+    fpr, tpr, roc_auc = test_dataset(rf, X_test, Y_test)
 
     dis = d.split('_')[0] # note: edd_singh samples were relabeld to cdi_singh
     results = pd.DataFrame.from_dict(
@@ -111,11 +133,21 @@ diseases = list(set([i.split('_')[0] for i in bigdf.index]))
 for d in diseases:
     print(d)
     train_h = [i for i in h_smpls if not i.startswith(d)]
+
+    # For ob comparison, get rid of the healthy controls from nash_zhu
+    # because they belong to ob_zhu dataset too
+    if d == 'ob':
+        train_h = [i for i in train_h if not i.startswith('nash_zhu')]
+
     train_dis = [i for i in dis_smpls if not i.startswith(d)]
     rf, X_train, Y_train = prep_classifier(
         bigdf, train_h, train_dis, random_state)
 
     test_h = [i for i in h_smpls if i.startswith(d)]
+    # Add the ob_zhu healthy samples here
+    if d == 'ob':
+        test_h += [i for i in h_smpls if i.startswith('nash_zhu')]
+
     test_dis = [i for i in dis_smpls if i.startswith(d)]
     _, X_test, Y_test = prep_classifier(bigdf, test_h, test_dis, random_state)
 
@@ -123,8 +155,8 @@ for d in diseases:
     rf = rf.fit(X_train, Y_train)
     # Test
     probs = rf.predict_proba(X_test)[:,1]
-    predictions = rf.predict(X_test)
 
+    # Get the fpr, tpr, and AUC for disease-wise results
     fpr, tpr, thresholds = roc_curve(Y_test, probs)
     roc_auc = auc(fpr, tpr)
 
@@ -132,6 +164,24 @@ for d in diseases:
         dict(zip(['disease', 'fpr', 'tpr', 'auc', 'classifier'],
                  (d, fpr, tpr, roc_auc, 'disease_out'))))
     all_results.append(results)
+
+    # Also get the dataset-wise fpr, tpr, and AUC
+    # Make dataframe with probabilities and Y_test
+    all_smpls = test_h + test_dis
+    probs_df = pd.DataFrame(probs, index=all_smpls, columns=['probs'])
+    probs_df['y_test'] = Y_test
+    probs_df['dataset'] = [i.split('-')[0] for i in probs_df.index]
+    if d == 'ob':
+        probs_df = probs_df.replace('nash_zhu', 'ob_zhu')
+
+    for g, subdf in probs_df.groupby('dataset'):
+        fpr, tpr, thresholds = roc_curve(subdf['y_test'], subdf['probs'])
+        roc_auc = auc(fpr, tpr)
+
+        results = pd.DataFrame.from_dict(
+            dict(zip(['dataset', 'disease', 'fpr', 'tpr', 'auc', 'classifier'],
+                     (g, d, fpr, tpr, roc_auc, 'disease_out'))))
+        all_results.append(results)
 
 all_results_df = pd.concat(all_results)
 all_results_df.to_csv(args.out_file, sep='\t', index=False)
