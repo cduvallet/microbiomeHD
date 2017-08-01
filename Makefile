@@ -338,12 +338,12 @@ figures: main_figures supp_figures
 
 # Some subset of figures
 main_figures: figure1 figure2 figure3
-supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure1_split figure2_split figure6_split healthy_dis_rf core_defns
-rf_param_figures: figure10 figure11
+supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12 figure13 figure14 figure15
+rf_param_figures: figure16 figure17
 
 ## Define figure file names
 figure1 = final/figures/figure1.samplesize_auc_extent_direction.pdf
-figure1_split = final/figures/figure1_split.samplesize_auc_extent_direction.pdf
+figure7 = final/figures/figure7.split_cases.samplesize_auc_extent_direction.pdf
 
 # Disease-specific heatmaps
 figure2 = final/figures/figure2.cdi_heatmap.pdf \
@@ -351,44 +351,42 @@ figure2 = final/figures/figure2.cdi_heatmap.pdf \
 		  final/figures/figure2.ibd_heatmap.pdf \
 		  final/figures/figure2.hiv_heatmap.pdf \
 		  final/figures/figure2.crc_heatmap.pdf
-figure6 = final/figures/figure6.cdi_heatmap.with_labels.pdf \
-          final/figures/figure6.ob_heatmap.with_labels.pdf \
-		  final/figures/figure6.ibd_heatmap.with_labels.pdf \
-		  final/figures/figure6.hiv_heatmap.with_labels.pdf \
-		  final/figures/figure6.crc_heatmap.with_labels.pdf
-figure2_split = final/figures/figure2_split.cd_heatmap.pdf \
-                final/figures/figure2_split.uc_heatmap.pdf
-figure6_split = final/figures/figure6_split.cd_heatmap.with_labels.pdf \
-                final/figures/figure6_split.uc_heatmap.with_labels.pdf
+figure5 = final/figures/figure5.cdi_heatmap.with_labels.pdf \
+          final/figures/figure5.ob_heatmap.with_labels.pdf \
+		  final/figures/figure5.ibd_heatmap.with_labels.pdf \
+		  final/figures/figure5.hiv_heatmap.with_labels.pdf \
+		  final/figures/figure5.crc_heatmap.with_labels.pdf
+figure8 = final/figures/figure8.cd_heatmap.with_labels.pdf \
+          final/figures/figure8.uc_heatmap.with_labels.pdf
 # Core response
 figure3a = final/figures/figure3a.core_disease_with_phylo.pdf
 figure3b = final/figures/figure3b.core_overlap.pdf
 figure3c = final/figures/figure3c.abundance.pdf \
            final/figures/figure3c.ubiquity.pdf
-figure7 = final/figures/figure7.core_disease_with_phylo.with_labels.pdf
+figure6 = final/figures/figure6.core_disease_with_phylo.with_labels.pdf
 
 # Alpha diversity
-figure4 = final/figures/figure4.alpha_diversity.shannon.pdf
+figure9 = final/figures/figure9.alpha_diversity.shannon.pdf
 
 # RF supplementary figures
-figure5 = final/figures/figure5.roc_curves.pdf
+figure4 = final/figures/figure4.roc_curves.pdf
 
-# Figure 8 and 9 are the big ol' heatmaps. Not done yet.
-figure8 = final/figures/figure8.overall_heatmap_log10qvalues.pdf
-figure9 = final/figures/figure9.overall_heatmap_log2effect.pdf
+# The big ol' heatmaps.
+figure14 = final/figures/figure14.overall_heatmap_log10qvalues.pdf
+figure15 = final/figures/figure15.overall_heatmap_log2effect.pdf
 
-# Note: figures 11 and 12 should NOT be in make 'all',
+# Note: figures 16 and 17 should NOT be in make 'all',
 # they should be with rf_params
-figure10 = final/figures/figure10.rf_params_gini.pdf
-figure11 = final/figures/figure11.rf_params_entropy.pdf
+figure16 = final/figures/figure16.rf_params_gini.pdf
+figure17 = final/figures/figure17.rf_params_entropy.pdf
 
 # Need to figure out where these fit in...
-rf_dataset_out = final/figures/figure.rf_healthy_disease.dataset_out.pdf
-rf_disease_out = final/figures/figure.rf_healthy_disease.disease_out.pdf
+rf_dataset_out = final/figures/figure13.rf_healthy_disease.dataset_out.pdf
+rf_disease_out = final/figures/figure13.rf_healthy_disease.disease_out.pdf
 healthy_dis_rf: $(rf_dataset_out) $(rf_disease_out)
 
 # Different ways to define core bugs
-core_defns_fig = final/figures/figure.different_core_definitions.pdf
+core_defns_fig = final/figures/figure12.different_core_definitions.pdf
 core_defns: $(core_defns_fig)
 
 figure1: $(figure1)
@@ -400,78 +398,77 @@ figure6: $(figure6)
 figure7: $(figure7)
 figure8: $(figure8)
 figure9: $(figure9)
-figure10: $(figure10)
-figure11: $(figure11)
-figure1_split: $(figure1_split)
-figure2_split: $(figure2_split)
-figure6_split: $(figure6_split)
+# figures 10 and 11 are the other alpha diversity ones
+figure12: core_defns
+figure13: healthy_dis_rf
+figure14: $(figure14)
+figure15: $(figure15)
+figure16: $(figure16)
+figure17: $(figure17)
 
 ## Figure dependencies
 fmt = src/util/Formatting.py
 
-# Figure 1: sample size, AUC, extent and direction of shifts
+# Sample size, AUC, extent and direction of shifts
 $(figure1): src/final/figure.samplesize_auc_extent_direction.py $(dysbiosis) $(dataset_info) $(fmt)
 	python $< $(dysbiosis) $(dataset_info) $(figure1)
 
-$(figure1_split): src/final/figure.samplesize_auc_extent_direction.py $(split_dysbiosis) $(split_dataset_info) $(fmt)
+$(figure7): src/final/figure.samplesize_auc_extent_direction.py $(split_dysbiosis) $(split_dataset_info) $(fmt)
 	python $< $(split_dysbiosis) $(split_dataset_info) $@ --edd
 
-# Figure 2: disease heatmaps without labels
+# Disease heatmaps without labels
 # $* contains the disease string, $@ is the target file
 final/figures/figure2.%_heatmap.pdf: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info) $(fmt)
 	python $< $* $(qvalues) $(dataset_info) $@
 
-final/figures/figure2_split.%_heatmap.pdf: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info) $(fmt)
-	python $< $* $(split_qvalues) $(split_dataset_info) $@
-
-# Figure 3A: Core heatmaps: disease-wise, core, and phylogeny
+# Core heatmaps: disease-wise, core, and phylogeny
 $(figure3a): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean) $(fmt)
 	python $< $(meta_clean) $(overall_clean) $@
 
-# Figure 3B: Percent overlap
+# Percent overlap
 $(figure3b): src/final/figure.percent_overlap.py $(dysbiosis) $(dataset_info) $(fmt)
 	python $< $(dysbiosis) $(dataset_info) $@
 
-# Figure 3C: Ubiquity and abundance
+# Ubiquity and abundance
 final/figures/figure3c.%.pdf: src/final/figure.ubiquity_abundance_boxplots.py $(ubiquity)
 	python $< $(ubiquity) $* $@
 
-# Figure 4: alpha diversities
-$(figure4): src/final/figure.alpha_diversity.py $(alpha_divs) $(fmt)
+# Alpha diversities
+$(figure9): src/final/figure.alpha_diversity.py $(alpha_divs) $(fmt)
 	python $< $(alpha_divs) $(subst .shannon.pdf,,$@)
 
-# Figure 5: ROC curves
-$(figure5): src/final/figure.roc_curves.py $(rf_results) $(fmt)
+# ROC curves
+$(figure4): src/final/figure.roc_curves.py $(rf_results) $(fmt)
 	python $< $(rf_results) $@
 
-# Figure 6: Disease-specific heatmap with labels
-final/figures/figure6.%_heatmap.with_labels.pdf: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info) $(fmt)
+# Disease-specific heatmap with labels
+final/figures/figure5.%_heatmap.with_labels.pdf: src/final/figure.disease_specific_heatmaps.py $(qvalues) $(dataset_info) $(fmt)
 	python $< $* $(qvalues) $(dataset_info) $@ --labels
 
-final/figures/figure6_split.%_heatmap.with_labels.pdf: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info) $(fmt)
+final/figures/figure8.%_heatmap.with_labels.pdf: src/final/figure.disease_specific_heatmaps.py $(split_qvalues) $(split_dataset_info) $(fmt)
 	python $< $* $(split_qvalues) $(split_dataset_info) $@ --labels
 
-# Figure 7: Core heatmap with labels
-$(figure7): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean) $(fmt)
+# Core heatmap with labels
+$(figure6): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $(overall_clean) $(fmt)
 	python $< $(meta_clean) $(overall_clean) $@ --labels
 
-# Figure 8: Overall heatmap with q values
-$(figure8): src/final/figure.overall_heatmap.py $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
+# Overall heatmap with q values
+$(figure14): src/final/figure.overall_heatmap.py $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
 	python $< $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $@ --plot-log10
 
-# Figure 9: Overall hetamap with effect
-$(figure9): src/final/figure.overall_heatmap.py $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
+# Overall heatmap with effect
+$(figure15): src/final/figure.overall_heatmap.py $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
 	python $< $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $@
 
-# Figure 10: RF parameter search, gini criteria
-$(figure10): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
+# RF parameter search, gini criteria
+$(figure16): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
 	python $< $(rf_param_search) gini $@
 
-# Figure 11: RF parameter search, entropy criteria
-$(figure11): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
+# RF parameter search, entropy criteria
+$(figure17): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
 	python $< $(rf_param_search) entropy $@
 
-# Figure something: healthy vs disease classifier
+# Healthy vs disease classifier
 $(rf_dataset_out): src/final/figure.healthy_vs_disease_classifier.py $(rf_results) $(rf_h_v_dis)
 	python $< $(rf_results) $(rf_h_v_dis) $(rf_dataset_out) $(rf_disease_out)
 
@@ -481,6 +478,7 @@ $(rf_disease_out): $(rf_dataset_out)
 		$(MAKE) $(AM_MAKEFLAGS) $<; \
 	fi
 
+# Different core definitions
 $(core_defns_fig): src/final/figure.core_different_definitions.py $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file)
 	python $< --labels $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file) $@
 
