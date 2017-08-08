@@ -20,9 +20,8 @@ Specific files of interest include:
 
 * **summary_file.txt**: this file contains a summary of all parameters used to process the data
 * **datasetID.metadata.txt**: the metadata associated with the samples. Note that some samples in the metadata may not have sequencing data, and vice versa.
-* **RDP/datasetID.otu_table.100.denovo.rdp_assigned**: the 100% OTU tables with Latin taxonomic names assigned using the RDP classifier.
+* **RDP/datasetID.otu_table.100.denovo.rdp_assigned**: the 100% OTU tables with Latin taxonomic names assigned using the RDP classifier (c = 0.5).
 * **datasetID.otu_seqs.100.fasta**: representative sequences for each OTU in the 100% OTU table. OTU labels in the OTU table end with `d__denovoID` - these denovoIDs correspond to the sequences in this file.
-Processing
 
 The raw data was acquired as described in the supplementary materials of Duvallet et al.'s "Meta analysis of microbiome studies identifies shared and disease-specific patterns".
 
@@ -62,12 +61,13 @@ The code used to process and analyze this data in Duvallet et al. (2017) is avai
 
 **Files**
 
-*Core genera*
+*Data files*
 
-**file-S3.core_genera.txt**: Supplemental Table 3 from Duvallet et al. (2017), listing the core health- and disease-associated microbes.
+**file-S3.core_genera.txt**: Supplemental Table 3 from Duvallet et al. (2017), listing the core health- and disease-associated microbes.   
+**dataset_info.yaml**: yaml file with additional dataset metadata.   
 
 *Datasets*
 
-Note that MicrobiomeHD contains all 28 datasets from Duvallet et al. (2017), as well as additional datasets which did not meet the inclusion criteria for the meta-analysis presented in the paper. Additional information about the datasets included in this MicrobiomeHD release are in the original publications and the MicrobiomeHD github repo https://github.com/cduvallet/microbiomeHD, in the file *db/dataset_info.yaml*.
+Note that MicrobiomeHD contains all 28 datasets from Duvallet et al. (2017), as well as additional datasets which did not meet the inclusion criteria for the meta-analysis presented in the paper. Additional information about the datasets included in this MicrobiomeHD release are in the original publications and the MicrobiomeHD github repo https://github.com/cduvallet/microbiomeHD, and in the file *dataset_info.yaml*.
 
 The sample sizes listed here reflect what was reported in the original publications. Some may have discrepancies between what is reported and what is in the actual data due to missing data, quality issues, barcode mismatches, etc.
