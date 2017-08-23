@@ -67,16 +67,16 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
     #hspace = 0.2    #the amount of height reserved for white space between subplots
 
     ## Set up 3 grid specs on my plot
-    fig = plt.figure(figsize=(13,10))
+    fig = plt.figure(figsize=(13,14))
     # Left bar has one heatmap (order level)
     gsL = gridspec.GridSpec(1, 1)
-    gsL.update(left=0.12, right=0.14, bottom=0.15, top=0.95)
+    gsL.update(left=0.12, right=0.14, bottom=0.15, top=0.98)
     # Middle bar has two heatmaps (one with one column, one with four columns)
     gsM = gridspec.GridSpec(1,5)
-    gsM.update(left=0.16, right=0.27, wspace=0.6, bottom=0.15, top=0.95)
+    gsM.update(left=0.16, right=0.27, wspace=0.6, bottom=0.15, top=0.98)
     # Right bar has a bunch of heatmaps (one for each disease)
     gsR = gridspec.GridSpec(1, mean_toplot.shape[1])
-    gsR.update(left=0.28, right=0.86, wspace=0.3, bottom=0.15, top=0.95)
+    gsR.update(left=0.28, right=0.86, wspace=0.3, bottom=0.15, top=0.98)
 
     ## Phylogeny, left axis
     # axL1 has order-level colors (only column in phylodf)
@@ -146,7 +146,7 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
     ax.yaxis.set_label_position('right')
     labels = [i.split(';')[-1][3:] for i in subdf.index]
     ax.set_yticks(np.arange(0.5, len(labels) + 0.5))
-    ax.set_yticklabels(labels, fontsize=6, va='bottom')
+    ax.set_yticklabels(labels, fontsize=8, va='bottom')
 
     return fig
 
