@@ -8,6 +8,7 @@ ROC curve and also the corresponding AUC for each.
 import argparse
 import pandas as pd
 import numpy as np
+from sklearn.metrics import cohen_kappa_score
 
 import os, sys
 # Add src/util to path and import modules from files there
@@ -33,8 +34,9 @@ def results2df(results, dataset, n_ctrl, n_case, n_features):
     -------
     resultsdf : pandas DataFrame
         dataframe with 'mean_fpr', 'mean_tpr', 'fisher_p', and 'roc_auc' columns
-        from the results dict, and 'dataset', 'H_smpls', 'dis_smpls', and
-        'num_features' from the input parameters
+        from the results dict, 'kappa' from
+        cohen_kappa_score(results['y_preds']), and 'dataset', 'H_smpls',
+        'dis_smpls', and 'num_features' from the input parameters
     """
     # Directly calling pd.DataFrame.from_dict doesn't work because
     # this dictionary contains arrays, matrices, etc..
@@ -48,6 +50,9 @@ def results2df(results, dataset, n_ctrl, n_case, n_features):
     resultsdf['H_smpls'] = n_ctrl
     resultsdf['dis_smpls'] = n_case
     resultsdf['num_features'] = n_features
+
+    resultsdf['kappa'] = cohen_kappa_score(
+        results['y_true'], results['y_preds'])
 
     return resultsdf
 

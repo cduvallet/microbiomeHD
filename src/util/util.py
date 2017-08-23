@@ -15,7 +15,7 @@ from scipy.stats import ranksums, mannwhitneyu
 from statsmodels.sandbox.stats.multicomp import multipletests
 # Classifiers
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import auc, roc_curve, confusion_matrix
+from sklearn.metrics import auc, roc_curve, confusion_matrix, cohen_kappa_score, make_scorer
 from sklearn.cross_validation import StratifiedKFold
 from scipy import interp
 from scipy.stats import fisher_exact
@@ -219,8 +219,10 @@ def cv_and_roc(rf, X, Y, num_cv=5, random_state=None):
     conf_mat = np.asarray([[0,0],[0,0]])
     y_probs = np.empty_like(Y, dtype=float)
     y_trues = np.empty_like(Y)
+    y_preds = np.empty_like(Y)
     cv_count = 0
     cv_counts = np.empty_like(Y)
+
     for train_index, test_index in cv:
         X_train, X_test = X[train_index], X[test_index]
         Y_train, Y_test = Y[train_index], Y[test_index]
@@ -230,6 +232,7 @@ def cv_and_roc(rf, X, Y, num_cv=5, random_state=None):
         y_probs[test_index] = probs
         y_trues[test_index] = Y_test # literally redundant, but keep it to maintain backward compatibility
         y_pred = rf.predict(X_test)
+        y_preds[test_index] = y_pred
         # Compute ROC curve and area under the curve
         fpr, tpr, thresholds = roc_curve(Y_test, probs)
         mean_tpr += interp(mean_fpr, fpr, tpr)
@@ -247,6 +250,7 @@ def cv_and_roc(rf, X, Y, num_cv=5, random_state=None):
 
     return {i: j for i, j in
             zip(('roc_auc', 'conf_mat', 'mean_fpr', 'mean_tpr',
-                'fisher_p', 'y_prob', 'y_true', 'test_fold'),
+                'fisher_p', 'y_prob', 'y_true', 'test_fold',
+                'y_preds'),
                (roc_auc, conf_mat, mean_fpr, mean_tpr, fisher_p,
-               y_probs, y_trues, cv_counts))}
+               y_probs, y_trues, cv_counts, y_preds))}
