@@ -145,7 +145,7 @@ $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_fil
 
 ## 2. meta-analysis results (+/- 1's) for each disease
 $(meta_qvalues): src/analysis/meta_analyze.py $(qvalues)
-	python src/analysis/meta_analyze.py $(qvalues) data/analysis_results 0.05 2
+	python $< $(qvalues) data/analysis_results 0.05 2 --exclude-nonhealthy
 
 ## 3. overall meta-analysis results are made at the same time as meta_qvalues
 $(overall_qvalues): $(meta_qvalues)

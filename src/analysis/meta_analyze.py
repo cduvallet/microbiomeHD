@@ -212,6 +212,9 @@ if __name__ == "__main__":
     parser.add_argument('n_diseases', help='number of diseases to use in calculating "core" genera', default=2, type=int)
     parser.add_argument('--no-cdi', help='flag to exclude diarrhea datasets '
         + 'in determining core bugs.', action='store_true')
+    parser.add_argument('--exclude-nonhealthy', help='flag to exclude '
+        + 'studies without healthy controls and hiv_lozupone from the '
+        + 'overall cross-disease meta-analysis', action='store_true')
 
     args = parser.parse_args()
 
@@ -221,6 +224,13 @@ if __name__ == "__main__":
 
     # Disease-specific bugs
     disease_df = within_disease_meta_analysis(meta_counts, all_otus=qvals.index)
+
+    ## Re-count how many times each bug is significant in each disease, after
+    ## excluding any datasets without healthy controls.
+    if args.exclude_nonhealthy:
+        to_exclude = ['ibd_papa', 'ibd_gevers', 'hiv_lozupone']
+        qvals = qvals.drop(to_exclude, axis=1)
+        meta_counts = count_sig(qvals, args.qthresh)
 
     # Core bugs
     if args.no_cdi:
