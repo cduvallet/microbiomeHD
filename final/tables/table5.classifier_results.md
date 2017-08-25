@@ -1,0 +1,31 @@
+dataset_label | roc_auc | fisher_p | kappa
+----------|----------|----------|----------
+Singh 2015, EDD | 0.96 | 7.9e-31 | 0.7
+Schubert 2014, CDI | 0.99 | 8.7e-49 | 0.88
+Schubert 2014, nonCDI | 0.98 | 6.3e-38 | 0.79
+Vincent 2013, CDI | 0.91 | 1.6e-06 | 0.68
+Goodrich 2014, OB | 0.67 | 0.00014 | 0.11
+Turnbaugh 2009, OB | 0.84 | 1.7e-06 | 0.28
+Zupancic 2012, OB | 0.44 | 0.16 | -0.11
+Ross 2015, OB | 0.49 | 0.75 | -0.068
+Zhu 2013, OB | 0.86 | 1.3e-05 | 0.69
+Baxter 2016, CRC | 0.77 | 5.4e-16 | 0.43
+Zeller 2014, CRC | 0.82 | 3.4e-06 | 0.41
+Wang 2012, CRC | 0.9 | 2.6e-11 | 0.67
+Chen 2012, CRC | 0.78 | 0.034 | 0.35
+Gevers 2014, IBD | 0.71 | 1 | 0
+Morgan 2012, IBD | 0.81 | 0.0025 | 0.26
+Papa 2012, IBD | 0.84 | 0.0019 | 0.34
+Willing 2009, IBD | 0.66 | 0.81 | 0.026
+Noguera-Julian 2016, HIV | 0.67 | 1 | 0
+Lozupone 2013, HIV | 0.92 | 8.7e-06 | 0.76
+Dinh 2015, HIV | 0.22 | 0.062 | -0.26
+Son 2015, ASD | 0.39 | 0.12 | -0.16
+Kang 2013, ASD | 0.76 | 0.056 | 0.33
+Alkanani 2015, T1D | 0.71 | 0.0078 | 0.27
+Mejia-Leon 2014, T1D | 0.77 | 0.18 | 0.25
+Wong 2013, NASH | 0.68 | 0.098 | 0.28
+Zhu 2013, NASH | 0.93 | 1.3e-07 | 0.84
+Scher 2013, ART | 0.62 | 1 | -0.034
+Zhang 2013, LIV | 0.8 | 0.016 | 0.29
+Scheperjans 2015, PAR | 0.67 | 0.0083 | 0.23

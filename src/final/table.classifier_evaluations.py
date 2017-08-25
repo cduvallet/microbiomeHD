@@ -18,7 +18,7 @@ p.add_argument('fout', help='out file (Latex file)')
 args = p.parse_args()
 
 df = pd.read_csv(args.rf_in, sep='\t')
-df = df.drop(['mean_fpr', 'mean_tpr'], axis=1).drop_duplicates()
+df = df.drop(['mean_fpr', 'mean_tpr'], axis=1).drop_duplicates().dropna()
 
 # Order datasets as in Figure 1
 df['dataset'] = df['dataset']\

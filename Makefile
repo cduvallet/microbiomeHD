@@ -309,8 +309,10 @@ table2 = final/tables/table2.dataset_info_supplement.tex
 table3 = final/tables/table3.processing_info.tex
 # Table 4 has the data and metadata sources
 table4 = final/tables/table4.data_metadata_sources.tex
+# Table 5 has the classifier results
+table5 = final/tables/table5.classifier_results.tex
 
-tables: $(table1) $(table2) $(table3) $(table4)
+tables: $(table1) $(table2) $(table3) $(table4) $(table5)
 
 # tables-1-2.dataset_info.py makes table1, table2, and dataset_info
 $(table1): src/final/table.datasets_info.py $(dataset_info)
@@ -330,6 +332,10 @@ $(table4): $(table3)
 		rm -f $(table3); \
 		$(MAKE) $(AM_MAKEFLAGS) $(table3); \
 	fi
+
+$(table5): src/final/table.classifier_evaluations.py $(rf_results)
+	python $< $(rf_results) $@
+	
 ###################
 ##### FIGURES #####
 ###################
