@@ -1,7 +1,9 @@
 *~
 *.tar.gz
 *.clean
-*_results
+data/raw_otu_tables/*.tar.gz
+data/raw_otu_tables/*_results
+data/analysis_results/*.txt
 *.pyc
 *#
 *.DS_Store
@@ -10,3 +12,4 @@
 final/tables/*.tex
 final/tables/*.txt
 *.feather
+*.html

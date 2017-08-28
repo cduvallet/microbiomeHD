@@ -20,10 +20,10 @@ disease-associated in 1 dataset of the same disease, then it is *not* considered
 consistently associated with that disease. In other words, being both health- and
 disease-associated cancels out and only the *net* association is considered.
 
-**file-S3.core_genera.txt**
+**file-S3.nonspecific_genera.txt**
 
-The "core" microbes that respond generally to disease. A genus is considered part of the
-"core" response if it is significant (q < 0.05) in the same direction in at least two
+The microbes that respond non-specifically to disease. A genus is considered part of the
+shared response if it is significant (q < 0.05) in the same direction in at least two
 different diseases (i.e. in at least one dataset across at least two diseases).
 
 "Mixed" genera are those which were enriched in cases across two diseases and also
@@ -31,12 +31,12 @@ enriched in controls across two diseases.
 
 **file-S4.literature_results.txt**
 
-The manually curated results from each previously published paper. 
+The manually curated results from each previously published paper.
 
 **file-S5.effects.txt**
 
 Logfold difference of mean abundance in cases and controls.
-For each genus, this is calculated as: 
+For each genus, this is calculated as:
 `log2(mean_abundance_in_cases/mean_abundance_in_controls)`.
 If the mean abundance in both cases and controls is 0, this value
 is 0. If the mean abundance in cases is not zero but the mean

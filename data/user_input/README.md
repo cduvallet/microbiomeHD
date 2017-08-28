@@ -24,7 +24,7 @@ Other keys are optional and provide helpful notes about each dataset.
 
 #### list_of_tar_files.txt
 
-The list of tar files to download from Zenodo. Thisile should have no header, and have each
+The list of tar files to download from Zenodo. This file should have no header, and have each
 file name on a new line.
 
 ```
@@ -35,13 +35,10 @@ hiv_lozupone_results.tar.gz
 t1d_alkanani_results.tar.gz
 ```
 
-#### phyloT_tree.newick
+#### split_cases_datasets.txt
 
-The genus-level tree produced by phyloT. Note that the code in this repository provides all
-of the steps to re-make this tree, but phyloT may return a tree with different tip orders
-even given the same list of genus IDs. This tree is the one that was used to make the figures
-in the paper. Other trees are also correct, but may produce slightly different ordering of
-genera (while maintaining the relative ordering phylogenetically accurate).
+This file contains the dataset IDs for which separate analyses should be done
+for each case group (i.e. in the Supplementary Discussion "Stratifying
+ heterogenous case groups shows consistent disease-specific signals").
 
-The tree that was used to make the figures in the paper is in 
-`data/analysis_results/phyloT_tree.updated.newick`. It was *not* made from the tree here.
+ It should have each dataset ID on its own line.

@@ -13,25 +13,26 @@
 # $* is the stem that files have in common
 # Multiple targets for one rule: https://www.gnu.org/software/automake/manual/html_node/Multiple-Outputs.html
 
-## Some common files
-util = src/util/util.py
-fileio = src/util/FileIO.py
-summaryparser = src/util/SummaryParser.py
 
-all: data analysis figures tables supp_files
-reviewer_comments: reviewer_analysis
-
+all: data analysis reviewer_analysis figures tables supp_files
 # All of the files associated with the RF parameter search
 rf_params: rf_param_search rf_param_figures
 
 ### User inputs - these files are not made, they should already exist!
+# List of tar files to download and process into data.
 tar_files = data/user_input/list_of_tar_files.txt
+# Master yaml file. All tar_files should be in dataset_id: folder: entries
 yaml_file = data/user_input/results_folders.yaml
+# List of datasets to perform separate analyses for each type of case patients
+split_datasets = data/user_input/split_cases_datasets.txt
+# Manual curation of reported results in papers
 manual_meta_analysis = data/lit_search/literature_based_meta_analysis.txt
 
-###################################
-##### DOWNLOAD AND CLEAN DATA #####
-###################################
+###############################################
+#                                             #
+#         DOWNLOAD AND CLEAN DATA             #
+#                                             #
+###############################################
 
 ### Define target data files
 # define the tar files from the list_of_tar_files.txt file
@@ -41,6 +42,7 @@ clean_otu_tables := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed '
 # define the metadata file names from the dataset IDs in the results_folders.yaml
 clean_metadata_files := $(shell grep -v '^    ' $(yaml_file) | grep -v '^\#' | sed 's/:/.metadata.clean.feather/g' | sed 's/^/data\/clean_tables\//g')
 
+# Tables with information about each dataset
 dataset_info = data/analysis_results/datasets_info.txt
 split_dataset_info = data/analysis_results/datasets_info.split_cases.txt
 
@@ -67,20 +69,20 @@ $(raw_tar_files): data/user_input/list_of_tar_files.txt src/data/download_tar_fo
 
 # This code cleans both the OTU and metadata files,
 # and writes both *.otu_table.clean and *.metadata.clean
+# Technically it also depends on one function in FileIO.py
 $(clean_otu_tables): src/data/clean_otu_and_metadata.py $(yaml_file)
-	python src/data/clean_otu_and_metadata.py data/raw_otu_tables \
-	$(yaml_file) $@
+	python $< data/raw_otu_tables $(yaml_file) $@
 
 # Recover from the removal of $@
 # i.e. if the metadata file is deleted but the OTU table still is unchanged
 $(clean_metadata_files): $(clean_otu_tables)
 	@if test -f $@; then :; else \
 		rm -f $(subst metadata,otu_table,$@); \
-		$(MAKE) $(AM_MAKEFLAGS) $(subst metadata,otu_table,$@); \
+		make $(subst metadata,otu_table,$@); \
   	fi
 
 ## 3. Manual meta-analysis
-# Maybe pull this from the internet? Maybe just have it echo the link to download it from? Or, like, "grab it from the paper"?
+# This file is manually made, and provided with the repo
 $(manual_meta_analysis):
 	echo -e "You can find the manual meta analysis files in data/lit_search"
 
@@ -92,24 +94,26 @@ $(dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(cle
 $(split_dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables) $(clean_metadata_files) $(split_datasets)
 	python $< $(yaml_file) data/raw_otu_tables data/clean_tables $@ --split-cases --subset $(split_datasets)
 
-####################
-##### ANALYSES #####
-####################
+###############################################
+#                                             #
+#               ANALYSES FILES                #
+#                                             #
+###############################################
 
-## Q values
+## Univariate analysis
 # Note that the file names for these qvalues files are hard-coded in the
 # respective scripts, rather than being passed in as inputs.
 qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.case-control.txt
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
 
-## Core/shared bugs
+## Non-specific/shared responses
 # Based on counting heuristic (significant in at least 2 diseases)
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
 # Based on counting heuristic excluding diarrhea datasets
 nocdi_overall = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases_except_cdi.txt
 # +/- 1 labels, based on combining qvalues with Stouffer's method
 overall_qvalues_stouffer = data/analysis_results/meta.stouffer.q-0.05.across_all_diseases.txt
-# Raw combined pvalues from Stouffer's method
+# The actual combined pvalues from Stouffer's method
 qvalues_stouffer = data/analysis_results/meta.stouffer_qvalues.txt
 
 ## "Null" core bugs
@@ -117,42 +121,51 @@ null_core = data/analysis_results/null_core.2_diseases.txt \
 		    data/analysis_results/null_core.3_diseases.txt \
 			data/analysis_results/null_core.4_diseases.txt \
 			data/analysis_results/null_core.5_diseases.txt \
-# Corresponding actual core bugs
-all_core = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt \
+# Corresponding actual core bugs, defined with different n_diseases thresholds
+all_core = $(overall_qvalues) \
 	data/analysis_results/meta.counting.q-0.05.3_diseases.across_all_diseases.txt \
 	data/analysis_results/meta.counting.q-0.05.4_diseases.across_all_diseases.txt \
 	data/analysis_results/meta.counting.q-0.05.5_diseases.across_all_diseases.txt
 
+# Dysbiosis metrics, including n_sig and balance
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
 
+# Alpha diversity analyses
 alpha_divs = data/analysis_results/alpha_diversity.txt
 alpha_pvals = data/analysis_results/alpha_diversity.pvalues.txt
 
+# Random forest classifier results
 rf_results = data/analysis_results/rf_results.txt
-rf_core = data/analysis_results/rf_results.core_only.txt
-rf_param_search = data/analysis_results/rf_results.parameter_search.txt
 rf_h_v_dis = data/analysis_results/rf_results.healthy_vs_disease.txt
+rf_param_search = data/analysis_results/rf_results.parameter_search.txt
+# Reviewer response only (not included anywhere in paper text)
+rf_core = data/analysis_results/rf_results.core_only.txt
 
 ubiquity = data/analysis_results/ubiquity_abundance_calculations.txt
 
-# Reviewer comment: split analysis for UC/CD case patients
-split_datasets = data/user_input/split_cases_datasets.txt
+# Split analyses for heterogenous case patients
 split_qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.split-cases.txt
 split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
-analysis: qvals $(dysbiosis) alpha rf_results
-reviewer_analysis: $(rf_core) $(overall_qvalues_stouffer) $(stouffer) $(nocdi_overall) $(split_qvalues) $(split_dysbiosis) $(split_rf) $(null_core) $(all_core)
-
-# Make this separately, because it takes forever
+analysis: qvals alpha rf_results $(dysbiosis)
+reviewer_analysis: shared_response $(rf_core) $(split_qvalues) $(split_dysbiosis) $(split_rf)
+# Search classifier parameter space separately, because it takes forever
 rf_param_search: $(rf_param_search)
 
-# Some other nice subsets of the analyses, mostly for testing
+# Some other nice subsets of the analyses
 qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(split_qvalues)
+shared_response: $(overall_qvalues) $(overall_qvalues_stouffer) $(qvalues_stouffer) $(nocdi_overall) $(null_core) $(all_core)
 alpha: $(alpha_divs) $(alpha_pvals)
 rf_results: $(rf_results) $(rf_h_v_dis)
 
-## 1. q-values files for all genera across all studies
+###############################################
+#                                             #
+#               ANALYSES RULES                #
+#                                             #
+###############################################
+
+## 1. Univariate q-values files for all genera across all studies
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
 	python $< data/clean_tables $@
 
@@ -160,7 +173,7 @@ $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_fil
 $(meta_qvalues): src/analysis/meta_analyze.py $(qvalues)
 	python $< $(qvalues) data/analysis_results 0.05 2 --exclude-nonhealthy --disease
 
-## 3. cross-disease meta-analysis results
+## 3. cross-disease meta-analysis results, for different n_disease thresholds
 data/analysis_results/meta.counting.q-0.05.%_diseases.across_all_diseases.txt: src/analysis/meta_analyze.py $(qvalues)
 	python $< $(qvalues) data/analysis_results/ 0.05 $* --exclude-nonhealthy --overall
 
@@ -172,26 +185,30 @@ $(nocdi_overall): src/analysis/meta_analyze.py $(qvalues)
 $(overall_qvalues_stouffer): src/analysis/meta_analyze_stouffer.py $(qvalues) $(dataset_info)
 	python $< $(qvalues) $(dataset_info) $(qvalues_stouffer) $@
 
+# The combined qvalues are another output to the above script
+$(qvalues_stouffer):
+	@if test -f $@; then :; else \
+		rm -f $<; \
+		make $<; \
+	fi
+
 ## 4. dysbiosis metrics
 $(dysbiosis): src/analysis/dysbiosis_metrics.py $(qvalues) $(dataset_info) $(overall_qvalues) $(rf_results)
-	python src/analysis/dysbiosis_metrics.py $(qvalues) $(dataset_info) \
-	$(overall_qvalues) $(rf_results) $(dysbiosis)
+	python $< $(qvalues) $(dataset_info) $(overall_qvalues) $(rf_results) $@
 
 ## 5. alpha diversities
 $(alpha_divs): src/analysis/alpha_diversity.py $(clean_otu_tables) $(clean_metadata_files)
-	python src/analysis/alpha_diversity.py data/clean_tables \
-	$(alpha_divs) $(alpha_pvals)
+	python $< data/clean_tables $(alpha_divs) $(alpha_pvals)
 
 $(alpha_pvals): $(alpha_divs)
 	@if test -f $@; then :; else \
-		rm -f $(alpha_pvals); \
-		$(MAKE) $(AM_MAKEFLAGS) $(alpha_pvals); \
+		rm -f $<; \
+		make $<; \
 	fi
 
 ## 6. random forest results
 $(rf_results): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_files)
-	python src/analysis/classifiers.py data/clean_tables \
-	$(rf_results)
+	python $< data/clean_tables $(rf_results)
 
 ## 7. random forest parameter search
 $(rf_param_search): src/analysis/classifiers_parameters.py $(clean_otu_tables) $(clean_metadata_files)
@@ -199,12 +216,10 @@ $(rf_param_search): src/analysis/classifiers_parameters.py $(clean_otu_tables) $
 	$(rf_param_search)
 
 ## 8. Ubiquity and abundance
-ubiquity: $(ubiquity)
 $(ubiquity): src/analysis/ubiquity_abundance.py $(clean_otu_tables) $(clean_metadata_files) $(overall_qvalues)
-	python src/analysis/ubiquity_abundance.py data/clean_tables \
-	$(overall_qvalues) $@
+	python $< data/clean_tables $(overall_qvalues) $@
 
-## 9. Random forest using only core bugs
+## 9. Random forest using only non-specific bugs (in reviewer response only)
 $(rf_core): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_files) $(overall_qvalues)
 	python $< --core $(overall_qvalues) data/clean_tables $@
 
@@ -224,19 +239,26 @@ $(split_dysbiosis): src/analysis/dysbiosis_metrics.py $(split_qvalues) $(split_d
 	python $< $(split_qvalues) $(split_dataset_info) \
 	$(overall_qvalues) $(split_rf) $@
 
-## 11. Look at core bugs you'd expect by chance
+## 11. Significance of non-specific response for different heuristics
 data/analysis_results/null_core.%_diseases.txt: src/analysis/null_core.py $(qvalues)
 	python $< $(qvalues) 0.05 $@ --n_diseases $* --reps 1000 --exclude-nonhealthy
 
-#######################
-##### PHYLOT TREE #####
-#######################
+###############################################
+#                                             #
+#                PHYLOT TREE                  #
+#                                             #
+###############################################
 
-genera_file = data/analysis_results/genera.tmp
-ncbi_file = data/analysis_results/ncbi_ids.tmp
-clean_ncbi = data/analysis_results/ncbi_ids.clean.for_phyloT
-phyloT_file = data/user_input/phyloT_tree.newick
-final_tree_file = data/analysis_results/phyloT_tree.updated.newick
+# Making the phyloT tree has many intermediate steps which correspond
+# to manual cleaning and updating of the NCBI-generated IDs and phyloT tree.
+# The tree used in the paper is provided in the git repo. To avoid re-doing
+# all of this, you can run `make tree --touch`
+
+genera_file = data/tree/genera.tmp
+ncbi_file = data/tree/ncbi_ids.tmp
+clean_ncbi = data/tree/ncbi_ids.clean.for_phyloT
+phyloT_file = data/tree/phyloT_tree.newick
+final_tree_file = data/tree/phyloT_tree.updated.newick
 
 # Note: phyloT doesn't necessarily return genera in the same order for
 # the same input list of genus IDs, so the arrangement of genera may
@@ -246,17 +268,16 @@ tree: $(final_tree_file)
 
 # Grab genus names from the qvalues file
 $(genera_file): src/analysis/genera_from_qvalues.py $(qvalues)
-	src/analysis/genera_from_qvalues.py $(qvalues) $(genera_file)
+	python $< $(qvalues) $(genera_file)
 
-# Get NCBI IDs using esearch
+# Get NCBI IDs using esearch - this takes a while
 $(ncbi_file): src/analysis/get_ncbi_IDs.sh $(genera_file)
 	./src/analysis/get_ncbi_IDs.sh $(genera_file) $(ncbi_file)
 
 # Clean up the NCBI IDs (i.e. remove non-Bacteria things)
 # and keep just the genus IDs
 $(clean_ncbi): src/analysis/clean_ncbi.py $(ncbi_file)
-	src/analysis/clean_ncbi.py $(ncbi_file) \
-	data/analysis_results/ncbi_ids.clean.tmp $(clean_ncbi)
+	python $< $(ncbi_file) data/analysis_results/ncbi_ids.clean.tmp $(clean_ncbi)
 
 # Manual step: go to the phyloT website and make the tree
 $(phyloT_file): $(clean_ncbi)
@@ -266,9 +287,11 @@ $(phyloT_file): $(clean_ncbi)
 $(final_tree_file): src/analysis/update_tree.py $(phyloT_file) $(genera_file)
 	src/analysis/update_tree.py $(genera_file) $(phyloT_file) $(final_tree_file)
 
-#############################
-##### PREP FOR PLOTTING #####
-#############################
+###############################################
+#                                             #
+#           PREPARE FOR PLOTTING              #
+#                                             #
+###############################################
 
 ## Prepare q-value files for plotting
 # Re-order rows in qvalues and meta-analysis files phylogenetically
@@ -280,7 +303,7 @@ meta_clean = $(subst txt,sig_ordered.txt,$(meta_qvalues))
 overall_clean = $(subst txt,sig_ordered.txt,$(overall_qvalues))
 logfold = $(subst txt,log2change.sig_ordered.txt,$(qvalues))
 
-# Different core definitions
+# Other core definitions that get plotted
 nocdi_clean = $(subst txt,sig_ordered.txt,$(nocdi_overall))
 stouffer_clean = $(subst txt,sig_ordered.txt,$(overall_qvalues_stouffer))
 
@@ -292,6 +315,8 @@ $(qvalues_clean_tmp): src/analysis/clean_qvalues.py $(qvalues)
 $(qvalues_clean): src/analysis/reorder_qvalues.py $(qvalues_clean_tmp) $(final_tree_file)
 	python $< --do-qvals --qvalues $(qvalues_clean_tmp) $(final_tree_file)
 
+# I could have probably written this code to be more modular to avoid
+# the following repetition. Oh well.
 $(meta_clean): src/analysis/reorder_qvalues.py $(meta_qvalues) $(final_tree_file) $(qvalues_clean)
 	python $< --disease-df $(meta_qvalues) --qvalues $(qvalues_clean) $(final_tree_file)
 
@@ -310,9 +335,12 @@ $(logfold): src/analysis/logfold_effect.py $(qvalues_clean) $(clean_otu_tables) 
 	python src/analysis/logfold_effect.py data/clean_tables \
 	$(qvalues_clean) $(logfold)
 
-##################
-##### TABLES #####
-##################
+###############################################
+#                                             #
+#                   TABLES                    #
+#                                             #
+###############################################
+
 
 ## Tables
 # Table 1 (main text) has the datasets, controls, cases, and references
@@ -323,36 +351,39 @@ table2 = final/tables/table2.dataset_info_supplement.tex
 table3 = final/tables/table3.processing_info.tex
 # Table 4 has the data and metadata sources
 table4 = final/tables/table4.data_metadata_sources.tex
-# Table 5 has the classifier results
+# Table 5 has the classifier results, including AUC and kappa
 table5 = final/tables/table5.classifier_results.tex
 
 tables: $(table1) $(table2) $(table3) $(table4) $(table5)
 
-# tables-1-2.dataset_info.py makes table1, table2, and dataset_info
+# table.dataset_info.py makes table1 and table2 from datasets_info.txt
 $(table1): src/final/table.datasets_info.py $(dataset_info)
 	python $< $(dataset_info) $(table1) $(table2)
 
 $(table2): $(table1)
 	@if test -f $@; then :; else \
-		rm -f $(table1); \
-		$(MAKE) $(AM_MAKEFLAGS) $(table1); \
+		rm -f $<; \
+		make $<; \
 	fi
 
+# table.processing_info.py makes table3 and table4
 $(table3): src/final/table.processing_info.py $(yaml_file)
 	python $< $(yaml_file) data/raw_otu_tables $(table3) $(table4)
 
 $(table4): $(table3)
 	@if test -f $@; then :; else \
-		rm -f $(table3); \
-		$(MAKE) $(AM_MAKEFLAGS) $(table3); \
+		rm -f $<; \
+		make $<; \
 	fi
 
 $(table5): src/final/table.classifier_evaluations.py $(rf_results)
 	python $< $(rf_results) $@
 
-###################
-##### FIGURES #####
-###################
+###############################################
+#                                             #
+#                  FIGURES                    #
+#                                             #
+###############################################
 
 figures: main_figures supp_figures
 
@@ -362,6 +393,7 @@ supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12 figure13 
 rf_param_figures: figure16 figure17
 
 ## Define figure file names
+# Overviews of sample size, AUC, n significant, and direction
 figure1 = final/figures/figure1.samplesize_auc_extent_direction.pdf
 figure7 = final/figures/figure7.split_cases.samplesize_auc_extent_direction.pdf
 
@@ -400,14 +432,12 @@ figure15 = final/figures/figure15.overall_heatmap_log2effect.pdf
 figure16 = final/figures/figure16.rf_params_gini.pdf
 figure17 = final/figures/figure17.rf_params_entropy.pdf
 
-# Need to figure out where these fit in...
+# General health vs disease classifier
 rf_dataset_out = final/figures/figure13.rf_healthy_disease.dataset_out.pdf
 rf_disease_out = final/figures/figure13.rf_healthy_disease.disease_out.pdf
-healthy_dis_rf: $(rf_dataset_out) $(rf_disease_out)
 
 # Different ways to define core bugs
 core_defns_fig = final/figures/figure12.different_core_definitions.pdf
-core_defns: $(core_defns_fig)
 
 figure1: $(figure1)
 figure2: $(figure2)
@@ -418,9 +448,9 @@ figure6: $(figure6)
 figure7: $(figure7)
 figure8: $(figure8)
 figure9: $(figure9)
-# figures 10 and 11 are the other alpha diversity ones
-figure12: core_defns
-figure13: healthy_dis_rf
+# figs 10 and 11 are the other alpha diversity, automatically made from fig 9
+figure12: $(core_defns_fig)
+figure13: $(rf_dataset_out) $(rf_disease_out)
 figure14: $(figure14)
 figure15: $(figure15)
 figure16: $(figure16)
@@ -495,20 +525,22 @@ $(rf_dataset_out): src/final/figure.healthy_vs_disease_classifier.py $(rf_result
 $(rf_disease_out): $(rf_dataset_out)
 	@if test -f $@; then :; else \
 		rm -f $<; \
-		$(MAKE) $(AM_MAKEFLAGS) $<; \
+		make $<; \
 	fi
 
 # Different core definitions
 $(core_defns_fig): src/final/figure.core_different_definitions.py $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file)
 	python $< --labels $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file) $@
 
-###############################
-##### SUPPLEMENTARY FILES #####
-###############################
+###############################################
+#                                             #
+#            SUPPLEMENTARY FILES              #
+#                                             #
+###############################################
 
 supp_qvals = final/supp-files/file-S1.qvalues.txt
 supp_disease = final/supp-files/file-S2.disease_specific_genera.txt
-supp_overall = final/supp-files/file-S3.core_genera.txt
+supp_overall = final/supp-files/file-S3.nonspecific_genera.txt
 supp_litsearch = final/supp-files/file-S4.literature_results.txt
 supp_effects = final/supp-files/file-S5.effects.txt
 supp_files: $(supp_qvals) $(supp_disease) $(supp_overall) $(supp_litsearch) $(supp_effects)
