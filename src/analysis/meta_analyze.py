@@ -215,6 +215,10 @@ if __name__ == "__main__":
     parser.add_argument('--exclude-nonhealthy', help='flag to exclude '
         + 'studies without healthy controls and hiv_lozupone from the '
         + 'overall cross-disease meta-analysis', action='store_true')
+    parser.add_argument('--disease', help='flag to perform disease-wise '
+        + 'meta-analysis.', action='store_true')
+    parser.add_argument('--overall', help='flag to perform cross-disease '
+        + 'meta-analysis.', action='store_true')
 
     args = parser.parse_args()
 
@@ -223,34 +227,38 @@ if __name__ == "__main__":
     meta_counts = count_sig(qvals, args.qthresh)
 
     # Disease-specific bugs
-    disease_df = within_disease_meta_analysis(meta_counts, all_otus=qvals.index)
+    if args.disease:
+        disease_df = within_disease_meta_analysis(
+            meta_counts, all_otus=qvals.index)
 
-    ## Re-count how many times each bug is significant in each disease, after
-    ## excluding any datasets without healthy controls.
-    if args.exclude_nonhealthy:
-        to_exclude = ['ibd_papa', 'ibd_gevers', 'hiv_lozupone']
-        qvals = qvals.drop(to_exclude, axis=1)
-        meta_counts = count_sig(qvals, args.qthresh)
+        # Save file
+        disease_out = os.path.join(args.out_dir,
+            'meta.counting.q-{}.disease_wise.txt'.format(args.qthresh))
+        disease_df.to_csv(disease_out, sep='\t')
 
-    # Core bugs
-    if args.no_cdi:
-        overall_df = cross_disease_meta_analysis(meta_counts, args.n_diseases,
-            exclude_dis=['cdi'])
-    else:
-        overall_df = cross_disease_meta_analysis(meta_counts, args.n_diseases)
+    if args.overall:
+        ## Re-count how many times each bug is significant in each disease, after
+        ## excluding any datasets without healthy controls.
+        if args.exclude_nonhealthy:
+            to_exclude = ['ibd_papa', 'ibd_gevers', 'hiv_lozupone']
+            qvals = qvals.drop(to_exclude, axis=1)
+            meta_counts = count_sig(qvals, args.qthresh)
 
-    if args.no_cdi:
-        overall_out = os.path.join(args.out_dir,
-            'meta.counting.q-{}.{}_diseases.across_all_diseases_except_cdi.txt'\
-                .format(
+        # Core bugs
+        if args.no_cdi:
+            overall_df = cross_disease_meta_analysis(meta_counts, args.n_diseases,
+                exclude_dis=['cdi'])
+        else:
+            overall_df = cross_disease_meta_analysis(meta_counts, args.n_diseases)
+
+        if args.no_cdi:
+            overall_out = os.path.join(args.out_dir,
+                'meta.counting.q-{}.{}_diseases.across_all_diseases_except_cdi.txt'\
+                    .format(
+                        args.qthresh, args.n_diseases))
+        else:
+            overall_out = os.path.join(args.out_dir,
+                'meta.counting.q-{}.{}_diseases.across_all_diseases.txt'.format(
                     args.qthresh, args.n_diseases))
-    else:
-        overall_out = os.path.join(args.out_dir,
-            'meta.counting.q-{}.{}_diseases.across_all_diseases.txt'.format(
-                args.qthresh, args.n_diseases))
 
-    disease_out = os.path.join(args.out_dir,
-        'meta.counting.q-{}.disease_wise.txt'.format(args.qthresh))
-
-    overall_df.to_csv(overall_out, sep='\t')
-    disease_df.to_csv(disease_out, sep='\t')
+        overall_df.to_csv(overall_out, sep='\t')

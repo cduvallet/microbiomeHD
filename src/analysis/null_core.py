@@ -38,6 +38,9 @@ parser.add_argument('qthresh', help='significance threshold', default=0.05,
 parser.add_argument('out', help='file to write tidy results to')
 parser.add_argument('--n_diseases', help='number of diseases to use in '
     + ' calculating "core" genera', default=2, type=int)
+parser.add_argument('--exclude-nonhealthy', help='flag to exclude '
+    + 'studies without healthy controls and hiv_lozupone from the '
+    + 'overall cross-disease meta-analysis', action='store_true')
 parser.add_argument('--reps', help='number of repetitions to build null '
     + '[default: %(default)s]', default=1000, type=int)
 
@@ -45,13 +48,18 @@ args = parser.parse_args()
 
 qvals = pd.read_csv(args.qvalues, sep='\t', index_col=0)
 
+if args.exclude_nonhealthy:
+    to_exclude = ['ibd_papa', 'ibd_gevers', 'hiv_lozupone']
+    qvals = qvals.drop(to_exclude, axis=1)
+    meta_counts = count_sig(qvals, args.qthresh)
+
 # Placeholder for removing datasets to exclude... should actually probably
 # read these in and include their removal in count_sig call...
 
 # For each repetition, shuffle labels, count number of sig bugs
 results = []
 for i in range(args.reps):
-    print(i)
+    print(i),
     newq = qvals.copy().apply(shuffle_col)
     counts = count_sig(newq, args.qthresh)
     overall_df = cross_disease_meta_analysis(counts, args.n_diseases)

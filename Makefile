@@ -96,11 +96,13 @@ $(split_dataset_info): src/data/dataset_info.py $(yaml_file) $(clean_otu_tables)
 ##### ANALYSES #####
 ####################
 
-## Define the target analysis files
+## Q values
 # Note that the file names for these qvalues files are hard-coded in the
 # respective scripts, rather than being passed in as inputs.
 qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.case-control.txt
 meta_qvalues = data/analysis_results/meta.counting.q-0.05.disease_wise.txt
+
+## Core/shared bugs
 # Based on counting heuristic (significant in at least 2 diseases)
 overall_qvalues = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt
 # Based on counting heuristic excluding diarrhea datasets
@@ -109,6 +111,17 @@ nocdi_overall = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all
 overall_qvalues_stouffer = data/analysis_results/meta.stouffer.q-0.05.across_all_diseases.txt
 # Raw combined pvalues from Stouffer's method
 qvalues_stouffer = data/analysis_results/meta.stouffer_qvalues.txt
+
+## "Null" core bugs
+null_core = data/analysis_results/null_core.2_diseases.txt \
+		    data/analysis_results/null_core.3_diseases.txt \
+			data/analysis_results/null_core.4_diseases.txt \
+			data/analysis_results/null_core.5_diseases.txt \
+# Corresponding actual core bugs
+all_core = data/analysis_results/meta.counting.q-0.05.2_diseases.across_all_diseases.txt \
+	data/analysis_results/meta.counting.q-0.05.3_diseases.across_all_diseases.txt \
+	data/analysis_results/meta.counting.q-0.05.4_diseases.across_all_diseases.txt \
+	data/analysis_results/meta.counting.q-0.05.5_diseases.across_all_diseases.txt
 
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
 
@@ -129,7 +142,7 @@ split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
 analysis: qvals $(dysbiosis) alpha rf_results
-reviewer_analysis: $(rf_core) $(overall_qvalues_stouffer) $(stouffer) $(nocdi_overall) $(split_qvalues) $(split_dysbiosis) $(split_rf)
+reviewer_analysis: $(rf_core) $(overall_qvalues_stouffer) $(stouffer) $(nocdi_overall) $(split_qvalues) $(split_dysbiosis) $(split_rf) $(null_core) $(all_core)
 
 # Make this separately, because it takes forever
 rf_param_search: $(rf_param_search)
@@ -143,20 +156,17 @@ rf_results: $(rf_results) $(rf_h_v_dis)
 $(qvalues): src/analysis/get_qvalues.py $(clean_otu_tables) $(clean_metadata_files)
 	python $< data/clean_tables $@
 
-## 2. meta-analysis results (+/- 1's) for each disease
+## 2. meta-analysis results (+/- 1's) for within each disease
 $(meta_qvalues): src/analysis/meta_analyze.py $(qvalues)
-	python $< $(qvalues) data/analysis_results 0.05 2 --exclude-nonhealthy
+	python $< $(qvalues) data/analysis_results 0.05 2 --exclude-nonhealthy --disease
 
-## 3. overall meta-analysis results are made at the same time as meta_qvalues
-$(overall_qvalues): $(meta_qvalues)
-	@if test -f $@; then :; else \
-		rm -f $(meta_qvalues); \
-		$(MAKE) $(AM_MAKEFLAGS) $(meta_qvalues); \
-	fi
+## 3. cross-disease meta-analysis results
+data/analysis_results/meta.counting.q-0.05.%_diseases.across_all_diseases.txt: src/analysis/meta_analyze.py $(qvalues)
+	python $< $(qvalues) data/analysis_results/ 0.05 $* --exclude-nonhealthy --overall
 
 # Overall meta-analysis with heuristic, excluding diarrhea datasets
 $(nocdi_overall): src/analysis/meta_analyze.py $(qvalues)
-	python $< --no-cdi $(qvalues) data/analysis_results 0.05 2
+	python $< $(qvalues) data/analysis_results 0.05 2 --no-cdi --exclude-nonhealthy
 
 # Overall meta-analysis using Stouffer's method for combining pvalues
 $(overall_qvalues_stouffer): src/analysis/meta_analyze_stouffer.py $(qvalues) $(dataset_info)
@@ -213,6 +223,10 @@ $(split_rf): src/analysis/classifiers.py $(split_datasets) $(clean_otu_tables) $
 $(split_dysbiosis): src/analysis/dysbiosis_metrics.py $(split_qvalues) $(split_dataset_info) $(overall_qvalues) $(split_rf)
 	python $< $(split_qvalues) $(split_dataset_info) \
 	$(overall_qvalues) $(split_rf) $@
+
+## 11. Look at core bugs you'd expect by chance
+data/analysis_results/null_core.%_diseases.txt: src/analysis/null_core.py $(qvalues)
+	python $< $(qvalues) 0.05 $@ --n_diseases $* --reps 1000 --exclude-nonhealthy
 
 #######################
 ##### PHYLOT TREE #####
@@ -335,7 +349,7 @@ $(table4): $(table3)
 
 $(table5): src/final/table.classifier_evaluations.py $(rf_results)
 	python $< $(rf_results) $@
-	
+
 ###################
 ##### FIGURES #####
 ###################
