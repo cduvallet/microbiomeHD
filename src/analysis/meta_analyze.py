@@ -246,10 +246,11 @@ if __name__ == "__main__":
 
         # Core bugs
         if args.no_cdi:
-            overall_df = cross_disease_meta_analysis(meta_counts, args.n_diseases,
-                exclude_dis=['cdi'])
+            overall_df = cross_disease_meta_analysis(
+                meta_counts, args.n_diseases, exclude_dis=['cdi'])
         else:
-            overall_df = cross_disease_meta_analysis(meta_counts, args.n_diseases)
+            overall_df = cross_disease_meta_analysis(
+                meta_counts, args.n_diseases)
 
         if args.no_cdi:
             overall_out = os.path.join(args.out_dir,

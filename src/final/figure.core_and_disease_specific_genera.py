@@ -104,4 +104,4 @@ if args.labels:
 else:
     axL1.set_yticklabels([])
 
-plt.savefig(args.out, dpi=1100)
+plt.savefig(args.out)

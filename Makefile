@@ -179,7 +179,7 @@ data/analysis_results/meta.counting.q-0.05.%_diseases.across_all_diseases.txt: s
 
 # Overall meta-analysis with heuristic, excluding diarrhea datasets
 $(nocdi_overall): src/analysis/meta_analyze.py $(qvalues)
-	python $< $(qvalues) data/analysis_results 0.05 2 --no-cdi --exclude-nonhealthy
+	python $< $(qvalues) data/analysis_results 0.05 2 --no-cdi --exclude-nonhealthy --overall
 
 # Overall meta-analysis using Stouffer's method for combining pvalues
 $(overall_qvalues_stouffer): src/analysis/meta_analyze_stouffer.py $(qvalues) $(dataset_info)
@@ -389,8 +389,8 @@ figures: main_figures supp_figures
 
 # Some subset of figures
 main_figures: figure1 figure2 figure3
-supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12 figure13 figure14 figure15
-rf_param_figures: figure16 figure17
+supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12 figure13 figure14 figure15 figure16
+rf_param_figures: figure17 figure18
 
 ## Define figure file names
 # Overviews of sample size, AUC, n significant, and direction
@@ -424,20 +424,23 @@ figure9 = final/figures/figure9.alpha_diversity.shannon.pdf
 figure4 = final/figures/figure4.roc_curves.pdf
 
 # The big ol' heatmaps.
-figure14 = final/figures/figure14.overall_heatmap_log10qvalues.pdf
-figure15 = final/figures/figure15.overall_heatmap_log2effect.pdf
+heatmap_qvals = final/figures/figure15.overall_heatmap_log10qvalues.pdf
+heatmap_effects = final/figures/figure16.overall_heatmap_log2effect.pdf
 
 # Note: figures 16 and 17 should NOT be in make 'all',
 # they should be with rf_params
-figure16 = final/figures/figure16.rf_params_gini.pdf
-figure17 = final/figures/figure17.rf_params_entropy.pdf
+rf_params_gini = final/figures/figure17.rf_params_gini.pdf
+rf_params_entropy = final/figures/figure18.rf_params_entropy.pdf
 
 # General health vs disease classifier
-rf_dataset_out = final/figures/figure13.rf_healthy_disease.dataset_out.pdf
-rf_disease_out = final/figures/figure13.rf_healthy_disease.disease_out.pdf
+rf_dataset_out = final/figures/figure12.rf_healthy_disease.dataset_out.pdf
+rf_disease_out = final/figures/figure12.rf_healthy_disease.disease_out.pdf
 
 # Different ways to define core bugs
-core_defns_fig = final/figures/figure12.different_core_definitions.pdf
+core_defns_fig = final/figures/figure13.different_core_definitions.pdf
+
+# Significance of core bugs
+sig_core = final/figures/figure14.shared_response_significance.pdf
 
 figure1: $(figure1)
 figure2: $(figure2)
@@ -449,12 +452,13 @@ figure7: $(figure7)
 figure8: $(figure8)
 figure9: $(figure9)
 # figs 10 and 11 are the other alpha diversity, automatically made from fig 9
-figure12: $(core_defns_fig)
-figure13: $(rf_dataset_out) $(rf_disease_out)
-figure14: $(figure14)
-figure15: $(figure15)
-figure16: $(figure16)
-figure17: $(figure17)
+figure12: $(rf_dataset_out) $(rf_disease_out)
+figure13: $(core_defns_fig)
+figure14: $(sig_core)
+figure15: $(heatmap_qvals)
+figure16: $(heatmap_effects)
+figure17: $(rf_params_gini)
+figure18: $(rf_params_entropy)
 
 ## Figure dependencies
 fmt = src/util/Formatting.py
@@ -503,19 +507,19 @@ $(figure6): src/final/figure.core_and_disease_specific_genera.py $(meta_clean) $
 	python $< $(meta_clean) $(overall_clean) $@ --labels
 
 # Overall heatmap with q values
-$(figure14): src/final/figure.overall_heatmap.py $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
+$(heatmap_qvals): src/final/figure.overall_heatmap.py $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
 	python $< $(qvalues_clean) $(meta_clean) $(overall_clean) $(dataset_info) $@ --plot-log10
 
 # Overall heatmap with effect
-$(figure15): src/final/figure.overall_heatmap.py $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
+$(heatmap_effects): src/final/figure.overall_heatmap.py $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $(fmt)
 	python $< $(logfold) $(meta_clean) $(overall_clean) $(dataset_info) $@
 
 # RF parameter search, gini criteria
-$(figure16): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
+$(rf_params_gini): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
 	python $< $(rf_param_search) gini $@
 
 # RF parameter search, entropy criteria
-$(figure17): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
+$(rf_params_entropy): src/final/figure.rf_params.py $(rf_param_search) $(fmt)
 	python $< $(rf_param_search) entropy $@
 
 # Healthy vs disease classifier
@@ -531,6 +535,10 @@ $(rf_disease_out): $(rf_dataset_out)
 # Different core definitions
 $(core_defns_fig): src/final/figure.core_different_definitions.py $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file)
 	python $< --labels $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file) $@
+
+# Significance of core bugs
+$(sig_core): src/final/figure.null_shared_response.py $(all_core) $(null_core)
+	python $< data/analysis_results/null_core data/analysis_results/meta.counting.q-0.05 $@
 
 ###############################################
 #                                             #
