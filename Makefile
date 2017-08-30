@@ -183,7 +183,7 @@ $(nocdi_overall): src/analysis/meta_analyze.py $(qvalues)
 
 # Overall meta-analysis using Stouffer's method for combining pvalues
 $(overall_qvalues_stouffer): src/analysis/meta_analyze_stouffer.py $(qvalues) $(dataset_info)
-	python $< $(qvalues) $(dataset_info) $(qvalues_stouffer) $@
+	python $< $(qvalues) $(dataset_info) $(qvalues_stouffer) $@ --exclude-nonhealthy
 
 # The combined qvalues are another output to the above script
 $(qvalues_stouffer):

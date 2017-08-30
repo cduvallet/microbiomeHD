@@ -62,11 +62,17 @@ parser.add_argument('core_bugs', help='out file with +/- 1 indication '
     + 'of core genera.')
 parser.add_argument('--pthresh', help='significance threshold [default: '
     + '%(default)s]', default=0.05, type=float)
-
+parser.add_argument('--exclude-nonhealthy', help='flag to exclude '
+    + 'studies without healthy controls and hiv_lozupone from the '
+    + 'overall cross-disease meta-analysis', action='store_true')
 args = parser.parse_args()
 
 pvals = pd.read_csv(args.qvalues, sep='\t', index_col=0)
 dataset_info = pd.read_csv(args.dataset_info, sep='\t')
+
+if args.exclude_nonhealthy:
+    to_exclude = ['ibd_papa', 'ibd_gevers', 'hiv_lozupone']
+    pvals = pvals.drop(to_exclude, axis=1)
 
 ## Convert wide pvals df (genera X datasets) into tidy df
 longpvals = pvals_to_long(pvals)
