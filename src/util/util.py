@@ -254,3 +254,19 @@ def cv_and_roc(rf, X, Y, num_cv=5, random_state=None):
                 'y_preds'),
                (roc_auc, conf_mat, mean_fpr, mean_tpr, fisher_p,
                y_probs, y_trues, cv_counts, y_preds))}
+
+def shuffle_col(col):
+    """
+    Shuffles the index labels of one column after dropping NaN's.
+
+    Calling df.apply(shuffle_col) shuffles each column values but preserves
+    the location of NaN's.
+
+    (Why does this work? Because this function returns a Series with only
+    the non-NaN indices. When you call shuffle_col on an entire dataframe,
+    I think pandas just fills in the missing indices with NaN's...)
+    """
+    newcol = pd.Series(
+        data=col.dropna().values,
+        index=np.random.permutation(col.dropna().index))
+    return newcol

@@ -127,6 +127,9 @@ all_core = $(overall_qvalues) \
 	data/analysis_results/meta.counting.q-0.05.4_diseases.across_all_diseases.txt \
 	data/analysis_results/meta.counting.q-0.05.5_diseases.across_all_diseases.txt
 
+# Concordance analysis
+concordance = data/analysis_results/concordance.txt
+
 # Dysbiosis metrics, including n_sig and balance
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
 
@@ -148,7 +151,7 @@ split_qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.split-cases.tx
 split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
-analysis: qvals alpha rf_results $(dysbiosis)
+analysis: qvals alpha rf_results $(dysbiosis) $(concordance)
 reviewer_analysis: shared_response $(rf_core) $(split_qvalues) $(split_dysbiosis) $(split_rf)
 # Search classifier parameter space separately, because it takes forever
 rf_param_search: $(rf_param_search)
@@ -227,7 +230,7 @@ $(rf_core): src/analysis/classifiers.py $(clean_otu_tables) $(clean_metadata_fil
 $(rf_h_v_dis): src/analysis/healthy_disease_classifier.py $(clean_otu_tables) $(clean_metadata_files)
 	python $< data/clean_tables $@
 
-## 10. Reviewer comment: re-do major analyses for subgroups of case patients
+## Reviewer comment: re-do major analyses for subgroups of case patients
 ## separately
 $(split_qvalues): src/analysis/get_qvalues.py $(split_datasets) $(clean_otu_tables) $(clean_metadata_files)
 	python $< data/clean_tables $@ --subset $(split_datasets) --split-cases
@@ -242,6 +245,10 @@ $(split_dysbiosis): src/analysis/dysbiosis_metrics.py $(split_qvalues) $(split_d
 ## 11. Significance of non-specific response for different heuristics
 data/analysis_results/null_core.%_diseases.txt: src/analysis/null_core.py $(qvalues)
 	python $< $(qvalues) 0.05 $@ --n_diseases $* --reps 1000 --exclude-nonhealthy
+
+## Concordance analysis: how often are effects in same direction?
+$(concordance): src/analysis/concordance_analysis.py $(qvalues)
+	python $< --nreps 1000 --qthresh 1.0 $(qvalues) $@
 
 ###############################################
 #                                             #
@@ -389,8 +396,8 @@ figures: main_figures supp_figures
 
 # Some subset of figures
 main_figures: figure1 figure2 figure3
-supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12 figure13 figure14 figure15 figure16
-rf_param_figures: figure17 figure18
+supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12 figure13 figure14 figure15 figure16 figure17
+rf_param_figures: figure18 figure19
 
 ## Define figure file names
 # Overviews of sample size, AUC, n significant, and direction
@@ -424,23 +431,26 @@ figure9 = final/figures/figure9.alpha_diversity.shannon.pdf
 figure4 = final/figures/figure4.roc_curves.pdf
 
 # The big ol' heatmaps.
-heatmap_qvals = final/figures/figure15.overall_heatmap_log10qvalues.pdf
-heatmap_effects = final/figures/figure16.overall_heatmap_log2effect.pdf
+heatmap_qvals = final/figures/figure16.overall_heatmap_log10qvalues.pdf
+heatmap_effects = final/figures/figure17.overall_heatmap_log2effect.pdf
 
 # Note: figures 16 and 17 should NOT be in make 'all',
 # they should be with rf_params
-rf_params_gini = final/figures/figure17.rf_params_gini.pdf
-rf_params_entropy = final/figures/figure18.rf_params_entropy.pdf
+rf_params_gini = final/figures/figure18.rf_params_gini.pdf
+rf_params_entropy = final/figures/figure19.rf_params_entropy.pdf
 
 # General health vs disease classifier
 rf_dataset_out = final/figures/figure12.rf_healthy_disease.dataset_out.pdf
 rf_disease_out = final/figures/figure12.rf_healthy_disease.disease_out.pdf
 
 # Different ways to define core bugs
-core_defns_fig = final/figures/figure13.different_core_definitions.pdf
+core_defns_fig = final/figures/figure14.different_core_definitions.pdf
 
 # Significance of core bugs
-sig_core = final/figures/figure14.shared_response_significance.pdf
+sig_core = final/figures/figure15.shared_response_significance.pdf
+
+# Concordance p-values
+concordance_pvals = final/figures/figure13.concordance_pvalues.pdf
 
 figure1: $(figure1)
 figure2: $(figure2)
@@ -453,12 +463,14 @@ figure8: $(figure8)
 figure9: $(figure9)
 # figs 10 and 11 are the other alpha diversity, automatically made from fig 9
 figure12: $(rf_dataset_out) $(rf_disease_out)
-figure13: $(core_defns_fig)
-figure14: $(sig_core)
-figure15: $(heatmap_qvals)
-figure16: $(heatmap_effects)
-figure17: $(rf_params_gini)
-figure18: $(rf_params_entropy)
+figure13: $(concordance_pvals)
+
+figure14: $(core_defns_fig)
+figure15: $(sig_core)
+figure16: $(heatmap_qvals)
+figure17: $(heatmap_effects)
+figure18: $(rf_params_gini)
+figure19: $(rf_params_entropy)
 
 ## Figure dependencies
 fmt = src/util/Formatting.py
@@ -539,6 +551,10 @@ $(core_defns_fig): src/final/figure.core_different_definitions.py $(overall_clea
 # Significance of core bugs
 $(sig_core): src/final/figure.null_shared_response.py $(all_core) $(null_core)
 	python $< data/analysis_results/null_core data/analysis_results/meta.counting.q-0.05 $@
+
+$(concordance_pvals): src/final/figure.concordance.py $(concordance) $(dataset_info)
+	python $< $(concordance) $(dataset_info) $@
+
 
 ###############################################
 #                                             #

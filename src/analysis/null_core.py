@@ -11,24 +11,10 @@ import numpy as np
 import os, sys
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/analysis'))
 sys.path.insert(0, src_dir)
+src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
+sys.path.insert(0, src_dir)
 from meta_analyze import count_sig, cross_disease_meta_analysis
-
-def shuffle_col(col):
-    """
-    Shuffles the index labels of one column after dropping NaN's.
-
-    Calling df.apply(shuffle_col) shuffles each column values but preserves
-    the location of NaN's.
-
-    (Why does this work? Because this function returns a Series with only
-    the non-NaN indices. When you call shuffle_col on an entire dataframe,
-    I think pandas just fills in the missing indices with NaN's...)
-    """
-    newcol = pd.Series(
-        data=col.dropna().values,
-        index=np.random.permutation(col.dropna().index))
-    return newcol
-
+from util import shuffle_col
 
 parser = argparse.ArgumentParser()
 parser.add_argument('qvalues', help='file with qvalues; genera in rows, '
