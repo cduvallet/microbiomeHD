@@ -431,13 +431,13 @@ figure9 = final/figures/figure9.alpha_diversity.shannon.pdf
 figure4 = final/figures/figure4.roc_curves.pdf
 
 # The big ol' heatmaps.
-heatmap_qvals = final/figures/figure16.overall_heatmap_log10qvalues.pdf
-heatmap_effects = final/figures/figure17.overall_heatmap_log2effect.pdf
+heatmap_qvals = final/figures/figure15.overall_heatmap_log10qvalues.pdf
+heatmap_effects = final/figures/figure16.overall_heatmap_log2effect.pdf
 
 # Note: figures 16 and 17 should NOT be in make 'all',
 # they should be with rf_params
-rf_params_gini = final/figures/figure18.rf_params_gini.pdf
-rf_params_entropy = final/figures/figure19.rf_params_entropy.pdf
+rf_params_gini = final/figures/figure17.rf_params_gini.pdf
+rf_params_entropy = final/figures/figure18.rf_params_entropy.pdf
 
 # General health vs disease classifier
 rf_dataset_out = final/figures/figure12.rf_healthy_disease.dataset_out.pdf
@@ -447,7 +447,7 @@ rf_disease_out = final/figures/figure12.rf_healthy_disease.disease_out.pdf
 core_defns_fig = final/figures/figure14.different_core_definitions.pdf
 
 # Significance of core bugs
-sig_core = final/figures/figure15.shared_response_significance.pdf
+#sig_core = final/figures/figure15.shared_response_significance.pdf
 
 # Concordance p-values
 concordance_pvals = final/figures/figure13.concordance_pvalues.pdf
@@ -466,11 +466,11 @@ figure12: $(rf_dataset_out) $(rf_disease_out)
 figure13: $(concordance_pvals)
 
 figure14: $(core_defns_fig)
-figure15: $(sig_core)
-figure16: $(heatmap_qvals)
-figure17: $(heatmap_effects)
-figure18: $(rf_params_gini)
-figure19: $(rf_params_entropy)
+#figure15: $(sig_core)
+figure15: $(heatmap_qvals)
+figure16: $(heatmap_effects)
+figure17: $(rf_params_gini)
+figure18: $(rf_params_entropy)
 
 ## Figure dependencies
 fmt = src/util/Formatting.py
@@ -548,9 +548,9 @@ $(rf_disease_out): $(rf_dataset_out)
 $(core_defns_fig): src/final/figure.core_different_definitions.py $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file)
 	python $< --labels $(overall_clean) $(nocdi_clean) $(stouffer_clean) $(final_tree_file) $@
 
-# Significance of core bugs
-$(sig_core): src/final/figure.null_shared_response.py $(all_core) $(null_core)
-	python $< data/analysis_results/null_core data/analysis_results/meta.counting.q-0.05 $@
+## Significance of core bugs
+#$(sig_core): src/final/figure.null_shared_response.py $(all_core) $(null_core)
+#	python $< data/analysis_results/null_core data/analysis_results/meta.counting.q-0.05 $@
 
 $(concordance_pvals): src/final/figure.concordance.py $(concordance) $(dataset_info)
 	python $< $(concordance) $(dataset_info) $@
