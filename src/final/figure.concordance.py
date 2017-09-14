@@ -16,60 +16,18 @@ src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
 sys.path.insert(0, src_dir)
 import Formatting as fmt
 
-
-def get_pvals_df(df):
-    """
-    Calculate pvalues from the dataframe with the empirical distribution.
-
-    Parameters
-    ----------
-    df : pandas DataFrame
-        has columns ['study1', 'study2', 'qthresh', 'metric', 'n_concord',
-        'dis1', 'dis2']. (Produced from concordance_analysis.py)
-        The 'metric' column indicates whether the value in 'n_concord' is the
-        actual value ("observed") or a shuffled, expected value ("expected").
-
-    Returns
-    -------
-    pvalsdf : pandas DataFrame
-        has columns ['study1', 'study2', 'p'] where 'p' is the p value of the
-        expected n_concord being >= the observed n_concord.
-        Note that pvalsdf contains *redundant* study1-study2 pairs (so that
-        calling pvalsdf.pivot() yields a symmetric matrix)
-    """
-
-    # Make pvalues dataframe from the empirical distribution
-    pvals = []
-    for g, subdf in df.groupby(['study1','study2', 'qthresh']):
-        n_obs = subdf.query('metric == "observed"')['n_concord'].values
-        n_exp = subdf.query('metric == "expected"')['n_concord'].values
-        p = sum(n_exp >= n_obs)/float(len(n_exp))
-
-        pvals.append(
-            list(g) + [p, subdf['dis1'].iloc[0], subdf['dis2'].iloc[0]])
-    pvalsdf = pd.DataFrame(data=pvals,
-        columns=['study1', 'study2', 'qthresh', 'p', 'dis1', 'dis2'])
-    # Add study1-study2 flipped pairs so pivoted df is symmetric
-    pvalsdf = pd.concat(
-        (pvalsdf,
-         pvalsdf[['study1', 'study2', 'p']].rename(
-            columns={'study1': 'study2', 'study2': 'study1'})))\
-        .drop_duplicates(['study1', 'study2', 'p'])
-        # the within-disease comparisons get doubled here
-    return pvalsdf
-
 ## Arguments
 p = argparse.ArgumentParser()
-p.add_argument('concordance', help='tidy file with concordance results')
+p.add_argument('concordance', help='file with pvalues for each studywise '
+    + 'comparison. Should have redundant comparison pairs.')
 p.add_argument('dataset_info', help='file with dataset info, for use in '
     + 'ordering datasets for plotting (in Formatting.py)')
 p.add_argument('fout', help='path to write figure to')
 args = p.parse_args()
 
 ## Read in stuff
-df = pd.read_csv(args.concordance, sep='\t')
+pvalsdf = pd.read_csv(args.concordance, sep='\t')
 dataset_info = pd.read_csv(args.dataset_info, sep='\t')
-pvalsdf = get_pvals_df(df)
 
 ## Prepare for plotting
 # Get dataset orders, as in Figure 1
@@ -88,7 +46,7 @@ toplot = pd.DataFrame(data=np.tril(np.log10(toplot.values + 1e-4)),
 toplot = toplot.replace(0, np.nan)
 # Get labels for each dataset
 labeldict = fmt.get_labeldict(toplot.index)
-vmin = -4 #should match the pseudo-zero addition
+vmin = np.log10(0.05) #should match the pseudo-zero addition
 vmax = 0
 
 ## Set up grid spec - will make boxes around each disease

@@ -129,6 +129,7 @@ all_core = $(overall_qvalues) \
 
 # Concordance analysis
 concordance = data/analysis_results/concordance.txt
+concordance_pvals = data/analysis_results.concordance.pvals.txt
 
 # Dysbiosis metrics, including n_sig and balance
 dysbiosis = data/analysis_results/dysbiosis_metrics.txt
@@ -151,7 +152,7 @@ split_qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.split-cases.tx
 split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
-analysis: qvals alpha rf_results $(dysbiosis) $(concordance)
+analysis: qvals alpha rf_results $(dysbiosis) concord
 reviewer_analysis: shared_response $(rf_core) $(split_qvalues) $(split_dysbiosis) $(split_rf)
 # Search classifier parameter space separately, because it takes forever
 rf_param_search: $(rf_param_search)
@@ -161,6 +162,7 @@ qvals: $(qvalues) $(meta_qvalues) $(overall_qvalues) $(split_qvalues)
 shared_response: $(overall_qvalues) $(overall_qvalues_stouffer) $(qvalues_stouffer) $(nocdi_overall) $(null_core) $(all_core)
 alpha: $(alpha_divs) $(alpha_pvals)
 rf_results: $(rf_results) $(rf_h_v_dis)
+concord: $(concordance) $(concordance_pvals)
 
 ###############################################
 #                                             #
@@ -248,7 +250,7 @@ data/analysis_results/null_core.%_diseases.txt: src/analysis/null_core.py $(qval
 
 ## Concordance analysis: how often are effects in same direction?
 $(concordance): src/analysis/concordance_analysis.py $(qvalues)
-	python $< --nreps 1000 --qthresh 1.0 $(qvalues) $@
+	python $< --nreps 1000 --qthresh 1.0 --tidy_fout $@ $(qvalues)  $(concordance_pvals)
 
 ###############################################
 #                                             #
