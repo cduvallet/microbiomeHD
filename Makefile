@@ -152,7 +152,7 @@ split_qvalues = data/analysis_results/qvalues.mean.kruskal-wallis.split-cases.tx
 split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
-analysis: qvals alpha rf_results $(dysbiosis) concord
+analysis: qvals alpha rf_results $(dysbiosis) #concord
 reviewer_analysis: shared_response $(rf_core) $(split_qvalues) $(split_dysbiosis) $(split_rf)
 # Search classifier parameter space separately, because it takes forever
 rf_param_search: $(rf_param_search)
@@ -398,7 +398,7 @@ figures: main_figures supp_figures
 
 # Some subset of figures
 main_figures: figure1 figure2 figure3
-supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12 figure13 figure14 figure15 figure16 figure17
+supp_figures: figure4 figure5 figure6 figure7 figure8 figure9 figure12  figure14 figure15 figure16 figure17 #figure13
 rf_param_figures: figure18 figure19
 
 ## Define figure file names
