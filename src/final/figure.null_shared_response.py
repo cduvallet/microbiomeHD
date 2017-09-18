@@ -78,9 +78,9 @@ for i in range(4):
     newymax = oldymax + ytickrange
     ax[i].set_ylim([newymin, newymax])
     if i in [2]:
-        ax[i].set_yticks([0, 1, 2, 3])
+        ax[i].set_yticks([0, 1, 2, 3, 4])
     if i in [3]:
-        ax[i].set_yticks([0, 1, 2])
+        ax[i].set_yticks([0, 1])
 
     # print pvalues
     null = pd.read_csv(fnull, sep='\t')
