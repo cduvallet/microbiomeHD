@@ -16,7 +16,7 @@ Chen 2012, CRC | 0.78 | 0.034 | 0.35
 Gevers 2014, IBD | 0.71 | 1 | 0
 Morgan 2012, IBD | 0.81 | 0.0025 | 0.26
 Papa 2012, IBD | 0.84 | 0.0019 | 0.34
-Willing 2009, IBD | 0.66 | 0.81 | 0.026
+Willing 2010, IBD | 0.66 | 0.81 | 0.026
 Noguera-Julian 2016, HIV | 0.67 | 1 | 0
 Lozupone 2013, HIV | 0.92 | 8.7e-06 | 0.76
 Dinh 2015, HIV | 0.22 | 0.062 | -0.26

@@ -54,7 +54,7 @@ ax.set_xticks(ax.get_xticks() + 0.4)
 ax.set_xticklabels([labeldict[i] for i in neworder], rotation=45,
                    ha='right')
 
-ax.set_ylabel("Fraction overlap with core")
+ax.set_ylabel("Fraction overlap with\nnon-specific bacteria")
 ax.set_yticks([0,0.5,1])
 ax.set_xlabel('')
 [ax.spines[i].set_visible(False) for i in ['right', 'top']]

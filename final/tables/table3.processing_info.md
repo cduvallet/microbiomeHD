@@ -17,7 +17,7 @@ Noguera-Julian 2016, HIV | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Gevers 2014, IBD | fastq | No | No | -fastq_truncqual | 25 | 200
 Morgan 2012, IBD | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Papa 2012, IBD | fasta | n/a | n/a | n/a | n/a | 200
-Willing 2009, IBD | fastq | No | Yes | -fastq_maxee | 2 | 200
+Willing 2010, IBD | fastq | No | Yes | -fastq_maxee | 2 | 200
 Zhang 2013, LIV | fastq | No | Yes | -fastq_truncqual | 25 | 200
 Wong 2013, NASH | fastq | No | No | -fastq_truncqual | 25 | 200
 Zhu 2013, NASH | fasta | n/a | n/a | n/a | n/a | 200

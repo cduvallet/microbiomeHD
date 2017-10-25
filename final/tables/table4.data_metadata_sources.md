@@ -17,7 +17,7 @@ Noguera-Julian 2016, HIV | SRA study SRP068240 | SRA
 Gevers 2014, IBD | SRA study SRP040765 | Table S2
 Morgan 2012, IBD | SRA study SRP015953 | http://huttenhower.sph.harvard.edu/ibd2012
 Papa 2012, IBD | email authors | email authors
-Willing 2009, IBD | email authors | email authors
+Willing 2010, IBD | email authors | email authors
 Zhang 2013, LIV | SRA study SRP015698 | SRA
 Wong 2013, NASH | SRA study SRP011160 | SRA
 Zhu 2013, NASH | MG-RAST, study mgp1195 | MG-RAST

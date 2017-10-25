@@ -33,7 +33,7 @@ def plot_ubiq_abun_boxplot(tidy, metric, calculation):
     -------
     ax : Axis object
     """
-    fig, ax = plt.subplots(figsize=(4.5,4))
+    fig, ax = plt.subplots(figsize=(5.5,4))
     tmp = tidy.query('metric == @metric')\
               .query('calculation == @calculation')\
               .query('patient == "total"')
@@ -74,8 +74,9 @@ tidy = pd.read_csv(args.ubiquity, sep='\t')
 sns.set_style('white')
 fig, ax = plot_ubiq_abun_boxplot(tidy, args.metric, args.calc)
 ax.set_title('')
-ax.set_xticklabels(['Core\nhealth', 'Core\ndisease', 'Core\nmixed',
-                    'Not\ncore'], fontsize='medium')
+ax.set_xticklabels(['Non-specific\nhealth', 'Non-specific\ndisease',
+                    'Non-specific\nmixed', 'Not\nnon-specific'],
+                    fontsize='medium')
 ax.set_xlabel('')#, fontsize='x-large')
 
 if args.metric == 'abundance':

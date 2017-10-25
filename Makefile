@@ -153,7 +153,7 @@ split_rf = data/analysis_results/rf_results.split_cases.txt
 split_dysbiosis = data/analysis_results/dysbiosis_metrics.split_cases.txt
 
 analysis: qvals alpha rf_results $(dysbiosis)
-reviewer_analysis: shared_response $(split_qvalues) $(split_dysbiosis) $(split_rf) $(null_core) $(all_core) $(rf_core) 
+reviewer_analysis: shared_response $(split_qvalues) $(split_dysbiosis) $(split_rf) $(null_core) $(all_core) $(rf_core)
 # Search classifier parameter space separately, because it takes forever
 rf_param_search: $(rf_param_search)
 
@@ -366,7 +366,7 @@ table5 = final/tables/table5.classifier_results.tex
 tables: $(table1) $(table2) $(table3) $(table4) $(table5)
 
 # table.dataset_info.py makes table1 and table2 from datasets_info.txt
-$(table1): src/final/table.datasets_info.py $(dataset_info)
+$(table1): src/final/table.datasets_info.py $(dataset_info) $(fmt)
 	python $< $(dataset_info) $(table1) $(table2)
 
 $(table2): $(table1)
@@ -376,7 +376,7 @@ $(table2): $(table1)
 	fi
 
 # table.processing_info.py makes table3 and table4
-$(table3): src/final/table.processing_info.py $(yaml_file)
+$(table3): src/final/table.processing_info.py $(yaml_file) $(fmt)
 	python $< $(yaml_file) data/raw_otu_tables $(table3) $(table4)
 
 $(table4): $(table3)
@@ -385,7 +385,7 @@ $(table4): $(table3)
 		make $<; \
 	fi
 
-$(table5): src/final/table.classifier_evaluations.py $(rf_results)
+$(table5): src/final/table.classifier_evaluations.py $(rf_results) $(fmt)
 	python $< $(rf_results) $@
 
 ###############################################

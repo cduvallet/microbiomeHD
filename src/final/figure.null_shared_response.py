@@ -70,7 +70,7 @@ for i in range(4):
     if i in [1, 3]:
         ax[i].set_ylabel('')
     else:
-        ax[i].set_ylabel('N shared')
+        ax[i].set_ylabel('N non-specific')
     # y limits
     newymin = ax[i].get_yticks()[0]/5.0
     oldymax = ax[i].get_yticks()[-1]

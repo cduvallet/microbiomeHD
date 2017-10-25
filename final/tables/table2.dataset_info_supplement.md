@@ -18,7 +18,7 @@ Noguera-Julian 2016, HIV | 2016 | H | 34 | HIV | 205 | 16506.0 | MiSeq | V3-V4 |
 Gevers 2014, IBD | 2014 | nonIBD | 16 | CD | 146 | 9773.5 | Miseq | V4 | \cite{ibd-gevers}
 Morgan 2012, IBD | 2012 | H | 18 | UC, CD | 108 | 1022.5 | 454 | V3-V5 | \cite{ibd-hut}
 Papa 2012, IBD | 2012 | nonIBD | 24 | UC, CD | 66 | 1323.5 | 454 | V3-V5 | \cite{ibd-papa}
-Willing 2009, IBD | 2009 | H | 35 | UC, CD | 45 | 1118.5 | 454 | V5-V6 | \cite{ibd-engstrand}
+Willing 2010, IBD | 2009 | H | 35 | UC, CD | 45 | 1118.5 | 454 | V5-V6 | \cite{ibd-engstrand}
 Zhang 2013, LIV | 2013 | H | 25 | CIRR, MHE | 46 | 487.0 | 454 | V1-V2 | \cite{mhe-zhang}
 Wong 2013, NASH | 2013 | H | 22 | NASH | 16 | 1980.0 | 454 | V1-V2 | \cite{nash-chan}
 Zhu 2013, NASH | 2013 | H | 16 | NASH | 22 | 10863.0 | 454 | V4 | \cite{nash-baker}

@@ -24,7 +24,7 @@ import Formatting as fmt
 
 def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
                                 disease_df, dataset_order,
-                                heatmap_vmax=None):
+                                heatmap_vmax=None, figsize=(13,14)):
     """
     Heatmap with all datasets + overall results.
     Left panel: color bars corresponding to phylogeny
@@ -67,7 +67,7 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
     #hspace = 0.2    #the amount of height reserved for white space between subplots
 
     ## Set up 3 grid specs on my plot
-    fig = plt.figure(figsize=(13,14))
+    fig = plt.figure(figsize=figsize)
     # Left bar has one heatmap (order level)
     gsL = gridspec.GridSpec(1, 1)
     gsL.update(left=0.12, right=0.14, bottom=0.15, top=0.98)
@@ -91,7 +91,10 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
     axM1 = plt.subplot(gsM[0])
     axM1.imshow(overall_df.values, interpolation='nearest', aspect='auto',
         cmap=sns.diverging_palette(220,20,center='dark',as_cmap=True))
-    axM1.set_xticklabels([])
+    #axM1.set_xticklabels([])
+    axM1.set_xticks([0.4])
+    axM1.set_xticklabels(['Non-specific'], rotation=45,
+        fontsize='small', ha='right')
     axM1.set_yticklabels([])
     axM1.set_ylim(axM1.get_ylim()[0], axM1.get_ylim()[1] - 0.5)
     # axM2 has the disease-specific "overall" significant
@@ -145,8 +148,8 @@ def plot_overall_heatmap_figure(mean_toplot, phylo_toplot, overall_df,
     ax.yaxis.tick_right()
     ax.yaxis.set_label_position('right')
     labels = [i.split(';')[-1][3:] for i in subdf.index]
-    ax.set_yticks(np.arange(0.5, len(labels) + 0.5))
-    ax.set_yticklabels(labels, fontsize=8, va='bottom')
+    ax.set_yticks(np.arange(0, len(labels)))
+    ax.set_yticklabels(labels, fontsize=8, va='center')
 
     return fig
 
@@ -236,6 +239,9 @@ p.add_argument('--plot-log10', help='Flag to plot log10(values). [default: '
     + '%(default)s]', action='store_true')
 p.add_argument('--qthresh', help='q-value threshold to use as most opaque '
     + 'in big heatmap. [default: %(default)s]', default=0.05, type=float)
+p.add_argument('--figsize', help='comma-separated values for figure size. '
+    + ' e.g. should be entered as "--figsize 13,14" for figure with width 13 '
+    + ' height 14', default='13,14')
 args = p.parse_args()
 
 
@@ -244,6 +250,7 @@ main_values = pd.read_csv(args.main_values, sep='\t', index_col=0)
 disease_meta = pd.read_csv(args.disease_meta, sep='\t', index_col=0)
 overall_meta = pd.read_csv(args.overall, sep='\t', index_col=0)
 dataset_info = pd.read_csv(args.dataset_info, sep='\t')
+figsize = tuple(int(i) for i in args.figsize.split(','))
 
 if not (main_values.index == disease_meta.index).all() and \
        (main_values.index == overall_meta.index).all():
@@ -256,7 +263,8 @@ for_plotting = prepare_heatmap_plot(main_values, disease_meta,
                                     overall_meta, dataset_info,
                                     plot_log10=args.plot_log10,
                                     qthresh=args.qthresh)
+
 # Plot!
 sns.set_style('white')
-fig = plot_overall_heatmap_figure(*for_plotting)
+fig = plot_overall_heatmap_figure(*for_plotting, figsize=figsize)
 fig.savefig(args.figout)

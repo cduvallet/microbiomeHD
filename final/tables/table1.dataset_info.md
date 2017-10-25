@@ -17,7 +17,7 @@ Chen 2012, CRC | H | 22 | CRC | 21 | \cite{crc-xiang}
 Gevers 2014, IBD | nonIBD | 16 | CD | 146 | \cite{ibd-gevers}
 Morgan 2012, IBD | H | 18 | UC, CD | 108 | \cite{ibd-hut}
 Papa 2012, IBD | nonIBD | 24 | UC, CD | 66 | \cite{ibd-papa}
-Willing 2009, IBD | H | 35 | UC, CD | 45 | \cite{ibd-engstrand}
+Willing 2010, IBD | H | 35 | UC, CD | 45 | \cite{ibd-engstrand}
 Noguera-Julian 2016, HIV | H | 34 | HIV | 205 | \cite{noguera2016gut}
 Dinh 2015, HIV | H | 15 | HIV | 21 | \cite{hiv-dinh}
 Lozupone 2013, HIV | H | 13 | HIV | 23 | \cite{lozupone2013alterations}
