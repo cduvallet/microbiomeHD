@@ -290,7 +290,7 @@ $(clean_ncbi): src/analysis/clean_ncbi.py $(ncbi_file)
 
 # Manual step: go to the phyloT website and make the tree
 $(phyloT_file): $(clean_ncbi)
-	read -n1 -p "Go to http://phylot.biobyte.de/ and generate tree from ${clean_ncbi}. Press any key to continue once you've added the tree file in ${phyloT_file}. "
+	read -n1 -p "If you want to fully reproduce everything, go to http://phylot.biobyte.de/ and generate tree from ${clean_ncbi} and press any key to continue once you've added the tree file in ${phyloT_file}. Otherwise, just press enter to continue."
 
 # Manually edit tree with genera which didn't have NCBI IDs
 $(final_tree_file): src/analysis/update_tree.py $(phyloT_file) $(genera_file)

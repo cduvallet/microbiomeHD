@@ -40,6 +40,7 @@ Other things you can `make` separately:
 is not included in any of the other `make` commands.
 * `supp_files`: the supplementary files, which are also included in the repo
 and don't technically need to be re-made
+* `tree`: the phyloT tree used to order genera in final figures.
 
 ## Installing
 
@@ -87,6 +88,13 @@ All data-related files are (or will be) in `data/`:
 * `clean_tables`: OTU tables and metadata in feather format, with "cleaned"
 data (i.e. only samples with both metadata and 16S, OTUs and samples
 with too few reads removed, etc)
+* `tree`: files associated with the phyloT tree. Note that the final tree
+(and its direct prerequisites) are included in this repo. If you want to
+re-make the tree from scratch, delete any of these files before running
+`make`. Making the tree is dicier and involves a manual step for you at
+`http://phylot.biobyte.de/`. Re-making the tree will also change the order
+of genera so that they no longer match the ordering in the paper exactly
+(since the linear order of phylogenetic groups doesn't matter).
 
 #### source code
 
