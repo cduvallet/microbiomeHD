@@ -292,9 +292,12 @@ $(clean_ncbi): src/analysis/clean_ncbi.py $(ncbi_file)
 $(phyloT_file): $(clean_ncbi)
 	read -n1 -p "If you want to fully reproduce everything, go to http://phylot.biobyte.de/ and generate tree from ${clean_ncbi} and press any key to continue once you've added the tree file in ${phyloT_file}. Otherwise, just press enter to continue."
 
-# Manually edit tree with genera which didn't have NCBI IDs
-$(final_tree_file): src/analysis/update_tree.py $(phyloT_file) $(genera_file)
-	src/analysis/update_tree.py $(genera_file) $(phyloT_file) $(final_tree_file)
+## NOTE: UNCOMMENT THIS RECIPE AND DELETE phyloT_tree.updated.newick TO
+## RE-MAKE THE PHYLOT TREE FROM SCRATCH!
+
+## Manually edit tree with genera which didn't have NCBI IDs
+#$(final_tree_file): src/analysis/update_tree.py $(phyloT_file) $(genera_file)
+#	src/analysis/update_tree.py $(genera_file) $(phyloT_file) $(final_tree_file)
 
 ###############################################
 #                                             #
