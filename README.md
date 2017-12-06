@@ -41,6 +41,8 @@ is not included in any of the other `make` commands.
 * `supp_files`: the supplementary files, which are also included in the repo
 and don't technically need to be re-made
 
+## Installing
+
 To re-make all of the analyses, you'll first need to install the required
 modules. From this main directory, you can type:
 
@@ -50,6 +52,10 @@ Note that installing [feather](https://github.com/wesm/feather/tree/master/pytho
 may not work this way. If you have Anaconda, you can manually install feather
 first by typing `conda install feather-format -c conda-forge`
 and then re-run the `pip install` command.
+
+Also note that these scripts were all written for python2. I don't think there
+should be any backward-incompatible portions, so python3 **might** work, but
+no promises.
 
 You also need to install the NCBI EDirect command line tools for making
 the tree. Instructions on how to do that are on the NCBI
