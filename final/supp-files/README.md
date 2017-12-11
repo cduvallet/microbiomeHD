@@ -39,5 +39,7 @@ Logfold difference of mean abundance in cases and controls.
 For each genus, this is calculated as:
 `log2(mean_abundance_in_cases/mean_abundance_in_controls)`.
 If the mean abundance in both cases and controls is 0, this value
-is 0. If the mean abundance in cases is not zero but the mean
-abundance in controls is 0, returns `np.inf`.
+is 0. If the mean abundance in controls is 0 and in cases is not 0,
+the maximum value of the table is filled in. If the mean abundance
+in cases is 0 and in controls is not 0, the minimum value of the
+table is filled in.
