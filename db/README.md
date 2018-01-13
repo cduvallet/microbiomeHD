@@ -1,4 +1,4 @@
-This directory contains version-controlled information about the data in [MicrobiomeHD](https://zenodo.org/record/569601#.WYMcMdPytTY).
+This directory contains version-controlled information about the data in [MicrobiomeHD](https://doi.org/10.5281/zenodo.797943).
 
 `make` just compiles a few different sources of information to update the
 description that's on Zenodo.

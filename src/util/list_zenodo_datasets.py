@@ -26,10 +26,11 @@ args = p.parse_args()
 with open(args.token_file, 'r') as f:
     token = f.readline().strip()
 
-r = requests.get('https://zenodo.org/api/deposit/depositions/569601/files',
+r = requests.get('https://zenodo.org/api/deposit/depositions/1146764/files',
                  params={'access_token': token})
 
-names = [i['filename'].split('.tar.gz')[0] for i in r.json()]
+names = [i['filename'].split('.tar.gz')[0]
+         for i in r.json() if i['filename'].endswith('.tar.gz')]
 
 # Read in yaml file
 with open(args.yaml_file, 'r') as f:

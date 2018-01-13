@@ -50,24 +50,6 @@ cdi_schubert:
     paper: http://dx.doi.org/10.1128/mBio.01021-14
     dna_extraction_text: "PowerSoil-htp 96-well soil DNA isoltion kit (MO Bio Laboratories, Carlsbad, CA) on an EpMotion 5075 liquid-handling workstation"
     dna_extraction: bead_beating
-noncdi_schubert:
-    folder: cdi_schubert_results
-    region: V3-V5
-    sequencer: "454"
-    year: 2014
-    otu_calling: 97%, mothur
-    name_assignment: rdp
-    analysis_tools: lefse, R, stata
-    analyses: logit, logit_plus_metadata, diversity, community_types, LDA, lefse
-    sample_size:
-        CDI: 94
-        nonCDI: 89
-        H: 155
-    data_source: mothur.org/CDI_MicrobiomeModeling
-    metadata_source: mothur.org/CDI_MicrobiomeModeling
-    paper: http://dx.doi.org/10.1128/mBio.01021-14
-    dna_extraction_text: "PowerSoil-htp 96-well soil DNA isoltion kit (MO Bio Laboratories, Carlsbad, CA) on an EpMotion 5075 liquid-handling workstation"
-    dna_extraction: bead_beating
 cdi_vincent:
     folder: cdi_vincent_v3v5_results
     region: V3-V5
@@ -420,7 +402,7 @@ nash_wong:
     paper: http://dx.doi.org/10.1371/journal.pone.0062885
     dna_extraction_text: "180 mg   material   was   removed from   the   surface   and   core   of   the   frozen   stool   samples,   mixed manually, and the total DNA was purified by QIAamp DNA Stool Mini Kit (Qiagen, Inc, Hilden, Germany)."
     dna_extraction: lysis_buffer
-nash_zhu:
+nash_ob_zhu:
     folder: nash_ob_baker_results
     region: V4
     sequencer: "454"
@@ -452,6 +434,7 @@ ob_escobar:
    analysis_tools: qiime, fast_unifrac, R
    analyses: diversity, beta_diversity, linear_regressions, geography, metadata_correlations
    why_excluded: fewer than 15 cases
+   paper: https://doi.org/10.1186/s12866-014-0311-6
 ob_goodrich:
     folder: ob_goodrich_results
     region: V4
@@ -506,24 +489,6 @@ ob_turnbaugh:
     paper: http://dx.doi.org/10.1038/nature07540
     dna_extraction_text: "Ten to twenty grams of each sample was pulverized in liquid nitrogen with a mortar and pestle. An aliquot (approximately 500 mg) of each sample was then suspended, while frozen, in a solution containing 500 ml of extraction buffer (200 mM Tris (pH 8.0), 200 mM NaCl, 20 mM EDTA), 210 ml of 20% SDS, 500 ml of a mixture of phenol:chloroform:isoamyl alcohol (25:24:1, pH 7.9), and   500 ml   of   a   slurry   of   0.1-mm   diameter   zirconia/silica   beads   (BioSpec Products). Microbial cells were subsequently lysed by mechanical disruption with a bead beater (BioSpec Products) set on high for 2 min at room temperature, followed by extraction with phenol:chloroform:isoamyl alcohol, and precipitation with isopropanol."
     dna_extraction: bead_beating
-ob_zhu:
-    folder: nash_ob_baker_results
-    region: V4
-    sequencer: "454"
-    year: 2013
-    otu_calling: qiime, 97%
-    name_assignment: qiime_closed_ref?
-    analysis_tools: qiime, R
-    analyses: enterotypes, univariate, diversity, pca_unifrac
-    sample_size:
-        H: 16
-        OB: 25
-        NASH: 22
-    data_source: MG-RAST, study mgp1195 (same data as nash_zhu)
-    metadata_source: MG-RAST
-    paper: http://dx.doi.org/10.1002/hep.26093
-    dna_extraction_text: "Genomic DNA was isolated from stool samples using the DNeasy Blood and Tissue Kit (Qiagen, Valencia,   CA)   and   mechanical   lysis."
-    dna_extraction: lysis_buffer
 ob_zupancic:
     folder: ob_zupancic_results
     region: V1-V3
@@ -618,3 +583,19 @@ t1d_mejialeon:
     paper: http://dx.doi.org/10.1038/srep03814
     dna_extraction_text: "For stool samples the QIAamp DNA Stool Mini Kit (QIAGENH) was used."
     dna_extraction: lysis_buffer
+ob_wu:
+    folder: ob_wu_results
+    paper: http://dx.doi.org/10.1126/science.1208344
+    sample_size:
+        bmi_data: 101
+ob_zeevi:
+    folder: ob_zeevi_results
+    paper: http://dx.doi.org/10.1016/j.cell.2015.11.001
+    sample_size:
+        bmi_data: 870
+ob_jumpertz:
+    folder: ob_jumpertz_results
+    paper: http://ajcn.nutrition.org/content/early/2011/05/03/ajcn.110.010132
+    sample_size:
+        H: 12
+        OB: 9
