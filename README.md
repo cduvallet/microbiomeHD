@@ -45,18 +45,18 @@ and don't technically need to be re-made
 ## Installing
 
 To re-make all of the analyses, you'll first need to install the required
-modules. From this main directory, you can type:
+modules.
 
-`pip install -r requirements.txt`
+You should probably do this in a Python 2 virtual environment. Unfortunately, many of the packages I used are no longer available in conda, so if you use anaconda you'll need to first create an empty conda environment, [install pip](https://github.com/ContinuumIO/anaconda-issues/issues/1429), and then pip install the packages. If you don't use anaconda and/or have an alternative preferred way of making virtual environments, that's fine too (but I can't confirm that it will all work out). From the main directory, type:
 
-Note that installing [feather](https://github.com/wesm/feather/tree/master/python)
-may not work this way. If you have Anaconda, you can manually install feather
-first by typing `conda install feather-format -c conda-forge`
-and then re-run the `pip install` command.
+```
+conda create -n microbiomeHD python=2.7
+source activate microbiomeHD
+conda install pip
+pip install -r requirements.txt
+```
 
-Also note that these scripts were all written for python2. I don't think there
-should be any backward-incompatible portions, so python3 **might** work, but
-no promises.
+Note that all of these scripts were written in and for Python 2. Also, there have been many backward incompatible changes in some important modules used throughout, so you should install the old versions specified in the `requirements.txt` or else be plagued by many import errors.
 
 You also need to install the NCBI EDirect command line tools for making
 the tree. Instructions on how to do that are on the NCBI

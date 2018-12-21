@@ -11,7 +11,7 @@ import subprocess
 
 import pandas as pd
 import feather
-from feather.compat import pdapi
+from pyarrow.compat import pdapi
 
 src_dir = os.path.normpath(os.path.join(os.getcwd(), 'src/util'))
 sys.path.append(src_dir)
